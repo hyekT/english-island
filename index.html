@@ -3803,7 +3803,7 @@
         bear:   { body: 0xc1916a, belly: 0xe8cdae, accent: 0xf0a8a0, nose: 0x3a2e2a, egg: 0xf6e7d6, spot: 0xc1916a, muzzle: 0xf1dec6 },
         fox:    { body: 0xf09b52, belly: 0xfff7ec, accent: 0xf6b3a8, nose: 0x3a2e2a, egg: 0xffebd8, spot: 0xf09b52, tip: 0x5a3a28 }
       };
-      const STAGE_SCALE = [1.3, .98, 1.15, 1.3, 1.45, 1.6];
+      const STAGE_SCALE = [1.3, .98, 1.12, 1.22, 1.32, 1.42];
       function sm(c) { return mat(c); }
       function ball(r, c, x, y, z, sx, sy, sz) {
         const m = mesh(new T.SphereGeometry(r, 18, 14), sm(c), x, y, z);
@@ -3827,18 +3827,27 @@
           g.scale.setScalar(1);
           return parts;
         }
-        const bodyS = stage >= 3 ? 1 : .86;
-        const torso = ball(.5, S.body, 0, .55, 0, 1 * bodyS, .92 * bodyS, .95 * bodyS); body.add(torso);
-        body.add(ball(.36, S.belly, 0, .5, .3 * bodyS, 1 * bodyS, 1 * bodyS, .5));
-        const head = new T.Group(); head.position.y = 1.32; body.add(head); parts.head = head;
+        // 단계별 체형: 꼬마 → 청소년 → 어른으로 갈수록 몸이 길어지고, 다리가 보이고, 머리·눈 비율이 작아져요
+        const legH = [0, 0, 0, .12, .22, .22][stage];
+        const tSY = [0, .86, .9, 1.04, 1.14, 1.14][stage];      // 몸통 세로
+        const tSX = [0, .86, .9, .97, 1.0, 1.0][stage];         // 몸통 가로
+        const headS = [0, 1.0, .98, .93, .88, .9][stage];
+        const eyeS = [0, 1.15, 1.08, 1.0, .9, .9][stage];
+        const ry = .46 * tSY, cy = .09 + legH + ry;              // 몸통 중심 높이
+        const adult = stage >= 4;
+        const torso = ball(.5, S.body, 0, cy, 0, tSX, .92 * tSY, .95 * tSX); body.add(torso);
+        body.add(ball(.36, S.belly, 0, cy - .05, .3 * tSX, tSX * (species === 'bear' && stage >= 3 ? 1.1 : 1), tSY, .5));
+        const head = new T.Group(); head.position.y = cy + ry + .31 * headS; head.scale.setScalar(headS); body.add(head); parts.head = head;
         head.add(ball(.62, S.body, 0, 0, 0, 1.05, .95, 1));
-        // 눈
+        // 눈 (어릴수록 커요)
         const eyeM = sm(0x3a2e2a), hiM = sm(0xffffff);
         const eyes = [];
         [-.22, .22].forEach(function (x) {
           const e = new T.Group(); e.position.set(x, .06, .55);
-          e.add(mesh(new T.SphereGeometry(.078, 12, 10), eyeM, 0, 0, 0)); e.children[0].scale.set(1, 1.25, .6);
-          e.add(mesh(new T.SphereGeometry(.026, 6, 5), hiM, .025, .04, .045));
+          const eb = new T.Group(); eb.scale.setScalar(eyeS); e.add(eb);
+          eb.add(mesh(new T.SphereGeometry(.078, 12, 10), eyeM, 0, 0, 0)); eb.children[0].scale.set(1, 1.25, .6);
+          eb.add(mesh(new T.SphereGeometry(.026, 6, 5), hiM, .025, .04, .045));
+          if (stage <= 2) eb.add(mesh(new T.SphereGeometry(.014, 5, 4), hiM, -.025, -.03, .045));
           head.add(e); eyes.push(e);
         });
         parts.eyes = eyes;
@@ -3846,54 +3855,74 @@
         [-.22, .22].forEach(function (x) { const b = mesh(new T.BoxGeometry(.14, .025, .02), eyeM, x, .2, .56); b.rotation.z = x < 0 ? .35 : -.35; brows.add(b); });
         brows.visible = false; head.add(brows); parts.brows = brows;
         [-.38, .38].forEach(function (x) { head.add(ball(.1, S.accent, x, -.1, .48, 1, .6, .4)); });
-        if (species === 'bear') head.add(ball(.2, S.muzzle, 0, -.12, .5, 1, .75, .6));
-        if (species === 'fox') { head.add(ball(.2, S.belly, -.16, -.13, .47, 1, .7, .6)); head.add(ball(.2, S.belly, .16, -.13, .47, 1, .7, .6)); }
+        if (species === 'bear') head.add(ball(.2 * (adult ? 1.12 : 1), S.muzzle, 0, -.12, .5, 1, .75, .6));
+        if (species === 'fox') { const m = adult ? 1.12 : 1; head.add(ball(.2 * m, S.belly, -.16, -.13, .47, 1, .7, .6)); head.add(ball(.2 * m, S.belly, .16, -.13, .47, 1, .7, .6)); }
         head.add(ball(species === 'bear' || species === 'fox' ? .065 : .045, S.nose, 0, -.04, species === 'bear' ? .66 : .61, 1.2, .8, .8));
-        // 입 (작은 w)
         const mouthM = new T.MeshBasicMaterial({ color: 0x3a2e2a });
         [-.04, .04].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.04, .011, 4, 10, Math.PI), mouthM); m.position.set(x, -.14, species === 'bear' ? .62 : .59); m.rotation.z = Math.PI; head.add(m); });
         if (species === 'cat') {
           [-.1, 0, .1].forEach(function (x) { head.add(mesh(new T.BoxGeometry(.04, .14, .02), sm(S.stripe), x, .45, .38)); });
           const wm = new T.MeshBasicMaterial({ color: 0x5e6780 });
-          [[-1, .0], [-1, -.06], [1, 0], [1, -.06]].forEach(function (w) { const l = new T.Mesh(new T.BoxGeometry(.24, .01, .01), wm); l.position.set(w[0] * .46, -.08 + w[1], .45); l.rotation.z = w[0] * (w[1] ? -.12 : .12); head.add(l); });
+          [[-1, .0], [-1, -.06], [1, 0], [1, -.06]].forEach(function (w) { const l = new T.Mesh(new T.BoxGeometry(.24 + (adult ? .06 : 0), .01, .01), wm); l.position.set(w[0] * .46, -.08 + w[1], .45); l.rotation.z = w[0] * (w[1] ? -.12 : .12); head.add(l); });
+          // 어른 고양이: 볼 털
+          if (adult) [-1, 1].forEach(function (s) { const c = mesh(new T.ConeGeometry(.09, .22, 4), sm(S.body), s * .6, -.12, .12); c.rotation.z = s * Math.PI / 2; head.add(c); });
         }
-        // 귀
+        // 귀 (자랄수록 길어지고 커져요)
         if (species === 'rabbit') {
-          const len = 2.2 + stage * .3;
+          const len = [0, 1.9, 2.3, 2.8, 3.2, 3.3][stage];
           [-1, 1].forEach(function (s) {
-            const ear = new T.Group(); ear.position.set(s * .24, .5, -.05); ear.rotation.z = -s * .14;
+            const ear = new T.Group(); ear.position.set(s * .24, .5, -.05); ear.rotation.z = -s * (stage >= 3 ? .2 : .12);
             ear.add(ball(.15, S.body, 0, .15 * len * .5 + .1, 0, 1, len, .6));
             ear.add(ball(.08, S.accent, 0, .15 * len * .5 + .1, .06, 1, len * 1.5, .3));
             head.add(ear);
           });
         } else if (species === 'cat' || species === 'fox') {
-          const h = species === 'fox' ? .55 + stage * .02 : .42;
+          const h = species === 'fox' ? [0, .48, .54, .6, .66, .66][stage] : [0, .36, .4, .45, .5, .5][stage];
+          const w = species === 'fox' ? .21 + (stage >= 3 ? .03 : 0) : .21;
           [-1, 1].forEach(function (s) {
-            const ear = new T.Group(); ear.position.set(s * .36, .42, 0); ear.rotation.z = -s * .3;
-            ear.add(mesh(new T.ConeGeometry(.21, h, 4), sm(S.body), 0, h / 2, 0));
-            ear.add(mesh(new T.ConeGeometry(.12, h * .7, 4), sm(S.accent), 0, h * .38, .08));
-            if (species === 'fox') ear.add(mesh(new T.ConeGeometry(.09, h * .3, 4), sm(S.tip), 0, h * .85, 0));
+            const ear = new T.Group(); ear.position.set(s * .36, .42, 0); ear.rotation.z = -s * (stage >= 3 ? .24 : .32);
+            ear.add(mesh(new T.ConeGeometry(w, h, 4), sm(S.body), 0, h / 2, 0));
+            ear.add(mesh(new T.ConeGeometry(w * .57, h * .7, 4), sm(S.accent), 0, h * .38, .08));
+            if (species === 'fox') ear.add(mesh(new T.ConeGeometry(w * .43, h * .3, 4), sm(S.tip), 0, h * .85, 0));
+            if (species === 'cat' && adult) ear.add(mesh(new T.ConeGeometry(.03, .14, 3), sm(S.stripe), 0, h + .04, 0));
             head.add(ear);
           });
         } else {
-          [-1, 1].forEach(function (s) { head.add(ball(.2, S.body, s * .45, .45, -.05)); head.add(ball(.11, S.muzzle, s * .45, .45, .08, 1, 1, .4)); });
+          const er = [0, .18, .19, .21, .23, .23][stage];
+          [-1, 1].forEach(function (s) { head.add(ball(er, S.body, s * .45, .45, -.05)); head.add(ball(er * .55, S.muzzle, s * .45, .45, .08, 1, 1, .4)); });
         }
-        // 팔·발
-        const armL = ball(.13, S.body, -.45 * bodyS, .62, .1, 1, 1.5, 1), armR = ball(.13, S.body, .45 * bodyS, .62, .1, 1, 1.5, 1);
+        // 팔
+        const armLen = 1.5 + (stage >= 3 ? .25 : 0) + (adult ? .15 : 0);
+        const armL = ball(.13, S.body, -.45 * tSX, cy + .07, .1, 1, armLen, 1), armR = ball(.13, S.body, .45 * tSX, cy + .07, .1, 1, armLen, 1);
         armL.rotation.z = .5; armR.rotation.z = -.5; body.add(armL); body.add(armR);
-        const footL = ball(.17, S.body, -.22, .1, .06, 1, .6, 1.3), footR = ball(.17, S.body, .22, .1, .06, 1, .6, 1.3);
-        g.add(footL); g.add(footR);
+        // 다리·발 (청소년부터 다리가 보여요)
+        const sockC = species === 'fox' && stage >= 3 ? S.tip : S.body;
+        const mkFoot = function (x) {
+          const f = new T.Group(); f.position.set(x, 0, .06);
+          f.add(ball(.17 * (adult ? 1.12 : 1), sockC, 0, .1, 0, 1, .6, 1.3));
+          if (legH > 0) f.add(mesh(new T.CylinderGeometry(.11 * tSX, .12, legH + .14, 10), sm(sockC), 0, .12 + (legH + .14) / 2, -.04));
+          g.add(f); return f;
+        };
+        const footL = mkFoot(-.22), footR = mkFoot(.22);
         parts.footL = footL; parts.footR = footR; parts.armL = armL; parts.armR = armR;
-        // 꼬리
-        if (species === 'rabbit') body.add(ball(.16, 0xffffff, 0, .45, -.48));
-        if (species === 'bear') body.add(ball(.12, S.body, 0, .42, -.48));
+        // 몸 무늬 (어른)
+        if (adult && species === 'rabbit') { [[-.09, .02], [.09, .02], [0, -.05]].forEach(function (q) { body.add(ball(.12, 0xffffff, q[0], cy + ry * .55 + q[1], .36 * tSX, 1, .8, .7)); }); }
+        if (adult && species === 'cat') { [-.25, 0, .25].forEach(function (z) { const st = mesh(new T.TorusGeometry(.42 * tSX, .03, 4, 16, Math.PI * .7), sm(S.stripe), 0, cy + z * .5 + .05, -.05); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .65; body.add(st); }); }
+        if (adult && species === 'bear') { const moon = mesh(new T.TorusGeometry(.17, .045, 6, 14, Math.PI), sm(0xf6ead6), 0, cy + ry * .5, .44 * tSX); moon.rotation.z = Math.PI; body.add(moon); }
+        if (adult && species === 'fox') { const ruff = mesh(new T.ConeGeometry(.24, .4, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff); }
+        // 꼬리 (자랄수록 커져요)
+        const tg = [0, .85, .95, 1.1, 1.25, 1.3][stage];
+        if (species === 'rabbit') body.add(ball(.16 * tg, 0xffffff, 0, cy - .1, -.48 * tSX));
+        if (species === 'bear') body.add(ball(.12 * tg, S.body, 0, cy - .13, -.48 * tSX));
         if (species === 'cat') {
-          const curve = new T.CatmullRomCurve3([new T.Vector3(0, .4, -.42), new T.Vector3(0, .35, -.75), new T.Vector3(0, .7, -.9), new T.Vector3(0, 1.0, -.75)]);
+          const k = tg, y0 = cy - .15;
+          const curve = new T.CatmullRomCurve3([new T.Vector3(0, y0, -.42 * tSX), new T.Vector3(0, y0 - .05, -.42 - .33 * k), new T.Vector3(0, y0 + .3 * k, -.42 - .48 * k), new T.Vector3(0, y0 + .6 * k, -.42 - .33 * k)]);
           const tail = mesh(new T.TubeGeometry(curve, 16, .08, 8), sm(S.body)); body.add(tail); parts.tail = tail;
+          if (stage >= 3) body.add(ball(.09, S.stripe, 0, y0 + .6 * k, -.42 - .33 * k));
         }
         if (species === 'fox') {
-          const tail = new T.Group(); tail.position.set(0, .55, -.5); tail.rotation.x = -.9;
-          const ts = 1 + stage * .08;
+          const tail = new T.Group(); tail.position.set(0, cy, -.5 * tSX); tail.rotation.x = -.9 + (stage >= 3 ? .15 : 0);
+          const ts = tg;
           tail.add(ball(.26 * ts, S.body, 0, 0, -.3 * ts, 1, 1, 1.9));
           tail.add(ball(.17 * ts, S.belly, 0, 0, -.72 * ts, 1, 1, 1.1));
           body.add(tail); parts.tail = tail;
@@ -3901,22 +3930,30 @@
         // 단계별 장식
         if (stage === 2 || stage === 3) {
           const sprout = new T.Group(); sprout.position.y = .56;
-          sprout.add(mesh(new T.CylinderGeometry(.02, .025, .25, 5), sm(0x4e8f3a), 0, .12, 0));
-          const l1 = ball(.1, 0x7cc35f, -.1, .26, 0, 1.4, .45, .8); l1.rotation.z = .4; sprout.add(l1);
-          const l2 = ball(.1, 0x8fd06f, .1, .28, 0, 1.4, .45, .8); l2.rotation.z = -.4; sprout.add(l2);
+          const big = stage === 3 ? 1.25 : 1;
+          sprout.add(mesh(new T.CylinderGeometry(.02, .025, .25 * big, 5), sm(0x4e8f3a), 0, .12 * big, 0));
+          const l1 = ball(.1 * big, 0x7cc35f, -.1 * big, .26 * big, 0, 1.4, .45, .8); l1.rotation.z = .4; sprout.add(l1);
+          const l2 = ball(.1 * big, 0x8fd06f, .1 * big, .28 * big, 0, 1.4, .45, .8); l2.rotation.z = -.4; sprout.add(l2);
           head.add(sprout); parts.sprout = sprout;
         }
         if (stage === 3 || stage === 4) {
-          const scarf = mesh(new T.TorusGeometry(.4, .1, 8, 18), sm(0xe46a6a), 0, .95, 0); scarf.rotation.x = Math.PI / 2; scarf.scale.set(1.05, 1, 1); body.add(scarf);
-          const tailS = mesh(new T.BoxGeometry(.16, .34, .07), sm(0xe46a6a), .18, .78, .4); tailS.rotation.z = .2; body.add(tailS);
+          const ny = cy + ry - .05;
+          const scarf = mesh(new T.TorusGeometry(.4 * tSX, .1, 8, 18), sm(0xe46a6a), 0, ny, 0); scarf.rotation.x = Math.PI / 2; scarf.scale.set(1.05, 1, 1); body.add(scarf);
+          const tailS = mesh(new T.BoxGeometry(.16, .34, .07), sm(0xe46a6a), .18, ny - .17, .4 * tSX); tailS.rotation.z = .2; body.add(tailS);
         }
         if (stage === 4) {
-          const cols = [0xff9eb5, 0xffe07a, 0xffffff, 0xb9a4f5, 0xff8a7a, 0xffe07a, 0xff9eb5];
-          for (let i = 0; i < 7; i++) {
-            const a = -Math.PI * .85 + i / 6 * Math.PI * .7 + Math.PI / 2;
-            const f = mesh(new T.DodecahedronGeometry(.07, 0), flat(cols[i]), Math.cos(a) * .48, .42, Math.sin(a) * .42 - .05);
-            head.add(f);
+          // 꽃 화관: 머리 위를 한 바퀴 두르는 큼직한 꽃
+          const cols = [0xff9eb5, 0xffe07a, 0xffffff, 0xb9a4f5, 0xff8a7a];
+          const ring = new T.Group(); ring.position.y = .4; ring.rotation.x = -.18;
+          ring.add(mesh(new T.TorusGeometry(.5, .035, 6, 24), sm(0x6cb758), 0, 0, 0)).rotation.x = Math.PI / 2;
+          for (let i = 0; i < 9; i++) {
+            const a = i / 9 * Math.PI * 2;
+            const fl = new T.Group(); fl.position.set(Math.cos(a) * .5, .02, Math.sin(a) * .5);
+            for (let k = 0; k < 5; k++) { const pa = k / 5 * Math.PI * 2; fl.add(mesh(new T.SphereGeometry(.055, 6, 5), sm(cols[i % 5]), Math.cos(pa) * .06, .03, Math.sin(pa) * .06)); }
+            fl.add(mesh(new T.SphereGeometry(.04, 6, 5), sm(0xf6b53d), 0, .05, 0));
+            ring.add(fl);
           }
+          head.add(ring);
         }
         if (stage === 5) {
           const crown = new T.Group(); crown.position.y = .58;
@@ -3925,11 +3962,13 @@
           for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; crown.add(mesh(new T.ConeGeometry(.06, .18, 4), gold, Math.cos(a) * .25, .14, Math.sin(a) * .25)); }
           crown.add(ball(.05, 0xe2557a, 0, .02, .27));
           head.add(crown);
-          const cape = mesh(new T.CylinderGeometry(.32, .62, 1.0, 12, 1, true, Math.PI * .6, Math.PI * .8), mat(0x8e6bc4, { side: T.DoubleSide }), 0, .55, -.06);
-          cape.rotation.y = Math.PI; body.add(cape);
           const glow = new T.PointLight(0xffe27a, .9, 4, 2); glow.position.set(0, 1.2, .5); g.add(glow);
           const halo = new T.Mesh(new T.RingGeometry(.7, .95, 32), new T.MeshBasicMaterial({ color: 0xffe27a, transparent: true, opacity: .35, side: T.DoubleSide }));
           halo.rotation.x = -Math.PI / 2; halo.position.y = .03; g.add(halo); parts.halo = halo;
+          // 반짝이는 별 3개가 머리 위를 맴돌아요
+          const orbit = new T.Group(); orbit.position.y = cy + ry + .9;
+          for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2; orbit.add(mesh(new T.OctahedronGeometry(.07, 0), new T.MeshBasicMaterial({ color: 0xffe27a }), Math.cos(a) * .75, 0, Math.sin(a) * .75, false)); }
+          g.add(orbit); parts.orbit = orbit;
         }
         g.scale.setScalar(STAGE_SCALE[stage]);
         return parts;
@@ -4426,6 +4465,7 @@
         parts.body.rotation.z = P.state === 'sleep' ? .12 : 0;
         if (parts.tail && pet.species !== 'cat') parts.tail.rotation.y = Math.sin(t * (walking ? 10 : 3)) * .3;
         if (parts.halo) parts.halo.rotation.z += dt;
+        if (parts.orbit) parts.orbit.rotation.y += dt * 1.2;
         // 표정
         const blink = (t % 4.3) > 4.15;
         let ey = 1;

@@ -18,7 +18,8 @@ const API_ALLOWED = [
   'sendMail', 'submitMailReply', 'sendStudyLink',
   'startWordGame', 'submitWordGame',
   'verifyTeacherPassword', 'submitFeedback', 'updateFeedback', 'addBonus',
-  'listStudentAccounts', 'resetStudentPassword'
+  'listStudentAccounts', 'resetStudentPassword',
+  'getIslandLayout', 'saveIslandLayout'
 ];
 
 function doPost(e) {
@@ -33,4 +34,53 @@ function doPost(e) {
     out = { ok: false, error: (err && err.message) ? err.message : String(err) };
   }
   return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// ---------------------------------------------------------------
+// 🛠️ 섬 꾸미기 배치 저장 (시트 'IslandLayouts'를 자동으로 만들어요)
+// ---------------------------------------------------------------
+// 이 스크립트가 구글 시트에 붙어 있지 않다면(독립 스크립트) 시트 ID를 넣어 주세요.
+const ISLAND_SHEET_ID = '';
+
+function islandLayoutSheet_() {
+  const ss = ISLAND_SHEET_ID ? SpreadsheetApp.openById(ISLAND_SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName('IslandLayouts');
+  if (!sh) {
+    sh = ss.insertSheet('IslandLayouts');
+    sh.appendRow(['className', 'studentNumber', 'layout', 'updatedAt']);
+  }
+  return sh;
+}
+
+function getIslandLayout(className, studentNumber) {
+  const rows = islandLayoutSheet_().getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][0] === className && String(rows[i][1]) === String(studentNumber)) {
+      return { layout: JSON.parse(rows[i][2] || 'null'), updatedAt: Number(rows[i][3]) || 0 };
+    }
+  }
+  return null;
+}
+
+function saveIslandLayout(className, studentNumber, layoutJson) {
+  if (String(layoutJson).length > 20000) throw new Error('배치 정보가 너무 커요.');
+  const L = JSON.parse(layoutJson);
+  if (!L || L.v !== 1) throw new Error('배치 정보가 올바르지 않아요.');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sh = islandLayoutSheet_();
+    const rows = sh.getDataRange().getValues();
+    const now = Date.now();
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][0] === className && String(rows[i][1]) === String(studentNumber)) {
+        sh.getRange(i + 1, 3, 1, 2).setValues([[layoutJson, now]]);
+        return { updatedAt: now };
+      }
+    }
+    sh.appendRow([className, Number(studentNumber), layoutJson, now]);
+    return { updatedAt: now };
+  } finally {
+    lock.releaseLock();
+  }
 }

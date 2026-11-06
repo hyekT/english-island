@@ -19,7 +19,7 @@ const API_ALLOWED = [
   'startWordGame', 'submitWordGame',
   'verifyTeacherPassword', 'submitFeedback', 'updateFeedback', 'addBonus',
   'listStudentAccounts', 'resetStudentPassword',
-  'getIslandLayout', 'saveIslandLayout'
+  'getIslandProfile', 'saveIslandLayout', 'saveIslandPet', 'getClassIslands', 'likeIsland'
 ];
 
 function doPost(e) {
@@ -37,50 +37,85 @@ function doPost(e) {
 }
 
 // ---------------------------------------------------------------
-// 🛠️ 섬 꾸미기 배치 저장 (시트 'IslandLayouts'를 자동으로 만들어요)
+// 🏝️ 내 섬 정보: 친구(동물)·꾸미기 배치·도장 (시트 'Islands'를 자동으로 만들어요)
 // ---------------------------------------------------------------
 // 이 스크립트가 구글 시트에 붙어 있지 않다면(독립 스크립트) 시트 ID를 넣어 주세요.
 const ISLAND_SHEET_ID = '';
+const ISLAND_COLS = ['className', 'studentNumber', 'studentName', 'pet', 'layout', 'updatedAt', 'likes', 'likedBy'];
 
-function islandLayoutSheet_() {
+function islandSheet_() {
   const ss = ISLAND_SHEET_ID ? SpreadsheetApp.openById(ISLAND_SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName('IslandLayouts');
-  if (!sh) {
-    sh = ss.insertSheet('IslandLayouts');
-    sh.appendRow(['className', 'studentNumber', 'layout', 'updatedAt']);
-  }
+  let sh = ss.getSheetByName('Islands');
+  if (!sh) { sh = ss.insertSheet('Islands'); sh.appendRow(ISLAND_COLS); sh.setFrozenRows(1); }
   return sh;
 }
-
-function getIslandLayout(className, studentNumber) {
-  const rows = islandLayoutSheet_().getDataRange().getValues();
-  for (let i = 1; i < rows.length; i++) {
-    if (rows[i][0] === className && String(rows[i][1]) === String(studentNumber)) {
-      return { layout: JSON.parse(rows[i][2] || 'null'), updatedAt: Number(rows[i][3]) || 0 };
-    }
-  }
-  return null;
+function islandRows_() { return islandSheet_().getDataRange().getValues(); }
+function islandFind_(rows, className, studentNumber) {
+  for (let i = 1; i < rows.length; i++) if (rows[i][0] === className && String(rows[i][1]) === String(studentNumber)) return i;
+  return -1;
 }
-
-function saveIslandLayout(className, studentNumber, layoutJson) {
-  if (String(layoutJson).length > 20000) throw new Error('배치 정보가 너무 커요.');
-  const L = JSON.parse(layoutJson);
-  if (!L || L.v !== 1) throw new Error('배치 정보가 올바르지 않아요.');
+function islandParse_(v) { try { return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+// 행을 찾아서(없으면 만들어서) fn(row)로 고친 뒤 저장해요
+function islandUpdate_(className, studentNumber, studentName, fn) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sh = islandLayoutSheet_();
-    const rows = sh.getDataRange().getValues();
-    const now = Date.now();
-    for (let i = 1; i < rows.length; i++) {
-      if (rows[i][0] === className && String(rows[i][1]) === String(studentNumber)) {
-        sh.getRange(i + 1, 3, 1, 2).setValues([[layoutJson, now]]);
-        return { updatedAt: now };
-      }
-    }
-    sh.appendRow([className, Number(studentNumber), layoutJson, now]);
-    return { updatedAt: now };
+    const sh = islandSheet_(), rows = sh.getDataRange().getValues();
+    let i = islandFind_(rows, className, studentNumber);
+    let row = i >= 0 ? rows[i].slice() : [className, Number(studentNumber), studentName || '', '', '', 0, 0, '{}'];
+    while (row.length < ISLAND_COLS.length) row.push('');
+    if (studentName) row[2] = studentName;
+    const out = fn(row);
+    if (i >= 0) sh.getRange(i + 1, 1, 1, ISLAND_COLS.length).setValues([row]);
+    else sh.appendRow(row);
+    return out;
   } finally {
     lock.releaseLock();
   }
+}
+
+function getIslandProfile(className, studentNumber) {
+  const rows = islandRows_(), i = islandFind_(rows, className, studentNumber);
+  if (i < 0) return null;
+  const r = rows[i];
+  return { pet: islandParse_(r[3]), layout: islandParse_(r[4]), updatedAt: Number(r[5]) || 0, likes: Number(r[6]) || 0 };
+}
+
+function saveIslandLayout(className, studentNumber, studentName, layoutJson) {
+  if (String(layoutJson).length > 20000) throw new Error('배치 정보가 너무 커요.');
+  const L = JSON.parse(layoutJson);
+  if (!L || L.v !== 1) throw new Error('배치 정보가 올바르지 않아요.');
+  return islandUpdate_(className, studentNumber, studentName, function (row) {
+    row[4] = layoutJson; row[5] = Date.now(); return { updatedAt: row[5] };
+  });
+}
+
+function saveIslandPet(className, studentNumber, studentName, petJson) {
+  const p = JSON.parse(petJson);
+  if (!p || ['rabbit', 'cat', 'bear', 'fox'].indexOf(p.species) < 0) throw new Error('친구 정보가 올바르지 않아요.');
+  const clean = JSON.stringify({ species: p.species, name: String(p.name || '').slice(0, 8), adoptedAt: Number(p.adoptedAt) || Date.now() });
+  return islandUpdate_(className, studentNumber, studentName, function (row) { row[3] = clean; return true; });
+}
+
+function getClassIslands(className) {
+  const rows = islandRows_(), out = [];
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][0] !== className) continue;
+    out.push({ studentNumber: Number(rows[i][1]), studentName: rows[i][2], pet: islandParse_(rows[i][3]), layout: islandParse_(rows[i][4]), likes: Number(rows[i][6]) || 0 });
+  }
+  return out;
+}
+
+// 친구 섬에 👍 도장: 한 친구 섬에 하루 한 번
+function likeIsland(className, targetNumber, visitorNumber) {
+  if (String(targetNumber) === String(visitorNumber)) throw new Error('내 섬에는 도장을 찍을 수 없어요.');
+  const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  const rows = islandRows_();
+  if (islandFind_(rows, className, targetNumber) < 0) throw new Error('친구 섬을 찾지 못했어요.');
+  return islandUpdate_(className, targetNumber, '', function (row) {
+    const by = islandParse_(row[7]) || {};
+    if (by[visitorNumber] === today) return { likes: Number(row[6]) || 0, already: true };
+    by[visitorNumber] = today; row[7] = JSON.stringify(by); row[6] = (Number(row[6]) || 0) + 1;
+    return { likes: row[6], already: false };
+  });
 }

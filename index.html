@@ -665,6 +665,58 @@
     .g-evo-gift { background: #EEF8E8; border-radius: 14px; padding: 10px 12px; font-size: 13.5px; color: #3F7A33; margin: -4px 0 12px; line-height: 1.6; }
     .g-evo-gift-btn { margin-top: 6px; border: none; background: #5DAF4C; color: #fff; border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 700; cursor: pointer; box-shadow: 0 3px 0 #3F8A33; }
     @media (max-width: 720px) { .g-panel .g-props { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); } }
+    /* ⚔️ 보스전 */
+    .w-boss-label { background: rgba(40,34,60,.88); color: #fff; border-color: rgba(255,255,255,.7); }
+    .w-boss-label::after { border-top-color: rgba(40,34,60,.88); }
+    .w-boss-label:hover { background: rgba(60,50,90,.95); }
+    .w-boss-label.done { background: #FFE7A8; color: #7A4A00; }
+    .w-boss-label.done::after { border-top-color: #FFE7A8; }
+    .w-boss-hp { display: inline-block; width: 70px; height: 9px; border-radius: 99px; background: rgba(255,255,255,.25); overflow: hidden; margin-left: 4px; }
+    .w-boss-hp i { display: block; height: 100%; background: linear-gradient(90deg, #ff6b5a, #ffb34d); border-radius: 99px; }
+    .w-dmg { position: absolute; transform: translate(-50%, -50%); font-weight: 800; font-size: 22px; color: #FFE14D; text-shadow: 0 2px 0 #B5423A, 0 0 6px rgba(0,0,0,.4); pointer-events: none; animation: w-dmg 1.2s ease-out forwards; white-space: nowrap; }
+    .w-dmg.big { font-size: 30px; }
+    @keyframes w-dmg { 0% { opacity: 0; transform: translate(-50%, -30%) scale(.6); } 15% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); } 100% { opacity: 0; transform: translate(-50%, -160%) scale(1); } }
+    .g-bossbar { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 19; width: min(380px, calc(100vw - 480px)); min-width: 250px; background: rgba(40,34,60,.9); color: #fff; border: 3px solid rgba(255,255,255,.8); border-radius: 18px; padding: 7px 12px 8px; cursor: pointer; box-shadow: var(--g-shadow); }
+    .g-bossbar:hover { background: rgba(55,46,82,.95); }
+    .g-bossbar-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 700; }
+    .g-bossbar-top span:last-child { font-weight: 400; opacity: .8; font-size: 12px; white-space: nowrap; }
+    .g-bossbar-track { height: 13px; border-radius: 99px; background: rgba(255,255,255,.18); margin-top: 5px; overflow: hidden; position: relative; }
+    .g-bossbar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #ff6b5a, #ffb34d); transition: width .8s; }
+    .g-bossbar-track b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10.5px; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+    .g-bossbar.win { background: #FFE7A8; color: #7A4A00; }
+    .g-bossbar.win .g-bossbar-track { display: none; }
+    body:has(.g-bossbar) .g-toasts { top: 78px; }
+    @media (max-width: 720px) { .g-bossbar { top: auto; bottom: 70px; left: 12px; right: 12px; transform: none; width: auto; min-width: 0; } body:has(.g-bossbar) .g-toasts { top: auto; bottom: 138px; } }
+    .g-boss-hero { text-align: center; padding: 6px 0 4px; }
+    .g-boss-hero .e { font-size: 44px; line-height: 1.1; }
+    .g-boss-hero .n { font-size: 22px; font-weight: 800; margin-top: 2px; }
+    .g-boss-hero .d { font-size: 13px; color: var(--ej-ink-soft); margin-top: 2px; }
+    .g-boss-big { height: 20px; border-radius: 99px; background: #EFE3CC; overflow: hidden; position: relative; margin: 10px 0 4px; border: 2px solid #fff; }
+    .g-boss-big i { display: block; height: 100%; background: linear-gradient(90deg, #ff6b5a, #ffb34d); }
+    .g-boss-big b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #3B2F2A; }
+    .g-rule { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: 13.5px; background: #fff; border: 2px solid #EBDDC3; border-radius: 14px; padding: 10px 12px; }
+    .g-rule b { color: #D9622C; text-align: right; }
+    .g-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #fff; border: 2px solid #EBDDC3; border-radius: 14px; margin-bottom: 6px; font-size: 14px; }
+    .g-row .rk { width: 26px; text-align: center; font-weight: 800; }
+    .g-row .bar { flex: 1; height: 9px; border-radius: 99px; background: #EFE3CC; overflow: hidden; }
+    .g-row .bar i { display: block; height: 100%; background: linear-gradient(90deg, #ff6b5a, #ffb34d); }
+    .g-row.me { border-color: #8CCB79; background: #F4FBEF; }
+    /* 🏝️ 친구 섬 */
+    .g-friend { display: flex; align-items: center; gap: 10px; padding: 9px 10px; background: #fff; border: 2px solid #EBDDC3; border-radius: 16px; margin-bottom: 8px; box-shadow: 0 3px 0 #EBDDC3; }
+    .g-friend .av { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(#DDF1F8, #BFE6A8); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .g-friend .info { flex: 1; min-width: 0; }
+    .g-friend .nm { font-weight: 800; font-size: 14.5px; }
+    .g-friend .sub { font-size: 12px; color: var(--ej-ink-soft); }
+    .g-friend button { border: none; background: #5DAF4C; color: #fff; font: inherit; font-weight: 700; font-size: 13px; padding: 7px 12px; border-radius: 12px; cursor: pointer; box-shadow: 0 3px 0 #3F8A33; white-space: nowrap; }
+    .g-visitbar { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 25; display: flex; align-items: center; gap: 10px; background: rgba(255,251,242,.96); border: 3px solid #fff; border-radius: 20px; padding: 8px 10px 8px 14px; box-shadow: var(--g-shadow); max-width: calc(100vw - 24px); }
+    .g-visitbar .t { font-weight: 800; font-size: 15px; white-space: nowrap; }
+    .g-visitbar .s { font-size: 12px; color: var(--ej-ink-soft); }
+    .g-visitbar button { border: none; font: inherit; font-weight: 700; font-size: 13.5px; padding: 8px 12px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
+    .g-visit-like { background: #FFE3E0; color: #B5423A; box-shadow: 0 3px 0 #F1B5AD; }
+    .g-visit-like.done { background: #EEE; color: #888; box-shadow: none; cursor: default; }
+    .g-visit-home { background: #5DAF4C; color: #fff; box-shadow: 0 3px 0 #3F8A33; }
+    body[data-visit] .g-player, body[data-visit] .g-toasts, body[data-visit] .g-bossbar, body[data-visit] .g-menu, body[data-visit] .g-hint { display: none; }
+    @media (max-width: 720px) { .g-visitbar { top: auto; bottom: 12px; flex-wrap: wrap; justify-content: center; } }
   </style>
   <!-- 3D 섬: Three.js (불러오지 못하면 글자 메뉴만으로도 모든 기능을 쓸 수 있어요) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
@@ -3139,7 +3191,7 @@
     }
 
     // ---------------- 🧪 체험 모드 가짜 서버 ----------------
-    const DEMO_KEY = 'ei_demo_db_v1';
+    const DEMO_KEY = 'ei_demo_db_v3';
     let DEMO = null;
     function demoUid() { return 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
     function demoDay(k) { const d = new Date(); d.setDate(d.getDate() - k); const p = function (n) { return String(n).padStart(2, '0'); }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
@@ -3150,10 +3202,29 @@
       const entries = learned.map(function (t, i) {
         return { id: demoUid() + i, className: C, studentName: N, studentNumber: 1, date: demoDay(i + 1), learned: t, participation: '', feeling: ['재밌었다', '조금 헷갈렸지만 이해했다', '발표해서 뿌듯했다'][i % 3], message: i === 0 ? '다음 시간에 퀴즈 있나요?' : '', understanding: 3 + (i % 3), points: pts[i], feedback: ['잘 정리했어요!', '예문을 더 만들어 보면 좋아요 👍', '꾸준히 쓰는 모습 최고!'][i % 3], feedbackAt: now - (i + 1) * 80000000, createdAt: now - (i + 1) * 86400000 };
       });
+      // 체험용 반 친구들 (친구 섬 놀러 가기·보스전 체험용)
+      const mates = [
+        { num: 2, name: '이준호', pet: { species: 'bear', name: '든든이' }, pts: [25, 25, 30, 30, 30], likes: 3,
+          layout: { v: 1, objects: { desk: { x: -3.2, z: 4.6, rot: .5 }, calendar: { x: 1.2, z: 6.0, rot: 0 } }, props: [{ type: 'bench', x: 1.5, z: 3.5, rot: 0 }, { type: 'flowerbed', x: -5.0, z: 5.5, rot: .6 }, { type: 'mushroom', x: 5.0, z: 5.6, rot: 0 }, { type: 'lamp', x: -1.0, z: 2.4, rot: 0 }] } },
+        { num: 3, name: '최민재', pet: { species: 'fox', name: '번개' }, pts: [20, 20], likes: 1, layout: null },
+        { num: 4, name: '정우진', pet: { species: 'cat', name: '치즈' }, pts: [40, 40, 40, 40, 40], likes: 7,
+          layout: { v: 1, objects: { arcade: { x: 5.5, z: 4.0, rot: -2.2 }, chest: { x: 6.8, z: -0.6, rot: -1.42 } }, props: [{ type: 'swing', x: 1.8, z: 3.2, rot: 0 }, { type: 'fountain', x: -0.2, z: 1.2, rot: 0 }, { type: 'lamp', x: -4.0, z: 4.8, rot: 0 }, { type: 'lamp', x: 3.4, z: 5.8, rot: 0 }, { type: 'flowerbed', x: -5.4, z: 0.9, rot: 1.57 }, { type: 'sign', x: 1.2, z: 6.6, rot: 0 }] } }
+      ];
+      const islands = {};
+      islands[C + '|1'] = { studentName: N, pet: null, layout: null, updatedAt: 0, likes: 2, likedBy: {} };
+      const mateAccounts = [];
+      mates.forEach(function (m) {
+        mateAccounts.push({ className: C, studentNumber: m.num, studentName: m.name, password: '0000' });
+        m.pts.forEach(function (pt, i) {
+          entries.push({ id: demoUid() + m.num + i, className: C, studentName: m.name, studentNumber: m.num, date: demoDay(i * 4 + 1), learned: '체험용 일지', participation: '', feeling: '', message: '', understanding: 4, points: pt, feedback: '좋아요!', feedbackAt: now - i * 90000000, createdAt: now - (i * 4 + 1) * 86400000 });
+        });
+        islands[C + '|' + m.num] = { studentName: m.name, pet: m.pet, layout: m.layout, updatedAt: now, likes: m.likes, likedBy: {} };
+      });
       return {
         seeded: now,
         classes: [C, '1학년 2반'],
-        accounts: [{ className: C, studentNumber: 1, studentName: N, password: '1234' }],
+        accounts: [{ className: C, studentNumber: 1, studentName: N, password: '1234' }].concat(mateAccounts),
+        islands: islands,
         entries: entries,
         mails: [{ id: 'seed-mail', className: C, title: '섬에 온 걸 환영해요! 🏝️', message: '올해는 학습일지를 쓰면서 친구를 키워 봐요.\n오늘 배운 것 중 가장 기억에 남는 걸 답장으로 알려 줄래요?', createdAt: now - 3600000, seed: true }],
         mailReplies: [],
@@ -3242,6 +3313,36 @@
       submitFeedback: function (id, text, points) { const d = demoLoad(); const e = d.entries.find(function (x) { return x.id === id; }); if (!e) throw new Error('일지를 찾지 못했어요.'); e.feedback = text; e.feedbackAt = Date.now(); e.points = Number(points); return { feedback: e.feedback, feedbackAt: e.feedbackAt, points: e.points }; },
       updateFeedback: function (id, text) { const d = demoLoad(); const e = d.entries.find(function (x) { return x.id === id; }); if (!e) throw new Error('일지를 찾지 못했어요.'); e.feedback = text; return { feedback: e.feedback }; },
       verifyTeacherPassword: function (pw) { return String(pw) === APP_CONFIG.DEMO_TEACHER_PW; },
+      getIslandProfile: function (cls, num) {
+        const d = demoLoad(); d.islands = d.islands || {};
+        const r = d.islands[cls + '|' + num];
+        return r ? { pet: r.pet, layout: r.layout, updatedAt: r.updatedAt || 0, likes: r.likes || 0 } : null;
+      },
+      saveIslandLayout: function (cls, num, name, json) {
+        const d = demoLoad(); d.islands = d.islands || {};
+        const k = cls + '|' + num, r = d.islands[k] || (d.islands[k] = { likes: 0, likedBy: {} });
+        r.studentName = name; r.layout = JSON.parse(json); r.updatedAt = Date.now(); return { updatedAt: r.updatedAt };
+      },
+      saveIslandPet: function (cls, num, name, json) {
+        const d = demoLoad(); d.islands = d.islands || {};
+        const k = cls + '|' + num, r = d.islands[k] || (d.islands[k] = { likes: 0, likedBy: {}, layout: null });
+        r.studentName = name; r.pet = JSON.parse(json); return true;
+      },
+      getClassIslands: function (cls) {
+        const d = demoLoad(); d.islands = d.islands || {};
+        return Object.keys(d.islands).filter(function (k) { return k.split('|')[0] === cls; }).map(function (k) {
+          const r = d.islands[k]; return { studentNumber: Number(k.split('|')[1]), studentName: r.studentName, pet: r.pet, layout: r.layout, likes: r.likes || 0 };
+        });
+      },
+      likeIsland: function (cls, targetNum, visitorNum) {
+        const d = demoLoad(); d.islands = d.islands || {};
+        const r = d.islands[cls + '|' + targetNum]; if (!r) throw new Error('친구 섬을 찾지 못했어요.');
+        r.likedBy = r.likedBy || {};
+        const today = demoDay(0);
+        if (r.likedBy[visitorNum] === today) return { likes: r.likes || 0, already: true };
+        r.likedBy[visitorNum] = today; r.likes = (r.likes || 0) + 1;
+        return { likes: r.likes, already: false };
+      },
       addBonus: function (cls, num, name, points, reason) { const d = demoLoad(); const b = { id: demoUid(), className: cls, studentNumber: demoNum(num), studentName: name, points: Number(points), reason: reason || '', createdAt: Date.now() }; d.bonuses.push(b); return b; }
     };
 
@@ -3995,7 +4096,7 @@
         document.body.setAttribute('data-wmode', mode);
         if (!W.ready) return;
         CAM.auto = mode !== 'home';
-        if (mode !== 'home') { W.focus(false); hideBubble(); if (EDIT.on) W.stopEdit(false); }
+        if (mode !== 'home') { W.focus(false); hideBubble(); if (EDIT.on) W.stopEdit(false); W.visiting = null; }
         if (mode === 'login' || mode === 'loading') {
           if (!pet || W.home) { setPetModel('rabbit', 2); }
           W.home = null; setStageDecor(2);
@@ -4008,7 +4109,7 @@
       W.setHome = function (info) {
         const first = !W.home;
         W.home = info;
-        if (!W.ready) return;
+        if (!W.ready || W.visiting) return;
         if (!P.evolving) setPetModel(info.species, info.stage);
         setStageDecor(info.stage);
         setBadge('mailbox', info.mail > 0 ? info.mail : '');
@@ -4061,6 +4162,7 @@
       };
       function hideBubble() { if (bubbleEl) bubbleEl.classList.remove('show'); P.bubbleUntil = 0; }
 
+      W._project = function (x, y, z) { return project(x, y, z); };
       W._debug = function () { return { x: P.x, z: P.z, state: P.state, near: nearKey, obstacles: obstacles }; };
       W.setOffset = function (x, y) { CAM.wantX = x || 0; CAM.wantY = y || 0; };
       W.focus = function (on) {
@@ -4071,6 +4173,7 @@
       // 사물 실행: 캐릭터가 걸어간 뒤 열기 (메뉴에서 부를 때는 바로 열기)
       W.activate = function (key, immediate) {
         if (EDIT.on) return;
+        if (W.visiting) { bump(key); W.say('친구 섬에서는 구경만 할 수 있어요 👀', 2200); return; }
         const o = objects[key];
         if (!W.ready || !o || !pet || W.mode !== 'home') { if (W.onObject) W.onObject(key); return; }
         bump(key);
@@ -4096,6 +4199,7 @@
         hearts();
         if (P.state === 'sleep') { P.state = 'idle'; P.until = performance.now() + 2000; }
         else if (P.state !== 'eat') { P.state = 'idle'; P.until = performance.now() + 1800; }
+        if (W.visiting) { W.say(pet.stage === 0 ? '(알이 콩콩 흔들려요) 반가워!' : ['안녕! 나는 ' + W.visiting.petName + '! 놀러 와 줘서 고마워 💕', '우리 섬 멋지지? 😎', W.visiting.ownerName + '이(가) 꾸몄어!'][P.pets % 3], 2800); return; }
         if (W.lineFor) W.say(W.lineFor(pet.stage === 0 ? 'egg' : (P.wasSleep ? 'wake' : 'touch'), P.pets), 2800);
       };
 
@@ -4233,6 +4337,7 @@
       }
       function click(e) {
         if (P.evolving) return;
+        if (BOSS.group && BOSS.group.visible) { const bh = []; BOSS.group.traverse(function (m) { if (m.isMesh) bh.push(m); }); if (pick(e, bh).length) { if (W.onBoss) W.onBoss(); return; } }
         const hits = pick(e, pickables.concat(petMeshes()));
         if (hits.length) {
           const k = hits[0].object.userData.key;
@@ -4322,7 +4427,7 @@
       }
       const keys = {};
       function keyVector() {
-        if (!pet || pet.stage === 0 || P.evolving || EDIT.on) return null;
+        if (!pet || pet.stage === 0 || P.evolving || EDIT.on || W.visiting) return null;
         const f = (keys.ArrowUp || keys.KeyW ? 1 : 0) - (keys.ArrowDown || keys.KeyS ? 1 : 0);
         const r = (keys.ArrowRight || keys.KeyD ? 1 : 0) - (keys.ArrowLeft || keys.KeyA ? 1 : 0);
         if (!f && !r) return null;
@@ -4526,6 +4631,7 @@
         if (!EDIT.on) updatePet(dt, now, t);
         updateNear();
         animateProps(t, tod === 'night');
+        updateBoss(dt, t);
         renderer.render(scene, camera);
         // 라벨·말풍선 위치
         const showLabels = W.mode === 'home';
@@ -4753,7 +4859,7 @@
         if (W.onEditSelect) W.onEditSelect(it ? { id: it.id, kind: it.kind, type: it.prop ? it.prop.type : it.id, valid: EDIT.valid } : null);
       }
       W.startEdit = function () {
-        if (!W.ready) return false;
+        if (!W.ready || W.visiting) return false;
         EDIT.on = true; EDIT.sel = null; EDIT.valid = true; EDIT.before = W.getLayout();
         document.body.setAttribute('data-edit', '1');
         if (pet) pet.parts.g.visible = false;
@@ -4872,6 +4978,244 @@
         });
       }
 
+
+      // =================================================================
+      // ⚔️ 반 대항 보스전 (섬 옆 하늘에 떠 있는 이번 주 보스)
+      // =================================================================
+      const BOSS = { info: null, id: null, group: null, mats: [], parts: {}, shake: 0, flash: 0, label: null, flag: null, dying: -1, pos: null };
+      function bmat(c, o) { const m = new T.MeshLambertMaterial(Object.assign({ color: c, flatShading: true }, o || {})); m.userData.baseEmissive = m.emissive.clone(); BOSS.mats.push(m); return m; }
+      function bmesh(geo, m, x, y, z) { const k = new T.Mesh(geo, m); k.position.set(x || 0, y || 0, z || 0); k.castShadow = true; return k; }
+      function angryEyes(g, y, z, spread, size, pupil, lid) {
+        [-1, 1].forEach(function (s) {
+          const e = bmesh(new T.SphereGeometry(size, 12, 10), bmat(0xffffff), s * spread, y, z); e.scale.set(1, .8, .5); g.add(e);
+          g.add(bmesh(new T.SphereGeometry(size * .45, 10, 8), bmat(pupil || 0x2a2233), s * spread * .95, y - size * .1, z + size * .35));
+          const brow = bmesh(new T.BoxGeometry(size * 1.6, size * .28, size * .3), bmat(lid || 0x2a2233), s * spread, y + size * .85, z + size * .2);
+          brow.rotation.z = -s * .45; g.add(brow);
+        });
+      }
+      const BOSS_BUILD = {
+        cloud: function () {
+          const g = new T.Group(); const c = bmat(0x50566f), c2 = bmat(0x5f6683);
+          [[0, 0, 0, 1.6], [-1.4, -.2, .2, 1.15], [1.45, -.15, .1, 1.2], [-.6, .75, -.1, 1.05], [.75, .8, 0, 1.1], [0, -.6, .5, 1.0]].forEach(function (b, i) {
+            const m = bmesh(new T.IcosahedronGeometry(b[3], 1), i % 2 ? c2 : c, b[0], b[1], b[2]); g.add(m);
+          });
+          angryEyes(g, .25, 1.35, .55, .32, 0xffe14d, 0x1d2030);
+          const mouth = new T.Group(); mouth.position.set(0, -.45, 1.45);
+          mouth.add(bmesh(new T.BoxGeometry(1.0, .3, .1), bmat(0x1d2030)));
+          for (let i = 0; i < 4; i++) mouth.add(bmesh(new T.ConeGeometry(.08, .16, 4), bmat(0xffffff), -.36 + i * .24, .08, .06));
+          g.add(mouth);
+          const bolts = new T.Group();
+          [-.9, .7].forEach(function (x, i) {
+            const sh = new T.Shape(); sh.moveTo(0, 0); sh.lineTo(.35, -.6); sh.lineTo(.12, -.6); sh.lineTo(.42, -1.3); sh.lineTo(-.05, -.5); sh.lineTo(.15, -.5); sh.lineTo(-.15, 0); sh.lineTo(0, 0);
+            const b = new T.Mesh(new T.ShapeGeometry(sh), new T.MeshBasicMaterial({ color: 0xffe14d, side: T.DoubleSide }));
+            b.position.set(x, -1.1, .6); b.scale.setScalar(1.4); bolts.add(b);
+          });
+          g.add(bolts); BOSS.parts.bolts = bolts;
+          return g;
+        },
+        slime: function () {
+          const g = new T.Group();
+          const rock = bmesh(jitter(new T.ConeGeometry(1.9, 1.8, 9, 1), .3), bmat(0x8f6a4a), 0, -1.75, 0); rock.rotation.x = Math.PI; g.add(rock);
+          g.add(bmesh(new T.CylinderGeometry(1.9, 1.85, .3, 9), bmat(0x86c96a), 0, -.75, 0));
+          const body = new T.Group(); body.position.y = -.6; g.add(body); BOSS.parts.body = body;
+          const blob = bmesh(new T.SphereGeometry(1.5, 24, 18, 0, Math.PI * 2, 0, Math.PI * .62), new T.MeshLambertMaterial({ color: 0x9b6bd6, transparent: true, opacity: .9 }), 0, 0, 0);
+          BOSS.mats.push(blob.material); blob.material.userData.baseEmissive = blob.material.emissive.clone();
+          blob.scale.set(1.15, 1.0, 1.05); body.add(blob);
+          body.add(bmesh(new T.SphereGeometry(.3, 10, 8), bmat(0xd9c2ff), -.6, 1.15, .7));
+          // 졸린 눈(눈꺼풀 반쯤)
+          [-1, 1].forEach(function (s) {
+            body.add(bmesh(new T.SphereGeometry(.3, 12, 10), bmat(0xffffff), s * .5, .85, 1.25));
+            body.add(bmesh(new T.SphereGeometry(.13, 10, 8), bmat(0x2a2233), s * .5, .8, 1.5));
+            const lid = bmesh(new T.SphereGeometry(.32, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), bmat(0x7d4fc0), s * .5, .86, 1.25); lid.rotation.x = .5; body.add(lid);
+          });
+          body.add(bmesh(new T.TorusGeometry(.25, .05, 6, 14, Math.PI), bmat(0x3a2050), 0, .35, 1.5));
+          const drop = bmesh(new T.SphereGeometry(.12, 8, 6), new T.MeshLambertMaterial({ color: 0xb79cf0, transparent: true, opacity: .85 }), .25, .1, 1.5); drop.scale.y = 1.5; body.add(drop); BOSS.parts.drop = drop;
+          return g;
+        },
+        golem: function () {
+          const g = new T.Group(); const r1 = bmat(0x8b8274), r2 = bmat(0x6f675c);
+          const torso = bmesh(new T.DodecahedronGeometry(1.35, 0), r1, 0, 0, 0); torso.scale.set(1.15, 1, .9); g.add(torso);
+          const head = bmesh(new T.DodecahedronGeometry(.75, 0), r2, 0, 1.55, .1); g.add(head);
+          const glow = new T.MeshBasicMaterial({ color: 0xff8a2a });
+          [-1, 1].forEach(function (s) { const e = new T.Mesh(new T.BoxGeometry(.26, .14, .1), glow); e.position.set(s * .27, 1.62, .78); e.rotation.z = -s * .25; g.add(e); });
+          const crack = new T.Mesh(new T.BoxGeometry(.08, .9, .05), glow); crack.position.set(.2, 0, 1.2); crack.rotation.z = .3; g.add(crack);
+          const crack2 = new T.Mesh(new T.BoxGeometry(.06, .5, .05), glow); crack2.position.set(-.3, -.35, 1.15); crack2.rotation.z = -.5; g.add(crack2);
+          const arms = [];
+          [-1, 1].forEach(function (s) {
+            const arm = new T.Group(); arm.position.set(s * 1.55, .45, 0);
+            arm.add(bmesh(new T.DodecahedronGeometry(.5, 0), r2, 0, 0, 0));
+            arm.add(bmesh(new T.DodecahedronGeometry(.45, 0), r1, s * .15, -.75, .1));
+            arm.add(bmesh(new T.DodecahedronGeometry(.55, 0), r2, s * .2, -1.45, .2));
+            g.add(arm); arms.push(arm);
+          });
+          BOSS.parts.arms = arms;
+          const orbit = new T.Group();
+          for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; orbit.add(bmesh(new T.DodecahedronGeometry(.22, 0), r1, Math.cos(a) * 2.6, Math.sin(i) * .4, Math.sin(a) * 2.6)); }
+          g.add(orbit); BOSS.parts.orbit = orbit;
+          return g;
+        }
+      };
+      function bossAnchor() { return window.innerWidth / window.innerHeight < 1 ? { x: -5, y: 1.8, z: -11.5 } : { x: -13.2, y: 2.2, z: 2.6 }; }
+      function bossLabel() {
+        if (BOSS.label) return BOSS.label;
+        const el = document.createElement('button');
+        el.type = 'button'; el.className = 'w-label w-boss-label';
+        el.onclick = function (ev) { ev.stopPropagation(); if (W.onBoss) W.onBoss(); };
+        labelLayer.appendChild(el); BOSS.label = el; return el;
+      }
+      function victoryFlag() {
+        if (BOSS.flag) return BOSS.flag;
+        const f = new T.Group();
+        f.add(mesh(new T.CylinderGeometry(.04, .04, 1.6, 6), flat(0x8e5e33), 0, .8, 0));
+        const tex = canvasTex(256, 160, function (c, w, h) { c.fillStyle = '#e2574c'; c.fillRect(0, 0, w, h); c.fillStyle = '#fff'; c.font = 'bold 64px sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('WIN!', w / 2, h / 2 + 4); });
+        const cloth = new T.Mesh(new T.PlaneGeometry(.9, .56), new T.MeshLambertMaterial({ map: tex, side: T.DoubleSide }));
+        cloth.position.set(.47, 1.3, 0); f.add(cloth); f.userData.cloth = cloth;
+        BOSS.flag = f; return f;
+      }
+      // info: {id, name, emoji, hp, maxHp, defeated}
+      W.setBoss = function (info) {
+        if (!W.ready) return;
+        BOSS.info = info;
+        const lab = bossLabel();
+        if (!info) { if (BOSS.group) { scene.remove(BOSS.group); BOSS.group = null; BOSS.id = null; } lab.style.display = 'none'; if (BOSS.flag && BOSS.flag.parent) BOSS.flag.parent.remove(BOSS.flag); return; }
+        if (BOSS.id !== info.id) {
+          if (BOSS.group) scene.remove(BOSS.group);
+          BOSS.mats = []; BOSS.parts = {};
+          BOSS.group = BOSS_BUILD[info.id] ? BOSS_BUILD[info.id]() : BOSS_BUILD.cloud();
+          BOSS.group.scale.setScalar(1.35);
+          const a = bossAnchor(); BOSS.group.position.set(a.x, a.y, a.z);
+          scene.add(BOSS.group); BOSS.id = info.id; BOSS.dying = -1;
+          BOSS.group.traverse(function (m) { if (m.isMesh) m.userData.boss = true; });
+        }
+        BOSS.group.visible = !info.defeated || BOSS.dying >= 0;
+        if (!info.defeated) { BOSS.group.scale.setScalar(1.35); BOSS.dying = -1; }
+        const pct = Math.max(0, Math.round(info.hp / info.maxHp * 100));
+        lab.innerHTML = info.defeated ? '<span class="w-label-emoji">🏆</span><span class="w-label-text">' + info.name + ' 격파!</span>'
+          : '<span class="w-label-emoji">' + info.emoji + '</span><span class="w-label-text">' + info.name + '</span><span class="w-boss-hp"><i style="width:' + pct + '%"></i></span>';
+        lab.classList.toggle('done', !!info.defeated);
+        // 격파 깃발: 집 지붕 위
+        const flag = victoryFlag();
+        if (info.defeated && objects.house) { if (flag.parent !== objects.house.group) objects.house.group.add(flag); flag.position.set(-.9, 2.4, .2); }
+        else if (flag.parent) flag.parent.remove(flag);
+      };
+      function bossScreenPos(dy) {
+        if (!BOSS.group) return null;
+        const p = BOSS.group.position;
+        return project(p.x, p.y + (dy || 0), p.z);
+      }
+      function dmgPopup(text, big) {
+        const s = bossScreenPos(1.5); if (!s) return;
+        const el = document.createElement('div');
+        el.className = 'w-dmg' + (big ? ' big' : ''); el.textContent = text;
+        el.style.left = (s.x + (Math.random() - .5) * 90) + 'px'; el.style.top = (s.y - Math.random() * 30) + 'px';
+        labelLayer.appendChild(el); setTimeout(function () { el.remove(); }, 1300);
+      }
+      function shot(onHit) {
+        if (!BOSS.group) { if (onHit) onHit(); return; }
+        const from = new T.Vector3(P.x, 2 + root.position.y, P.z);
+        const to = BOSS.group.position.clone();
+        const star = new T.Mesh(new T.OctahedronGeometry(.25, 0), new T.MeshBasicMaterial({ color: 0xffe27a }));
+        star.position.copy(from); scene.add(star);
+        const st = performance.now(), dur = 520;
+        (function a() {
+          const t = Math.min(1, (performance.now() - st) / dur);
+          star.position.lerpVectors(from, to, t); star.position.y += Math.sin(t * Math.PI) * 2.5; star.rotation.y += .4; star.rotation.x += .3;
+          if (t < 1) requestAnimationFrame(a); else { scene.remove(star); if (onHit) onHit(); }
+        })();
+      }
+      function bossBurst(color, n) {
+        if (!BOSS.group) return;
+        const g = new T.Group(), c0 = BOSS.group.position;
+        for (let i = 0; i < (n || 14); i++) {
+          const m = new T.Mesh(new T.OctahedronGeometry(.12 + Math.random() * .1, 0), new T.MeshBasicMaterial({ color: color || 0xffe27a, transparent: true }));
+          m.position.copy(c0); m.userData.v = new T.Vector3((Math.random() - .5) * 8, (Math.random() - .2) * 8, (Math.random() - .5) * 8); g.add(m);
+        }
+        scene.add(g);
+        const st = performance.now();
+        (function a() { const t = (performance.now() - st) / 1000; g.children.forEach(function (m) { m.position.addScaledVector(m.userData.v, 1 / 60); m.userData.v.multiplyScalar(.95); m.material.opacity = Math.max(0, 1 - t / .9); }); if (t < .9) requestAnimationFrame(a); else scene.remove(g); })();
+      }
+      // 공격 연출: hits = [{dmg, label}] 순서대로
+      W.bossAttack = function (hits, done) {
+        if (!W.ready || !BOSS.group || !hits || !hits.length) { if (done) done(); return; }
+        let i = 0;
+        (function next() {
+          if (i >= hits.length) { if (done) done(); return; }
+          const h = hits[i++];
+          if (pet && pet.stage > 0) P.hopT = 0;
+          shot(function () {
+            BOSS.shake = 1; BOSS.flash = 1; bossBurst(0xffe27a, 10);
+            dmgPopup('-' + h.dmg + (h.label ? ' ' + h.label : ''), h.dmg >= 10);
+            setTimeout(next, 260);
+          });
+        })();
+      };
+      W.bossDefeat = function (done) {
+        if (!BOSS.group) { if (done) done(); return; }
+        BOSS.group.visible = true; BOSS.dying = 0; BOSS.shake = 2;
+        const st = performance.now();
+        let bursts = 0;
+        (function a() {
+          const t = (performance.now() - st) / 1000;
+          BOSS.dying = t;
+          if (t > bursts * .25 && bursts < 6) { bossBurst([0xffe27a, 0xff9eb5, 0x9fe0a7, 0x8fc7f2][bursts % 4], 16); bursts++; BOSS.flash = 1; }
+          if (t < 1.8) requestAnimationFrame(a);
+          else { BOSS.group.visible = false; BOSS.dying = -1; if (done) done(); }
+        })();
+      };
+      function updateBoss(dt, t) {
+        if (!BOSS.group || !BOSS.group.visible) { if (BOSS.label) BOSS.label.style.display = BOSS.info && W.mode === 'home' && BOSS.info.defeated ? '' : 'none'; return; }
+        const a = bossAnchor(), g = BOSS.group;
+        BOSS.shake = Math.max(0, BOSS.shake - dt * 2.5);
+        BOSS.flash = Math.max(0, BOSS.flash - dt * 4);
+        const sh = BOSS.shake * .35;
+        g.position.set(a.x + (Math.random() - .5) * sh, a.y + Math.sin(t * 1.1) * .35 + (Math.random() - .5) * sh, a.z);
+        g.rotation.y = Math.sin(t * .4) * .2 + Math.atan2(camera.position.x - g.position.x, camera.position.z - g.position.z) * .8;
+        if (BOSS.dying >= 0) { const k = Math.max(0, 1 - BOSS.dying / 1.8); g.scale.setScalar(1.35 * (k * .9 + .1)); g.rotation.z = BOSS.dying * 3; }
+        BOSS.mats.forEach(function (m) { if (m.emissive) { m.emissive.setRGB(BOSS.flash, BOSS.flash, BOSS.flash * .85); } });
+        const P2 = BOSS.parts;
+        if (P2.bolts) P2.bolts.visible = (t % 2.6) < .18 || ((t + .9) % 3.7) < .12;
+        if (P2.body) { const q = 1 + Math.sin(t * 2) * .05; P2.body.scale.set(q, 1 / q, q); }
+        if (P2.drop) P2.drop.position.y = .1 - ((t * .5) % 1) * .5;
+        if (P2.arms) P2.arms.forEach(function (arm, i) { arm.rotation.x = Math.sin(t * 1.2 + i * Math.PI) * .3; });
+        if (P2.orbit) P2.orbit.rotation.y += dt * .6;
+        if (BOSS.flag && BOSS.flag.userData.cloth) BOSS.flag.userData.cloth.rotation.y = Math.sin(t * 3) * .2;
+        // 라벨
+        const lab = BOSS.label;
+        if (lab) {
+          const p = project(g.position.x, g.position.y + 3.2, g.position.z);
+          if (!p || W.mode !== 'home') lab.style.display = 'none';
+          else { lab.style.display = ''; lab.style.transform = 'translate(-50%,-100%) translate(' + p.x.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px)'; }
+        }
+      }
+
+      // =================================================================
+      // 🏝️ 친구 섬 놀러 가기 (구경 모드)
+      // =================================================================
+      W.visiting = null;
+      // v: {species, stage, petName, layout, ownerName} | null
+      W.setVisit = function (v) {
+        if (!W.ready) return;
+        if (v) {
+          const same = W.visiting && W.visiting.key === v.key;
+          W.visiting = v;
+          if (same) return;
+          if (EDIT.on) W.stopEdit(false);
+          if (food) food.visible = false;
+          Object.keys(objects).forEach(function (k) { setBadge(k, ''); });
+          if (objects.desk) objects.desk.ring.visible = false;
+          if (objects.board) objects.board.bang.visible = false;
+          setPetModel(v.species, v.stage);
+          setStageDecor(v.stage);
+          layoutSig = ''; W.setLayout(v.layout, v.petName);
+          P.x = .6; P.z = 1.6; P.state = 'idle'; P.until = performance.now() + 1200; P.after = null; collide(); placePet();
+          hideBubble();
+          setTimeout(function () { if (W.visiting === v) W.say('어서 와! 여기는 ' + v.ownerName + '네 섬이야 🏝️', 3200); }, 700);
+        } else if (W.visiting) {
+          W.visiting = null; layoutSig = '';
+          P.x = .6; P.z = 1.6; P.state = 'idle'; P.until = performance.now() + 1500;
+        }
+      };
+
       return W;
     })();
 
@@ -4906,19 +5250,111 @@
     function saveIslandLayout(L) {
       const rec = { layout: L, updatedAt: Date.now() };
       saveLayoutRec(rec);
-      if (RUN_MODE !== 'demo') gsRun('saveIslandLayout', STATE.studentClass, STATE.studentNumber, JSON.stringify(L)).catch(function () { });
+      gsRun('saveIslandLayout', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(L)).catch(function () { });
     }
+    // 로그인하면 서버(또는 체험 서버)의 내 섬 정보(친구·배치)를 받아와요. 다른 기기에서 고른 친구도 그대로!
     function syncIslandLayoutFromServer() {
-      if (RUN_MODE === 'demo') return;
       const owner = STATE.studentClass + '|' + STATE.studentNumber;
       if (STATE.layoutSyncedFor === owner) return;
       STATE.layoutSyncedFor = owner;
-      gsRun('getIslandLayout', STATE.studentClass, STATE.studentNumber).then(function (r) {
-        if (!r || !r.layout) return;
+      gsRun('getIslandProfile', STATE.studentClass, STATE.studentNumber).then(function (r) {
+        let changed = false;
+        const localPet = loadPet(STATE.studentClass, STATE.studentNumber);
+        if (r && r.pet && PET_SPECIES[r.pet.species] && !localPet) {
+          savePet(STATE.studentClass, STATE.studentNumber, r.pet); changed = true;
+          if (STATE.studentPanel === 'adopt') STATE.studentPanel = null;
+        } else if (localPet && (!r || !r.pet)) {
+          gsRun('saveIslandPet', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(localPet)).catch(function () { });
+        }
         const local = loadLayoutRec();
-        if (!local || (r.updatedAt || 0) > (local.updatedAt || 0)) { saveLayoutRec({ layout: r.layout, updatedAt: r.updatedAt || Date.now() }); if (STATE.screen === 'studentHome' && !(WORLD.isEditing && WORLD.isEditing())) render(); }
+        if (r && r.layout && (!local || (r.updatedAt || 0) > (local.updatedAt || 0))) { saveLayoutRec({ layout: r.layout, updatedAt: r.updatedAt || Date.now() }); changed = true; }
+        else if (local && local.layout && (!r || !r.layout)) gsRun('saveIslandLayout', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(local.layout)).catch(function () { });
+        if (changed && STATE.screen === 'studentHome' && !(WORLD.isEditing && WORLD.isEditing())) render();
       }).catch(function () { });
+      loadClassIslands();
     }
+    function loadClassIslands(cb) {
+      gsRun('getClassIslands', STATE.studentClass).then(function (list) {
+        STATE.classIslands = Array.isArray(list) ? list : [];
+        STATE.classIslandsAt = Date.now();
+        if (cb) cb(); else if (STATE.screen === 'studentHome' && (STATE.studentPanel === 'friends' || STATE.studentPanel === 'boss')) render();
+      }).catch(function () { STATE.classIslands = STATE.classIslands || []; if (cb) cb(); });
+    }
+
+    // =================================================================
+    // ⚔️ 반 대항 보스전 — 이번 주(월~일) 우리 반이 함께 쓰러뜨리는 보스
+    // =================================================================
+    const BOSSES = [
+      { id: 'cloud', name: '먹구름 대왕', emoji: '🌩️', desc: '공부 의욕을 먹구름으로 덮어 버리는 보스' },
+      { id: 'slime', name: '게으름 슬라임', emoji: '🟣', desc: '"내일 하지 뭐…" 하고 미루게 만드는 끈적한 보스' },
+      { id: 'golem', name: '망각 골렘', emoji: '🪨', desc: '배운 단어를 돌처럼 굳혀서 잊게 만드는 보스' }
+    ];
+    const BOSS_RULES = { entry: 10, game: 5, bonus: 5, reward: 3, hpPer: 30, hpMin: 100 };
+    function ymd_(d) { const p = function (n) { return String(n).padStart(2, '0'); }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+    function bossWeek_() {
+      const now = new Date(), day = (now.getDay() + 6) % 7;
+      const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day);
+      const end = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 7);
+      const sun = new Date(end.getTime() - 1);
+      const idx = Math.floor(Date.UTC(mon.getFullYear(), mon.getMonth(), mon.getDate()) / (7 * 86400000));
+      return { mon: ymd_(mon), sun: ymd_(sun), key: ymd_(mon), endsAt: end.getTime(), idx: idx };
+    }
+    function classMembers_(cls) {
+      const names = {};
+      STATE.entries.forEach(function (e) { if ((e.className || '미지정') === cls) names[e.studentName] = true; });
+      (STATE.studentAccounts || []).forEach(function (a) { if ((a.className || '미지정') === cls) names[a.studentName] = true; });
+      if (cls === STATE.studentClass) (STATE.classIslands || []).forEach(function (i) { if (i.studentName) names[i.studentName] = true; });
+      if (cls === STATE.studentClass && STATE.studentName) names[STATE.studentName] = true;
+      return Object.keys(names);
+    }
+    function bossFor(cls) {
+      const wk = bossWeek_();
+      const boss = BOSSES[((wk.idx % BOSSES.length) + BOSSES.length) % BOSSES.length];
+      const members = classMembers_(cls);
+      const maxHp = Math.max(BOSS_RULES.hpMin, members.length * BOSS_RULES.hpPer);
+      const by = {}, seen = {};
+      let dmg = 0;
+      const add = function (name, n) { dmg += n; by[name] = (by[name] || 0) + n; };
+      STATE.entries.forEach(function (e) {
+        if ((e.className || '미지정') !== cls || e.date < wk.mon || e.date > wk.sun) return;
+        const k = e.studentName + '|' + e.date; if (seen[k]) return; seen[k] = true;
+        add(e.studentName, BOSS_RULES.entry);
+      });
+      (STATE.bonuses || []).forEach(function (b) {
+        if ((b.className || '미지정') !== cls || !b.createdAt) return;
+        const d = ymd_(new Date(b.createdAt)); if (d < wk.mon || d > wk.sun) return;
+        const reason = String(b.reason || '');
+        if (reason.indexOf('⚔️') === 0) return; // 보스 격파 보상은 제외
+        add(b.studentName, reason.indexOf('단어 게임') >= 0 ? BOSS_RULES.game : BOSS_RULES.bonus);
+      });
+      return { id: boss.id, name: boss.name, emoji: boss.emoji, desc: boss.desc, maxHp: maxHp, dmg: dmg, hp: Math.max(0, maxHp - dmg), defeated: dmg >= maxHp, by: by, week: wk, members: members.length, cls: cls };
+    }
+    function timeLeftLabel_(ms) {
+      const left = Math.max(0, ms - Date.now()), d = Math.floor(left / 86400000), h = Math.floor(left % 86400000 / 3600000);
+      return d > 0 ? d + '일 ' + h + '시간 남음' : (h > 0 ? h + '시간 남음' : '곧 끝나요');
+    }
+    function bossSeenKey_(b) { return 'ei_boss_seen_' + b.cls + '_' + b.week.key; }
+    // 데미지가 늘어난 만큼 친구가 보스를 공격하는 연출
+    function playBossProgress(b) {
+      if (!WORLD.ready || STATE.visit || STATE.studentPanel === 'adopt') return;
+      let seen = null; try { const v = localStorage.getItem(bossSeenKey_(b)); seen = v === null ? null : Number(v); } catch (e) { }
+      if (seen !== null && b.dmg <= seen) return;
+      const before = seen || 0, diff = b.dmg - before;
+      try { localStorage.setItem(bossSeenKey_(b), String(b.dmg)); } catch (e) { }
+      if (diff <= 0) return;
+      const newlyDefeated = b.defeated && before < b.maxHp;
+      if (newlyDefeated) WORLD.setBoss(Object.assign({}, b, { defeated: false, hp: Math.max(1, b.maxHp - before) }));
+      const hits = []; let left = diff;
+      while (left > 0 && hits.length < 6) { const h = left >= 10 ? 10 : left; hits.push({ dmg: h }); left -= h; }
+      if (left > 0) hits[hits.length - 1].dmg += left;
+      setTimeout(function () {
+        WORLD.say(seen === null ? '이번 주 우리 반이 ' + b.name + '에게 ' + diff + ' 데미지를 넣었어! ⚔️' : '공격! ' + b.name + '에게 ' + diff + ' 데미지! 💥', 3200);
+        WORLD.bossAttack(hits, function () {
+          if (newlyDefeated) WORLD.bossDefeat(function () { WORLD.setBoss(b); decoToast('🏆 우리 반이 ' + b.name + '을(를) 쓰러뜨렸어요!'); WORLD.say('해냈다!! 우리 반 최고 🏆', 3500); });
+        });
+      }, 1300);
+    }
+
     function decoSeenKey_() { return 'ei_deco_seen_' + STATE.studentClass + '_' + STATE.studentNumber; }
     function decoSeenStage() { try { const v = localStorage.getItem(decoSeenKey_()); return v === null ? -1 : Number(v); } catch (e) { return -1; } }
     function newPropsBetween(from, to) { return PROP_CATALOG.filter(function (p) { return p.stage > from && p.stage <= to; }); }
@@ -5077,13 +5513,20 @@
       else if (STATE.screen === 'studentHome') app.innerHTML = studentHomeHtml();
       else if (STATE.screen === 'teacherClassSelect') app.innerHTML = teacherClassSelectHtml();
       else if (STATE.screen === 'teacherAccounts') app.innerHTML = teacherAccountsHtml();
-      else if (STATE.screen === 'teacherHome') app.innerHTML = teacherHomeHtml();
+      else if (STATE.screen === 'teacherHome') app.innerHTML = teacherBossCardHtml(STATE.selectedClass) + teacherHomeHtml();
       else if (STATE.screen === 'teacherDetail') app.innerHTML = teacherDetailHtml();
       bindEvents();
       bindGame();
       if (mode === 'teacher') refreshTeacherAccounts();
       if (mode !== 'teacher' && mode !== 'loading') STATE.accountsFetchedAt = 0;
-      if (mode === 'home') {
+      if (mode !== 'home') STATE.visit = null;
+      if (STATE.visit) document.body.setAttribute('data-visit', '1'); else document.body.removeAttribute('data-visit');
+      if (mode === 'home' && STATE.visit) {
+        WORLD.setVisit(STATE.visit);
+        WORLD.setBoss(bossFor(STATE.studentClass));
+        WORLD.focus(false); WORLD.setOffset(0, 0);
+      } else if (mode === 'home') {
+        WORLD.setVisit(null);
         const c = gameCtx();
         WORLD.setHome({
           species: c.pet.species, stage: c.stage, mood: c.mood, wroteToday: c.wroteToday,
@@ -5096,10 +5539,13 @@
           if (STATE.studentPanel !== 'decorate' && WORLD.isEditing()) WORLD.stopEdit(false);
         }
         syncIslandLayoutFromServer();
+        const bInfo = bossFor(STATE.studentClass);
+        WORLD.setBoss(bInfo);
+        playBossProgress(bInfo);
         WORLD.focus(STATE.studentPanel === 'pet' || STATE.studentPanel === 'adopt');
         const wide = window.innerWidth >= 720;
         WORLD.setOffset(STATE.studentPanel && wide ? 250 : 0, STATE.studentPanel && !wide ? Math.round(window.innerHeight * .27) : 0);
-      } else { WORLD.setOffset(0, 0); }
+      } else { WORLD.setOffset(0, 0); WORLD.setBoss && WORLD.setBoss(null); }
     }
 
     function loadingHtml() {
@@ -5160,9 +5606,10 @@
       ['desk', '📖', '학습일지'], ['calendar', '📅', '캘린더·기록'], ['sep'],
       ['mailbox', '📮', '우편함'], ['board', '📎', '학습방'], ['sep'],
       ['shelf', '🔍', '단어사전'], ['jar', '🫙', '단어장'], ['arcade', '🎮', '단어 게임'], ['sep'],
+      ['boss', '⚔️', '보스전'], ['friends', '🏝️', '친구 섬 놀러가기'], ['sep'],
       ['chest', '💰', '보너스 기록'], ['pet', '🐾', '내 친구'], ['decorate', '🛠️', '섬 꾸미기'], ['house', '🚪', '나가기']
     ];
-    const PANEL_OF = { desk: 'journal', calendar: 'calendar', chest: 'bonus', house: 'leave', pet: 'pet', decorate: 'decorate' };
+    const PANEL_OF = { desk: 'journal', calendar: 'calendar', chest: 'bonus', house: 'leave', pet: 'pet', decorate: 'decorate', boss: 'boss', friends: 'friends' };
 
     function studentHomeHtml() {
       const c = gameCtx();
@@ -5181,6 +5628,11 @@
         '</div>' +
         (c.streak > 0 ? '<div class="g-streak">🔥' + c.streak + '</div>' : '') +
       '</div>';
+      // 보스 체력 바
+      const bb = bossFor(STATE.studentClass);
+      h += '<div class="g-bossbar ui' + (bb.defeated ? ' win' : '') + '" id="g-bossbar" title="보스전 보기">' +
+        '<div class="g-bossbar-top"><span>' + (bb.defeated ? '🏆 ' + esc(bb.name) + ' 격파!' : bb.emoji + ' 이번 주 보스 · ' + esc(bb.name)) + '</span><span>' + timeLeftLabel_(bb.week.endsAt) + '</span></div>' +
+        '<div class="g-bossbar-track"><div class="g-bossbar-fill" style="width:' + (bb.hp / bb.maxHp * 100) + '%"></div><b>HP ' + bb.hp + ' / ' + bb.maxHp + '</b></div></div>';
       // 알림
       let toasts = '';
       if (c.feedback > 0) toasts += '<button type="button" class="g-toast" data-go="desk">🔔 새 피드백 ' + c.feedback + '개</button>';
@@ -5191,7 +5643,8 @@
         desk: c.feedback > 0 ? ['🔔' + c.feedback, ''] : (!c.wroteToday ? ['오늘!', 'soft'] : null),
         mailbox: c.mail > 0 ? [c.mail, ''] : null, board: c.study ? ['NEW', ''] : null,
         jar: c.words > 0 ? [c.words, 'soft'] : null, chest: c.bonus > 0 ? [c.bonus, 'soft'] : null,
-        decorate: newPropsBetween(decoSeenStage(), c.stage).length ? ['NEW', ''] : null
+        decorate: newPropsBetween(decoSeenStage(), c.stage).length ? ['NEW', ''] : null,
+        boss: (function () { const b = bossFor(STATE.studentClass); return b.defeated ? ['🏆', 'soft'] : (!b.by[STATE.studentName] ? ['!', ''] : null); })()
       };
       h += '<nav class="g-menu ui' + (STATE.menuOpen ? ' open' : '') + '"><div class="g-menu-head"><span class="t">🧭 메뉴</span><button type="button" class="g-menu-toggle" id="g-menu-toggle">' + (STATE.menuOpen ? '✕ 닫기' : '☰ 메뉴') + '</button></div><div class="g-menu-list">';
       GAME_MENU.forEach(function (m) {
@@ -5203,6 +5656,12 @@
       h += '</div></nav>';
       h += '<div class="g-hint">' + (RUN_MODE === 'demo' ? '🧪 체험 모드 · ' : '') + '⌨️ 방향키로 움직이고 사물 앞에서 Space · 🖱️ 드래그로 섬 돌리기</div>';
       if (STATE.studentPanel) h += gamePanelHtml(STATE.studentPanel, c);
+      if (STATE.visit) {
+        const v = STATE.visit, t = BADGE_TIERS[v.stage], sp = PET_SPECIES[v.species];
+        h += '<div class="g-visitbar ui"><div><div class="t">🏝️ ' + esc(v.ownerName) + '네 섬 구경 중</div><div class="s">' + sp.emoji + ' ' + esc(v.petName) + ' · ' + t.emoji + ' ' + t.label + ' · 👍 ' + (v.likes || 0) + '</div></div>' +
+          '<button type="button" class="g-visit-like' + (v.liked ? ' done' : '') + '" id="g-visit-like">' + (v.liked ? '👍 도장 완료' : '👍 도장 찍기') + '</button>' +
+          '<button type="button" class="g-visit-home" id="g-visit-home">🏠 내 섬으로</button></div>';
+      }
       return h;
     }
 
@@ -5255,6 +5714,48 @@
           '<div style="font-size:13.5px;text-align:center;margin:-4px 0 10px;color:var(--ej-ink-soft)">' + nextLine + '</div></div>' +
           '<div style="font-size:12.5px;color:var(--ej-ink-soft);line-height:1.6;margin-bottom:12px">✏️ 일지를 쓰면 섬에 밥그릇이 생기고, 선생님 피드백 포인트와 보너스로 친구가 자라요. 오래 안 오면 친구가 시무룩해져요.</div>' +
           '<div class="g-big-btns"><button type="button" class="ej-btn ej-btn-primary" id="g-pet-poke">💕 쓰다듬기</button><button type="button" class="ej-btn ej-btn-ghost" id="g-pet-edit">✏️ 이름·종류 바꾸기</button></div>');
+      }
+      if (kind === 'boss') {
+        const b = bossFor(STATE.studentClass);
+        let body = '<div class="g-boss-hero"><div class="e">' + (b.defeated ? '🏆' : b.emoji) + '</div><div class="n">' + esc(b.name) + (b.defeated ? ' 격파!' : '') + '</div><div class="d">' + esc(b.desc) + '</div></div>';
+        body += '<div class="g-boss-big"><i style="width:' + (b.hp / b.maxHp * 100) + '%"></i><b>HP ' + b.hp + ' / ' + b.maxHp + '</b></div>';
+        body += '<div style="text-align:center;font-size:12.5px;color:var(--ej-ink-soft);margin-bottom:12px">' + esc(STATE.studentClass) + ' · ' + b.week.mon.slice(5).replace('-', '/') + ' ~ ' + b.week.sun.slice(5).replace('-', '/') + ' · ' + timeLeftLabel_(b.week.endsAt) + '</div>';
+        if (b.defeated) body += '<div class="g-evo-gift" style="margin:0 0 12px">🎉 이번 주 보스를 쓰러뜨렸어요! 선생님이 반 전체에 보너스를 줄 수 있어요. 섬의 집 지붕에 승리 깃발이 꽂혔어요.</div>';
+        body += '<div class="ej-eyebrow" style="margin-bottom:6px">⚔️ 공격하는 방법</div><div class="g-rule">' +
+          '<span>📖 일지 쓰기 (하루 1번까지)</span><b>-' + BOSS_RULES.entry + '</b><span>🎮 단어 게임 만점</span><b>-' + BOSS_RULES.game + '</b><span>💰 선생님 칭찬 보너스</span><b>-' + BOSS_RULES.bonus + '</b></div>' +
+          '<div style="font-size:12px;color:var(--ej-ink-soft);margin:6px 2px 14px">보스 체력은 우리 반 인원 × ' + BOSS_RULES.hpPer + ' (최소 ' + BOSS_RULES.hpMin + ')이에요. 매주 월요일에 새 보스가 나타나요.</div>';
+        const top = Object.keys(b.by).map(function (n) { return { n: n, d: b.by[n] }; }).sort(function (x, y) { return y.d - x.d; });
+        body += '<div class="ej-eyebrow" style="margin-bottom:6px">🔥 이번 주 우리 반 공격왕</div>';
+        if (!top.length) body += '<div class="ej-card ej-empty" style="margin-bottom:12px">아직 아무도 공격하지 않았어요. 첫 공격의 주인공이 되어 보세요!</div>';
+        top.slice(0, 8).forEach(function (r, i) {
+          body += '<div class="g-row' + (r.n === STATE.studentName ? ' me' : '') + '"><span class="rk">' + (['🥇', '🥈', '🥉'][i] || (i + 1)) + '</span><span style="width:72px">' + esc(r.n) + '</span><span class="bar"><i style="width:' + Math.min(100, r.d / top[0].d * 100) + '%"></i></span><b>' + r.d + '</b></div>';
+        });
+        if (!b.by[STATE.studentName]) body += '<div style="font-size:13px;color:#B5423A;margin:6px 2px 0">아직 나는 공격하지 않았어요! 오늘 일지를 쓰면 바로 -10 💥</div>';
+        // 반 대항
+        const classes = allClassNames().filter(function (cl) { return classMembers_(cl).length > 0; });
+        const rank = classes.map(function (cl) { const x = bossFor(cl); return { cl: cl, p: Math.min(100, Math.round(x.dmg / x.maxHp * 100)), win: x.defeated }; }).sort(function (x, y) { return y.p - x.p; });
+        if (rank.length > 1) {
+          body += '<div class="ej-eyebrow" style="margin:16px 0 6px">🏁 반 대항 순위 (보스 체력 깎은 비율)</div>';
+          rank.forEach(function (r, i) { body += '<div class="g-row' + (r.cl === STATE.studentClass ? ' me' : '') + '"><span class="rk">' + (i + 1) + '</span><span style="width:84px">' + esc(r.cl) + '</span><span class="bar"><i style="width:' + r.p + '%"></i></span><b>' + (r.win ? '🏆' : r.p + '%') + '</b></div>'; });
+        }
+        return panelFrame('⚔️ 반 대항 보스전', body);
+      }
+      if (kind === 'friends') {
+        const list = (STATE.classIslands || []).filter(function (i) { return String(i.studentNumber) !== String(STATE.studentNumber); })
+          .sort(function (a, b) { return (a.studentNumber || 0) - (b.studentNumber || 0); });
+        let body = '<div class="g-deco-help" style="margin-bottom:12px">🏝️ 같은 반 친구의 섬을 구경하고 👍 도장을 찍어 주세요. 한 친구 섬에 하루 한 번 찍을 수 있어요.</div>';
+        if (!STATE.classIslandsAt) body += '<div class="ej-card ej-empty">친구 섬을 불러오는 중…</div>';
+        else if (!list.length) body += '<div class="ej-card ej-empty">아직 섬을 만든 친구가 없어요.<br>친구들이 들어와서 동물 친구를 고르면 여기 나타나요!</div>';
+        list.forEach(function (f) {
+          const pts = studentTotalPoints(STATE.studentClass, f.studentName), st = stageIndexOf(pts), t = BADGE_TIERS[st];
+          const sp = f.pet && PET_SPECIES[f.pet.species] ? PET_SPECIES[f.pet.species] : null;
+          body += '<div class="g-friend"><div class="av">' + (st === 0 || !sp ? '🥚' : sp.emoji) + '</div><div class="info"><div class="nm">' + (f.studentNumber ? f.studentNumber + '번 ' : '') + esc(f.studentName || '') + '</div>' +
+            '<div class="sub">' + (sp ? esc(f.pet.name) + ' · ' : '') + t.emoji + ' ' + t.label + ' · 👍 ' + (f.likes || 0) + '</div></div>' +
+            (sp ? '<button type="button" data-visit="' + f.studentNumber + '">놀러가기 ▶</button>' : '<span style="font-size:12px;color:var(--ej-ink-soft)">준비 중</span>') + '</div>';
+        });
+        const mine = (STATE.classIslands || []).find(function (i) { return String(i.studentNumber) === String(STATE.studentNumber); });
+        body += '<div style="font-size:12.5px;color:var(--ej-ink-soft);margin-top:10px;text-align:center">내 섬이 받은 도장 👍 ' + ((mine && mine.likes) || 0) + '개</div>';
+        return panelFrame('🏝️ 친구 섬 놀러가기', body);
       }
       if (kind === 'decorate') {
         let inv = '<div class="g-props">';
@@ -5328,7 +5829,7 @@
 
     // 사물(또는 메뉴) → 기능 열기
     function onWorldObject(key) {
-      if (STATE.screen !== 'studentHome') return;
+      if (STATE.screen !== 'studentHome' || STATE.visit) return;
       if (STATE.studentPanel === 'adopt') return;
       if (PANEL_OF[key]) { openGamePanel(PANEL_OF[key]); return; }
       if (STATE.studentPanel) { STATE.studentPanel = null; render(); }
@@ -5341,6 +5842,8 @@
     function menuGo(key) {
       if (key === 'pet') { openGamePanel('pet'); return; }
       if (key === 'decorate') { openDecorate(); return; }
+      if (key === 'boss') { openGamePanel('boss'); return; }
+      if (key === 'friends') { openGamePanel('friends'); loadClassIslands(); return; }
       if (WORLD.ready) WORLD.activate(key, true); else onWorldObject(key);
     }
 
@@ -5364,6 +5867,31 @@
       byId('g-deco-cancel', function (el) { el.onclick = function () { STATE.studentPanel = null; render(); }; });
       byId('g-deco-reset', function (el) { el.onclick = function () { WORLD.resetLayoutInEdit(); render(); decoToast('처음 배치로 돌려 놨어요. 저장을 눌러야 적용돼요'); }; });
       if (STATE.studentPanel === 'decorate' && WORLD.ready && WORLD.isEditing()) { /* 선택 상태 유지 */ }
+      byId('g-bossbar', function (el) { el.onclick = function () { openGamePanel('boss'); }; });
+      document.querySelectorAll('[data-visit]').forEach(function (el) {
+        el.onclick = function () {
+          const num = el.getAttribute('data-visit');
+          const f = (STATE.classIslands || []).find(function (i) { return String(i.studentNumber) === String(num); });
+          if (!f || !f.pet) return;
+          const pts = studentTotalPoints(STATE.studentClass, f.studentName);
+          STATE.visit = { key: STATE.studentClass + '|' + num + '|' + Date.now(), num: f.studentNumber, ownerName: f.studentName, petName: f.pet.name, species: f.pet.species, stage: stageIndexOf(pts), layout: f.layout, likes: f.likes || 0, liked: false };
+          STATE.studentPanel = null; render();
+        };
+      });
+      byId('g-visit-home', function (el) { el.onclick = function () { STATE.visit = null; STATE.studentPanel = 'friends'; render(); loadClassIslands(); }; });
+      byId('g-visit-like', function (el) {
+        el.onclick = function () {
+          const v = STATE.visit; if (!v || v.liked) return;
+          el.disabled = true;
+          gsRun('likeIsland', STATE.studentClass, v.num, STATE.studentNumber).then(function (r) {
+            v.liked = true; v.likes = r.likes;
+            const f = (STATE.classIslands || []).find(function (i) { return String(i.studentNumber) === String(v.num); }); if (f) f.likes = r.likes;
+            render(); WORLD.pokePet();
+            decoToast(r.already ? '오늘은 이미 도장을 찍었어요' : '👍 도장 쾅! ' + v.ownerName + '에게 전해졌어요');
+          }).catch(function (e) { el.disabled = false; decoToast((e && e.message) || '도장을 찍지 못했어요'); });
+        };
+      });
+      byId('g-boss-reward', function (el) { el.onclick = function () { giveBossReward(el.getAttribute('data-class')); }; });
       byId('g-pet-poke', function (el) { el.onclick = function () { WORLD.pokePet(); }; });
       byId('g-pet-edit', function (el) { el.onclick = function () { STATE.adoptSel = null; openGamePanel('adopt'); }; });
       document.querySelectorAll('[data-species]').forEach(function (el) {
@@ -5379,7 +5907,9 @@
           const saved = loadPet(STATE.studentClass, STATE.studentNumber);
           const sp = STATE.adoptSel || (saved && saved.species); if (!sp) return;
           const name = ((document.getElementById('g-pet-name') || {}).value || '').trim().slice(0, 8) || PET_SPECIES[sp].suggest;
-          savePet(STATE.studentClass, STATE.studentNumber, { species: sp, name: name, adoptedAt: (saved && saved.adoptedAt) || Date.now() });
+          const newPet = { species: sp, name: name, adoptedAt: (saved && saved.adoptedAt) || Date.now() };
+          savePet(STATE.studentClass, STATE.studentNumber, newPet);
+          gsRun('saveIslandPet', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(newPet)).catch(function () { });
           STATE.adoptSel = null; STATE.studentPanel = null; render();
           const stage = stageIndexOf(studentTotalPoints(STATE.studentClass, STATE.studentName));
           setTimeout(function () { WORLD.pokePet(); WORLD.say(stage === 0 ? '(알 속에서 톡톡…) 반가워! 꼭 깨어날게!' : '안녕! 나는 ' + name + '! 잘 부탁해 💕', 3600); }, 400);
@@ -5398,8 +5928,44 @@
       });
     }
     document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && STATE.screen === 'studentHome' && STATE.visit && !STATE.studentPanel) { STATE.visit = null; render(); return; }
       if (ev.key === 'Escape' && STATE.screen === 'studentHome' && STATE.studentPanel && !document.querySelector('.ej-mail-overlay, .ej-word-overlay')) closeGamePanel();
     });
+
+    // ---------- 교사 화면: 이번 주 보스전 현황 ----------
+    function bossRewardReason_(b) { return '⚔️ 보스 격파 보너스 (' + b.week.key + ')'; }
+    function teacherBossCardHtml(cls) {
+      if (!cls) return '';
+      const b = bossFor(cls);
+      const pct = Math.min(100, Math.round(b.dmg / b.maxHp * 100));
+      const reason = bossRewardReason_(b);
+      const given = (STATE.bonuses || []).some(function (x) { return (x.className || '미지정') === cls && x.reason === reason; });
+      const attackers = Object.keys(b.by).length;
+      let right = '';
+      if (b.defeated) right = given ? '<span class="ej-stamp">🎁 보상 지급 완료</span>'
+        : '<button type="button" class="ej-btn ej-btn-gold" id="g-boss-reward" data-class="' + esc(cls) + '">🎉 반 전체 +' + BOSS_RULES.reward + 'P 보상 주기</button>';
+      return '<div class="ej-card" style="padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">' +
+        '<div style="font-size:34px">' + (b.defeated ? '🏆' : b.emoji) + '</div>' +
+        '<div style="flex:1;min-width:220px"><div style="font-weight:800">⚔️ 이번 주 보스전 · ' + esc(b.name) + (b.defeated ? ' <span style="color:#3F8A33">격파!</span>' : '') + '</div>' +
+          '<div class="g-boss-big" style="margin:6px 0 4px"><i style="width:' + (100 - pct) + '%"></i><b>HP ' + b.hp + ' / ' + b.maxHp + ' (' + pct + '% 깎음)</b></div>' +
+          '<div style="font-size:12.5px;color:var(--ej-ink-soft)">공격한 학생 ' + attackers + ' / ' + b.members + '명 · ' + timeLeftLabel_(b.week.endsAt) + '</div></div>' + right + '</div>';
+    }
+    function giveBossReward(cls) {
+      const b = bossFor(cls);
+      if (!b.defeated) return;
+      const reason = bossRewardReason_(b);
+      const roster = rosterForClass(cls).filter(function (st) { return st.number != null; });
+      if (!roster.length) { alert('번호가 있는 학생이 없어서 보상을 줄 수 없어요.'); return; }
+      if (!confirm(cls + ' 학생 ' + roster.length + '명에게 보스 격파 보너스 +' + BOSS_RULES.reward + 'P를 줄까요?')) return;
+      const btn = document.getElementById('g-boss-reward'); if (btn) { btn.disabled = true; btn.textContent = '지급 중…'; }
+      let chain = Promise.resolve(), ok = 0;
+      roster.forEach(function (st) {
+        chain = chain.then(function () {
+          return gsRun('addBonus', cls, st.number, st.name, BOSS_RULES.reward, reason).then(function (bonus) { if (bonus) STATE.bonuses.unshift(bonus); ok++; }).catch(function () { });
+        });
+      });
+      chain.then(function () { render(); alert('보상을 ' + ok + '명에게 지급했어요 🎉'); });
+    }
 
     // ---------- 진화 연출 ----------
     function showTierCelebration(prevTier, tier, isMax) {
@@ -5434,6 +6000,7 @@
       setTimeout(function () { if (document.body.contains(box) && !box.classList.contains('wait')) close(); }, 14000);
     }
 
+    WORLD.onBoss = function () { if (!STATE.visit && STATE.screen === 'studentHome') openGamePanel('boss'); };
     WORLD.onKeyMove = function () { if (STATE.studentPanel === 'pet') { STATE.studentPanel = null; render(); } };
     WORLD.lineFor = petLine;
     WORLD.onObject = onWorldObject;

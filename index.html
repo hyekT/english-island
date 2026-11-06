@@ -991,36 +991,12 @@
     }
 
 
-    function allClassNames() {
-      const fromEntries = STATE.entries.map(function (e) { return e.className || '미지정'; });
-      const set = new Set(STATE.classes.concat(fromEntries));
-      return Array.from(set).sort(function (a, b) { return a.localeCompare(b, 'ko'); });
-    }
     function studentNamesInClass(cls) {
       const set = new Set(
         STATE.entries.filter(function (e) { return (e.className || '미지정') === cls; })
           .map(function (e) { return e.studentName; })
       );
       return Array.from(set).sort(function (a, b) { return a.localeCompare(b, 'ko'); });
-    }
-    function rosterForClass(cls) {
-      const byName = {};
-      STATE.entries.filter(function (e) { return (e.className || '미지정') === cls; })
-        .forEach(function (e) {
-          if (!byName[e.studentName] || (typeof e.studentNumber === 'number' && !byName[e.studentName].number)) {
-            byName[e.studentName] = { name: e.studentName, number: (typeof e.studentNumber === 'number' ? e.studentNumber : null) };
-          }
-        });
-      return Object.values(byName).sort(function (a, b) {
-        if (a.number != null && b.number != null) return a.number - b.number;
-        if (a.number != null) return -1;
-        if (b.number != null) return 1;
-        return a.name.localeCompare(b.name, 'ko');
-      });
-    }
-    function studentNumberInClass(cls, name) {
-      const entry = STATE.entries.find(function (e) { return (e.className || '미지정') === cls && e.studentName === name && typeof e.studentNumber === 'number'; });
-      return entry ? entry.studentNumber : null;
     }
     function studentTotalPoints(cls, name) {
       const entryPoints = STATE.entries
@@ -2041,7 +2017,7 @@
         html += '<div class="ej-grid">';
         names.forEach(function (cls) {
           const classEntries = STATE.entries.filter(function (e) { return (e.className || '미지정') === cls; });
-          const studentCount = new Set(classEntries.map(function (e) { return e.studentName; })).size;
+          const studentCount = rosterForClass(cls).length;
           const pending = classEntries.filter(function (e) { return !e.feedbackAt; }).length;
           html += '<button class="ej-card ej-card-btn class-card" data-class="' + esc(cls) + '" style="padding:18px">' +
             '<div class="ej-spine"></div><div class="ej-indent">' +
@@ -4997,6 +4973,52 @@
       return pick(lines);
     }
 
+    // ---------- 교사 화면 학생 목록: 일지를 쓴 학생 + 가입만 한 학생 ----------
+    function accountsInClass_(cls) {
+      return (STATE.studentAccounts || []).filter(function (a) { return (a.className || '미지정') === cls; });
+    }
+    function allClassNames() {
+      const fromEntries = STATE.entries.map(function (e) { return e.className || '미지정'; });
+      const fromAccounts = (STATE.studentAccounts || []).map(function (a) { return a.className || '미지정'; });
+      return Array.from(new Set(STATE.classes.concat(fromEntries, fromAccounts))).sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+    }
+    function rosterForClass(cls) {
+      const byName = {};
+      STATE.entries.filter(function (e) { return (e.className || '미지정') === cls; }).forEach(function (e) {
+        if (!byName[e.studentName] || (typeof e.studentNumber === 'number' && byName[e.studentName].number == null)) {
+          byName[e.studentName] = { name: e.studentName, number: (typeof e.studentNumber === 'number' ? e.studentNumber : null) };
+        }
+      });
+      accountsInClass_(cls).forEach(function (a) {
+        const n = Number(a.studentNumber);
+        if (!byName[a.studentName]) byName[a.studentName] = { name: a.studentName, number: isNaN(n) ? null : n };
+        else if (byName[a.studentName].number == null && !isNaN(n)) byName[a.studentName].number = n;
+      });
+      return Object.values(byName).sort(function (a, b) {
+        if (a.number != null && b.number != null) return a.number - b.number;
+        if (a.number != null) return -1;
+        if (b.number != null) return 1;
+        return a.name.localeCompare(b.name, 'ko');
+      });
+    }
+    function studentNumberInClass(cls, name) {
+      const entry = STATE.entries.find(function (e) { return (e.className || '미지정') === cls && e.studentName === name && typeof e.studentNumber === 'number'; });
+      if (entry) return entry.studentNumber;
+      const acc = accountsInClass_(cls).find(function (a) { return a.studentName === name; });
+      return acc && !isNaN(Number(acc.studentNumber)) ? Number(acc.studentNumber) : null;
+    }
+    // 교사 화면에 들어오면 가입한 학생 목록을 (1분마다) 새로 받아와요
+    function refreshTeacherAccounts() {
+      if (STATE.accountsFetching) return;
+      if (STATE.accountsFetchedAt && Date.now() - STATE.accountsFetchedAt < 60000) return;
+      STATE.accountsFetching = true;
+      gsRun('listStudentAccounts').then(function (list) {
+        STATE.studentAccounts = Array.isArray(list) ? list : [];
+        STATE.accountsFetchedAt = Date.now(); STATE.accountsFetching = false;
+        if (document.body.getAttribute('data-screen') === 'teacher') render();
+      }).catch(function () { STATE.accountsFetching = false; STATE.accountsFetchedAt = Date.now(); });
+    }
+
     // ---------- 화면 그리기 ----------
     function render() {
       const app = document.getElementById('app');
@@ -5019,6 +5041,8 @@
       else if (STATE.screen === 'teacherDetail') app.innerHTML = teacherDetailHtml();
       bindEvents();
       bindGame();
+      if (mode === 'teacher') refreshTeacherAccounts();
+      if (mode !== 'teacher' && mode !== 'loading') STATE.accountsFetchedAt = 0;
       if (mode === 'home') {
         const c = gameCtx();
         WORLD.setHome({

@@ -602,7 +602,7 @@
     .g-road-step.now .g-road-dot { border-color: #5DAF4C; background: #DDF2D3; transform: scale(1.12); box-shadow: 0 0 0 4px rgba(93,175,76,.2); }
     .g-road-step.lock .g-road-dot { filter: grayscale(1); opacity: .45; }
     .g-road-step.now { color: #3F8A33; font-weight: 700; }
-    .g-species { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 14px; }
+    .g-species { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 14px; }
     .g-species button { border: 3px solid #EBDDC3; background: #fff; border-radius: 18px; padding: 10px 4px 8px; cursor: pointer; font-family: 'IBM Plex Sans KR', sans-serif; font-weight: 700; font-size: 15px; color: #4A3A2C; box-shadow: 0 3px 0 #EBDDC3; }
     .g-species button .e { display: block; font-size: 34px; line-height: 1.1; margin-bottom: 2px; }
     .g-species button.sel { border-color: #5DAF4C; background: #EEF8E8; box-shadow: 0 3px 0 #8CCB79; }
@@ -3942,7 +3942,9 @@
 
       // ---------- 캐릭터 ----------
       const SPC = {
-        rabbit: { body: 0xfbf3ea, belly: 0xffffff, accent: 0xf5b3c2, nose: 0xf08aa0, egg: 0xfff0f3, spot: 0xf5b3c2 },
+        tiger:  { body: 0xf29a3a, belly: 0xfff3e0, accent: 0xf6b3a0, nose: 0xc96a5e, egg: 0xffe7c4, spot: 0x3a2a22, stripe: 0x33251e, muzzle: 0xfff3e0 },
+        wolf:   { body: 0x9aa5b1, belly: 0xeef1f4, accent: 0xd3d9e0, nose: 0x2a2a30, egg: 0xe7ecf2, spot: 0x7a8794, tip: 0x5a6470, muzzle: 0xeef1f4, iris: 0xf2b632 },
+        quokka: { body: 0xa8957e, belly: 0xefe6d8, accent: 0xe9a39c, nose: 0x2e2622, egg: 0xf1ebe1, spot: 0x8c7a64, muzzle: 0xf3ece2 },
         cat:    { body: 0xc9d0dd, belly: 0xf4f6fa, accent: 0xf2a7b5, nose: 0xf08aa0, egg: 0xeef1f7, spot: 0x9aa4b9, stripe: 0x8f99ae },
         bear:   { body: 0xc1916a, belly: 0xe8cdae, accent: 0xf0a8a0, nose: 0x3a2e2a, egg: 0xf6e7d6, spot: 0xc1916a, muzzle: 0xf1dec6 },
         fox:    { body: 0xf09b52, belly: 0xfff7ec, accent: 0xf6b3a8, nose: 0x3a2e2a, egg: 0xffebd8, spot: 0xf09b52, tip: 0x5a3a28 }
@@ -3955,7 +3957,7 @@
       }
 
       function buildPet(species, stage) {
-        const S = SPC[species] || SPC.rabbit;
+        const S = SPC[species] || SPC.cat;
         const g = new T.Group();
         const body = new T.Group(); g.add(body);
         const parts = { g: g, body: body };
@@ -3989,7 +3991,8 @@
         [-.22, .22].forEach(function (x) {
           const e = new T.Group(); e.position.set(x, .06, .55);
           const eb = new T.Group(); eb.scale.setScalar(eyeS); e.add(eb);
-          eb.add(mesh(new T.SphereGeometry(.078, 12, 10), eyeM, 0, 0, 0)); eb.children[0].scale.set(1, 1.25, .6);
+          eb.add(mesh(new T.SphereGeometry(.078, 12, 10), species === 'wolf' ? sm(S.iris) : eyeM, 0, 0, 0)); eb.children[0].scale.set(1, 1.25, .6);
+          if (species === 'wolf') { const pu = mesh(new T.SphereGeometry(.05, 10, 8), eyeM, 0, -.005, .03); pu.scale.set(1, 1.25, .6); eb.add(pu); }
           eb.add(mesh(new T.SphereGeometry(.026, 6, 5), hiM, .025, .04, .045));
           if (stage <= 2) eb.add(mesh(new T.SphereGeometry(.014, 5, 4), hiM, -.025, -.03, .045));
           head.add(e); eyes.push(e);
@@ -4000,10 +4003,38 @@
         brows.visible = false; head.add(brows); parts.brows = brows;
         [-.38, .38].forEach(function (x) { head.add(ball(.1, S.accent, x, -.1, .48, 1, .6, .4)); });
         if (species === 'bear') head.add(ball(.2 * (adult ? 1.12 : 1), S.muzzle, 0, -.12, .5, 1, .75, .6));
-        if (species === 'fox') { const m = adult ? 1.12 : 1; head.add(ball(.2 * m, S.belly, -.16, -.13, .47, 1, .7, .6)); head.add(ball(.2 * m, S.belly, .16, -.13, .47, 1, .7, .6)); }
-        head.add(ball(species === 'bear' || species === 'fox' ? .065 : .045, S.nose, 0, -.04, species === 'bear' ? .66 : .61, 1.2, .8, .8));
+        if (species === 'fox' || species === 'tiger') { const m = adult ? 1.12 : 1, r = species === 'tiger' ? .17 : .2; head.add(ball(r * m, S.belly, -.15, -.14, .48, 1, .78, .6)); head.add(ball(r * m, S.belly, .15, -.14, .48, 1, .78, .6)); }
+        if (species === 'quokka') { head.add(ball(.22, S.muzzle, 0, -.15, .49, 1.25, .8, .62)); [-1, 1].forEach(function (sd) { head.add(ball(.15, S.body, sd * .36, -.12, .4, 1, .85, .7)); }); }
         const mouthM = new T.MeshBasicMaterial({ color: 0x3a2e2a });
-        [-.04, .04].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.04, .011, 4, 10, Math.PI), mouthM); m.position.set(x, -.14, species === 'bear' ? .62 : .59); m.rotation.z = Math.PI; head.add(m); });
+        if (species === 'wolf') {
+          // 늑대: 앞으로 나온 주둥이
+          const sn = 1 + (stage >= 3 ? .12 : 0) + (adult ? .1 : 0);
+          head.add(ball(.2, S.body, 0, -.1, .55, 1, .72, 1.15 * sn));
+          head.add(ball(.17, S.muzzle, 0, -.17, .58, .95, .55, 1.05 * sn));
+          head.add(ball(.065, S.nose, 0, -.05, .55 + .23 * sn, 1.2, .8, .8));
+          [-.035, .035].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.035, .01, 4, 10, Math.PI), mouthM); m.position.set(x, -.22, .55 + .17 * sn); m.rotation.z = Math.PI; head.add(m); });
+        } else {
+          const nz = species === 'bear' ? .66 : (species === 'quokka' ? .64 : .61);
+          head.add(ball(species === 'cat' ? .045 : .062, S.nose, 0, -.04, nz, 1.2, .8, .8));
+          if (species === 'quokka') {
+            // 쿼카: 활짝 웃는 입
+            const w = adult ? .14 : .12;
+            const smile = new T.Mesh(new T.TorusGeometry(w, .022, 5, 16, Math.PI), mouthM); smile.position.set(0, -.11, .655); smile.rotation.z = Math.PI; smile.rotation.x = -.25; head.add(smile);
+            const mouthIn = ball(w * .8, 0x5a2a2a, 0, -.17, .62, 1.2, .5, .3); head.add(mouthIn);
+            head.add(ball(.05, 0xe86a7a, 0, -.2, .635, 1.4, .6, .4));
+          } else {
+            [-.04, .04].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.04, .011, 4, 10, Math.PI), mouthM); m.position.set(x, -.14, species === 'bear' ? .62 : .59); m.rotation.z = Math.PI; head.add(m); });
+          }
+        }
+        if (species === 'tiger') {
+          // 호랑이 이마·볼 줄무늬
+          const sc = sm(S.stripe);
+          [[-.12, .44, .1], [0, .47, .17], [.12, .44, .1]].forEach(function (q) { head.add(mesh(new T.BoxGeometry(.05, q[2] + .08, .03), sc, q[0], q[1], .39)); });
+          [-1, 1].forEach(function (sd) {
+            [[.03, .26], [-.1, .2]].forEach(function (q, i) { const st = mesh(new T.BoxGeometry(.2 - i * .04, .04, .03), sc, sd * .52, q[0], q[1]); st.rotation.y = sd * .9; st.rotation.z = sd * (i ? -.25 : .1); head.add(st); });
+          });
+          if (adult) head.add(mesh(new T.BoxGeometry(.2, .04, .03), sc, 0, .32, .5));
+        }
         if (species === 'cat') {
           [-.1, 0, .1].forEach(function (x) { head.add(mesh(new T.BoxGeometry(.04, .14, .02), sm(S.stripe), x, .45, .38)); });
           const wm = new T.MeshBasicMaterial({ color: 0x5e6780 });
@@ -4012,25 +4043,27 @@
           if (adult) [-1, 1].forEach(function (s) { const c = mesh(new T.ConeGeometry(.09, .22, 4), sm(S.body), s * .6, -.12, .12); c.rotation.z = s * Math.PI / 2; head.add(c); });
         }
         // 귀 (자랄수록 길어지고 커져요)
-        if (species === 'rabbit') {
-          const len = [0, 1.9, 2.3, 2.8, 3.2, 3.3][stage];
-          [-1, 1].forEach(function (s) {
-            const ear = new T.Group(); ear.position.set(s * .24, .5, -.05); ear.rotation.z = -s * (stage >= 3 ? .2 : .12);
-            ear.add(ball(.15, S.body, 0, .15 * len * .5 + .1, 0, 1, len, .6));
-            ear.add(ball(.08, S.accent, 0, .15 * len * .5 + .1, .06, 1, len * 1.5, .3));
-            head.add(ear);
-          });
-        } else if (species === 'cat' || species === 'fox') {
-          const h = species === 'fox' ? [0, .48, .54, .6, .66, .66][stage] : [0, .36, .4, .45, .5, .5][stage];
-          const w = species === 'fox' ? .21 + (stage >= 3 ? .03 : 0) : .21;
+        if (species === 'cat' || species === 'fox' || species === 'wolf') {
+          const h = species === 'cat' ? [0, .36, .4, .45, .5, .5][stage] : (species === 'wolf' ? [0, .5, .56, .64, .7, .7][stage] : [0, .48, .54, .6, .66, .66][stage]);
+          const w = species === 'cat' ? .21 : .21 + (stage >= 3 ? .03 : 0);
           [-1, 1].forEach(function (s) {
             const ear = new T.Group(); ear.position.set(s * .36, .42, 0); ear.rotation.z = -s * (stage >= 3 ? .24 : .32);
             ear.add(mesh(new T.ConeGeometry(w, h, 4), sm(S.body), 0, h / 2, 0));
             ear.add(mesh(new T.ConeGeometry(w * .57, h * .7, 4), sm(S.accent), 0, h * .38, .08));
-            if (species === 'fox') ear.add(mesh(new T.ConeGeometry(w * .43, h * .3, 4), sm(S.tip), 0, h * .85, 0));
+            if (species === 'fox' || species === 'wolf') ear.add(mesh(new T.ConeGeometry(w * .43, h * .3, 4), sm(S.tip), 0, h * .85, 0));
             if (species === 'cat' && adult) ear.add(mesh(new T.ConeGeometry(.03, .14, 3), sm(S.stripe), 0, h + .04, 0));
             head.add(ear);
           });
+        } else if (species === 'tiger') {
+          const er = [0, .15, .16, .18, .19, .19][stage];
+          [-1, 1].forEach(function (s) {
+            head.add(ball(er, S.body, s * .43, .46, -.05));
+            head.add(ball(er * .6, S.muzzle, s * .43, .46, .07, 1, 1, .4));
+            head.add(ball(er * .75, S.stripe, s * .43, .48, -.14, 1, 1, .4));
+          });
+        } else if (species === 'quokka') {
+          const er = [0, .12, .13, .14, .15, .15][stage];
+          [-1, 1].forEach(function (s) { head.add(ball(er, S.body, s * .5, .4, -.04, 1, 1, .6)); head.add(ball(er * .6, S.accent, s * .5, .4, .03, 1, 1, .3)); });
         } else {
           const er = [0, .18, .19, .21, .23, .23][stage];
           [-1, 1].forEach(function (s) { head.add(ball(er, S.body, s * .45, .45, -.05)); head.add(ball(er * .55, S.muzzle, s * .45, .45, .08, 1, 1, .4)); });
@@ -4043,20 +4076,37 @@
         const sockC = species === 'fox' && stage >= 3 ? S.tip : S.body;
         const mkFoot = function (x) {
           const f = new T.Group(); f.position.set(x, 0, .06);
-          f.add(ball(.17 * (adult ? 1.12 : 1), sockC, 0, .1, 0, 1, .6, 1.3));
+          f.add(ball(.17 * (adult ? 1.12 : 1), sockC, 0, .1, species === 'quokka' ? .05 : 0, 1, .6, species === 'quokka' ? 1.7 : 1.3));
           if (legH > 0) f.add(mesh(new T.CylinderGeometry(.11 * tSX, .12, legH + .14, 10), sm(sockC), 0, .12 + (legH + .14) / 2, -.04));
           g.add(f); return f;
         };
         const footL = mkFoot(-.22), footR = mkFoot(.22);
         parts.footL = footL; parts.footR = footR; parts.armL = armL; parts.armR = armR;
         // 몸 무늬 (어른)
-        if (adult && species === 'rabbit') { [[-.09, .02], [.09, .02], [0, -.05]].forEach(function (q) { body.add(ball(.12, 0xffffff, q[0], cy + ry * .55 + q[1], .36 * tSX, 1, .8, .7)); }); }
+        if (species === 'tiger' && stage >= 2) {
+          const n = adult ? 4 : 3;
+          for (let i = 0; i < n; i++) { const z = (i - (n - 1) / 2) * (adult ? .2 : .25); const st = mesh(new T.TorusGeometry(.43 * tSX, .035, 4, 16, Math.PI * .65), sm(S.stripe), 0, cy + z * .6 + .05, -.06); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .67; body.add(st); }
+          if (adult) body.add(ball(.2, S.belly, 0, cy + ry * .5, .38 * tSX, 1, .9, .6));
+        }
+        if (adult && species === 'wolf') {
+          const ruff = mesh(new T.ConeGeometry(.26, .42, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff);
+          body.add(ball(.42, S.tip, 0, cy + .12, -.2, 1.05 * tSX, .7, .8));
+        }
+        if (adult && species === 'quokka') body.add(ball(.22, S.belly, 0, cy + ry * .35, .36 * tSX, 1, 1.1, .6));
         if (adult && species === 'cat') { [-.25, 0, .25].forEach(function (z) { const st = mesh(new T.TorusGeometry(.42 * tSX, .03, 4, 16, Math.PI * .7), sm(S.stripe), 0, cy + z * .5 + .05, -.05); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .65; body.add(st); }); }
         if (adult && species === 'bear') { const moon = mesh(new T.TorusGeometry(.17, .045, 6, 14, Math.PI), sm(0xf6ead6), 0, cy + ry * .5, .44 * tSX); moon.rotation.z = Math.PI; body.add(moon); }
         if (adult && species === 'fox') { const ruff = mesh(new T.ConeGeometry(.24, .4, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff); }
         // 꼬리 (자랄수록 커져요)
         const tg = [0, .85, .95, 1.1, 1.25, 1.3][stage];
-        if (species === 'rabbit') body.add(ball(.16 * tg, 0xffffff, 0, cy - .1, -.48 * tSX));
+        if (species === 'quokka') { const qt = mesh(new T.ConeGeometry(.08, .45 * tg, 6), sm(S.body), 0, cy - .3, -.55 * tSX); qt.rotation.x = -2.1; body.add(qt); }
+        if (species === 'tiger') {
+          // 고리 무늬가 있는 긴 꼬리
+          const k = tg * 1.1, y0 = cy - .15;
+          const curve = new T.CatmullRomCurve3([new T.Vector3(0, y0, -.42 * tSX), new T.Vector3(0, y0 - .08, -.42 - .35 * k), new T.Vector3(0, y0 + .28 * k, -.42 - .55 * k), new T.Vector3(0, y0 + .62 * k, -.42 - .4 * k)]);
+          const tail = new T.Group();
+          for (let i = 0; i <= 10; i++) { const pt = curve.getPoint(i / 10); tail.add(ball(.085 - i * .002, i === 10 || i % 3 === 2 ? S.stripe : S.body, pt.x, pt.y, pt.z)); }
+          body.add(tail); parts.tail = tail;
+        }
         if (species === 'bear') body.add(ball(.12 * tg, S.body, 0, cy - .13, -.48 * tSX));
         if (species === 'cat') {
           const k = tg, y0 = cy - .15;
@@ -4064,11 +4114,12 @@
           const tail = mesh(new T.TubeGeometry(curve, 16, .08, 8), sm(S.body)); body.add(tail); parts.tail = tail;
           if (stage >= 3) body.add(ball(.09, S.stripe, 0, y0 + .6 * k, -.42 - .33 * k));
         }
-        if (species === 'fox') {
-          const tail = new T.Group(); tail.position.set(0, cy, -.5 * tSX); tail.rotation.x = -.9 + (stage >= 3 ? .15 : 0);
+        if (species === 'fox' || species === 'wolf') {
+          const wolf = species === 'wolf';
+          const tail = new T.Group(); tail.position.set(0, cy - (wolf ? .05 : 0), -.5 * tSX); tail.rotation.x = (wolf ? -.45 : -.9) + (stage >= 3 ? .15 : 0);
           const ts = tg;
           tail.add(ball(.26 * ts, S.body, 0, 0, -.3 * ts, 1, 1, 1.9));
-          tail.add(ball(.17 * ts, S.belly, 0, 0, -.72 * ts, 1, 1, 1.1));
+          tail.add(ball(.17 * ts, wolf ? S.tip : S.belly, 0, 0, -.72 * ts, 1, 1, 1.1));
           body.add(tail); parts.tail = tail;
         }
         // 단계별 장식
@@ -4141,7 +4192,7 @@
         CAM.auto = mode !== 'home';
         if (mode !== 'home') { W.focus(false); hideBubble(); if (EDIT.on) W.stopEdit(false); W.visiting = null; }
         if (mode === 'login' || mode === 'loading') {
-          if (!pet || W.home) { setPetModel('rabbit', 2); }
+          if (!pet || W.home) { setPetModel('tiger', 2); }
           W.home = null; setStageDecor(2);
           Object.keys(objects).forEach(function (k) { setBadge(k, ''); });
           if (food) food.visible = false;
@@ -5274,12 +5325,14 @@
     // 🎮 게임 화면 (로그인·HUD·메뉴·패널) — 기존 기능 함수를 그대로 불러 써요
     // =====================================================================
     const PET_SPECIES = {
-      rabbit: { name: '토끼',   emoji: '🐰', suggest: '몽실' },
-      cat:    { name: '고양이', emoji: '🐱', suggest: '나비' },
+      tiger:  { name: '호랑이', emoji: '🐯', suggest: '태풍' },
+      wolf:   { name: '늑대',   emoji: '🐺', suggest: '달빛' },
+      fox:    { name: '여우',   emoji: '🦊', suggest: '단풍' },
       bear:   { name: '곰',     emoji: '🐻', suggest: '꼬미' },
-      fox:    { name: '여우',   emoji: '🦊', suggest: '단풍' }
+      cat:    { name: '고양이', emoji: '🐱', suggest: '나비' },
+      quokka: { name: '쿼카',   emoji: '🦘', suggest: '스마일' }
     };
-    const PET_SPECIES_ORDER = ['rabbit', 'cat', 'bear', 'fox'];
+    const PET_SPECIES_ORDER = ['tiger', 'wolf', 'fox', 'bear', 'cat', 'quokka'];
     // 🎁 진화 단계마다 열리는 꾸미기 소품 (stage: BADGE_TIERS 번호, max: 놓을 수 있는 개수)
     const PROP_CATALOG = [
       { type: 'flowerbed', name: '꽃밭', emoji: '🌷', stage: 1, max: 3 },
@@ -5424,7 +5477,7 @@
     function currentPet() {
       const p = loadPet(STATE.studentClass, STATE.studentNumber);
       if (p) return p;
-      const sp = PET_SPECIES_ORDER[(Number(STATE.studentNumber) || 0) % 4];
+      const sp = PET_SPECIES_ORDER[(Number(STATE.studentNumber) || 0) % PET_SPECIES_ORDER.length];
       return { species: sp, name: PET_SPECIES[sp].suggest, temp: true };
     }
     function petFedKey_() { return 'ej_pet_fed_' + STATE.studentClass + '_' + STATE.studentNumber; }
@@ -5583,7 +5636,7 @@
         WORLD.setVisit(null);
         const c = gameCtx();
         WORLD.setHome({
-          species: c.pet.species, stage: c.stage, mood: c.mood, wroteToday: c.wroteToday,
+          species: c.pet.species, stage: (STATE.studentPanel === 'adopt' && c.stage === 0) ? 2 : c.stage, mood: c.mood, wroteToday: c.wroteToday,
           food: c.wroteToday && !c.fed, mail: c.mail, study: c.study, words: c.words, feedback: c.feedback, bonus: c.bonus,
           greet: STATE.studentPanel === 'adopt' ? '' : petLine('greet')
         });
@@ -5844,7 +5897,7 @@
         PET_SPECIES_ORDER.forEach(function (k) { grid += '<button type="button" data-species="' + k + '" class="' + (sel === k ? 'sel' : '') + '"><span class="e">' + PET_SPECIES[k].emoji + '</span>' + PET_SPECIES[k].name + '</button>'; });
         grid += '</div>';
         return panelFrame(saved ? '✏️ 내 친구 바꾸기' : '🌱 함께 자랄 친구 고르기',
-          '<p style="margin:0 0 4px;color:var(--ej-ink-soft);font-size:14px;line-height:1.6">' + (saved ? '종류와 이름을 바꿀 수 있어요. 포인트와 성장 단계는 그대로예요.' : '일지를 쓰고 포인트를 모으면 알에서 깨어나 쑥쑥 자라고 진화해요! 동물을 누르면 섬에서 미리 볼 수 있어요.') + '</p>' +
+          '<p style="margin:0 0 4px;color:var(--ej-ink-soft);font-size:14px;line-height:1.6">' + (saved ? '종류와 이름을 바꿀 수 있어요. 포인트와 성장 단계는 그대로예요.' : '일지를 쓰고 포인트를 모으면 알에서 깨어나 쑥쑥 자라고 진화해요! 동물을 누르면 섬에서 미리 볼 수 있어요.') + (c.stage === 0 ? '<br><span style="color:#3F8A33">👀 섬에 보이는 건 알에서 깨어나 조금 자란 모습이에요.</span>' : '') + '</p>' +
           grid +
           '<div class="ej-field"><div class="ej-field-label">이름 (최대 8자)</div><input id="g-pet-name" class="ej-input" maxlength="8" placeholder="' + (sel ? PET_SPECIES[sel].suggest : '이름') + '" value="' + (saved ? esc(saved.name) : '') + '"></div>' +
           '<div class="g-big-btns"><button type="button" class="ej-btn ej-btn-primary" id="g-adopt-go"' + (sel ? '' : ' disabled') + '>' + (saved ? '바꾸기' : '이 친구로 할래요! ▶') + '</button>' +

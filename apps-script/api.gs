@@ -93,7 +93,7 @@ function saveIslandLayout(className, studentNumber, studentName, layoutJson) {
 
 function saveIslandPet(className, studentNumber, studentName, petJson) {
   const p = JSON.parse(petJson);
-  if (!p || ['rabbit', 'cat', 'bear', 'fox'].indexOf(p.species) < 0) throw new Error('친구 정보가 올바르지 않아요.');
+  if (!p || ['tiger', 'wolf', 'fox', 'bear', 'cat', 'quokka'].indexOf(p.species) < 0) throw new Error('친구 정보가 올바르지 않아요.');
   const clean = JSON.stringify({ species: p.species, name: String(p.name || '').slice(0, 8), adoptedAt: Number(p.adoptedAt) || Date.now() });
   return islandUpdate_(className, studentNumber, studentName, function (row) { row[3] = clean; return true; });
 }

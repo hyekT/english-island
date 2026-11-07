@@ -1320,7 +1320,7 @@
       const recent = words.slice(0, 4);
       let html = '<div class="ej-card ej-word-card">';
       html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">';
-      html += '<div><div class="ej-eyebrow">WORD COLLECTOR</div><div style="margin-top:5px"><span class="ej-word-count">' + words.length + '</span> <span style="color:var(--ej-ink-soft);font-size:12px">words</span></div></div>';
+      html += '<div><div class="ej-eyebrow">MY VOCABULARY</div><div style="margin-top:5px"><span class="ej-word-count">' + words.length + '</span> <span style="color:var(--ej-ink-soft);font-size:12px">words</span></div></div>';
       html += '<span style="font-size:25px">📚</span></div>';
       if (recent.length > 0) {
         html += '<div class="ej-word-grid">';
@@ -1340,7 +1340,7 @@
       const words = studentWordsFor(STATE.studentClass, STATE.studentNumber);
       let html = '<div class="ej-word-modal">';
       html += '<button id="word-modal-close" class="ej-word-close" aria-label="닫기">✕</button>';
-      html += '<h2 class="ej-serif" style="font-size:26px;margin:0 0 4px">📚 My Word Collector</h2>';
+      html += '<h2 class="ej-serif" style="font-size:26px;margin:0 0 4px">📚 My vocabulary</h2>';
       html += '<p style="color:var(--ej-ink-soft);font-size:12px;margin:0 0 18px">수업에서 새로 배운 단어를 나만의 단어장에 모아 보세요.</p>';
       if (STATE.wordError) html += '<div class="ej-error">' + esc(STATE.wordError) + '</div>';
       html += '<form id="word-add-form" class="ej-card" style="padding:16px;margin-bottom:18px">';
@@ -1786,73 +1786,6 @@
       });
     }
 
-    // ---- 단어사전 팝업 ----
-    function dictChipsHtml(list) {
-      return list.map(function (x) { return '<span class="ej-dict-chip">' + esc(x) + '</span>'; }).join('');
-    }
-    function openDictionaryModal() {
-      const existing = document.getElementById('ej-dict-overlay');
-      if (existing) existing.remove();
-      const overlay = document.createElement('div');
-      overlay.id = 'ej-dict-overlay';
-      overlay.className = 'ej-mail-overlay';
-      overlay.innerHTML = '<div class="ej-mail-modal">' +
-        '<button id="dict-close" class="ej-mail-modal-close" aria-label="닫기">✕</button>' +
-        '<h2 class="ej-serif" style="font-size:26px;font-weight:700;margin:0 0 4px;text-align:center">🔍 단어사전</h2>' +
-        '<p style="color:var(--ej-ink-soft);font-size:12px;margin-bottom:14px;text-align:center">영어 단어를 검색하면 뜻, 동의어, 반의어를 알려줘요.</p>' +
-        '<form id="dict-form" style="display:flex;gap:8px;margin-bottom:14px">' +
-          '<input id="dict-input" class="ej-input" maxlength="40" placeholder="예: happy" autocomplete="off" autocapitalize="none" style="flex:1">' +
-          '<button type="submit" id="dict-submit" class="ej-btn ej-btn-primary">검색</button></form>' +
-        '<div id="dict-result"></div></div>';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', function (ev) { if (ev.target === overlay) closeDictionaryModal(); });
-      overlay.querySelector('#dict-close').onclick = closeDictionaryModal;
-      const input = overlay.querySelector('#dict-input');
-      const box = overlay.querySelector('#dict-result');
-      const btn = overlay.querySelector('#dict-submit');
-      setTimeout(function () { input.focus(); }, 50);
-      overlay.querySelector('#dict-form').onsubmit = function (ev) {
-        ev.preventDefault();
-        const q = input.value.trim();
-        if (!q) return;
-        btn.disabled = true; btn.textContent = '검색 중…';
-        box.innerHTML = '<div class="ej-card ej-empty">찾는 중…</div>';
-        gsRun('lookupWord', q).then(function (r) {
-          btn.disabled = false; btn.textContent = '검색';
-          const already = studentWordsFor(STATE.studentClass, STATE.studentNumber).some(function (w) { return String(w.word).toLowerCase() === r.word; });
-          let h = '<div class="ej-card" style="padding:18px;text-align:left">';
-          h += '<div class="ej-serif" style="font-size:22px;font-weight:700">' + esc(r.word) + '</div>';
-          h += '<div style="font-size:16px;margin:6px 0 2px">' + ({n:'(명사) ',v:'(동사) ',adj:'(형용사) ',adv:'(부사) '}[r.pos] || '') + (r.meaning ? esc(r.meaning) : '뜻을 찾지 못했어요') + '</div>';
-          h += '<div style="font-size:12px;color:var(--ej-ink-soft);margin-bottom:12px">뜻은 자동 번역이라 참고용이에요.</div>';
-          h += '<div class="ej-eyebrow" style="margin-bottom:6px">동의어</div><div class="ej-dict-chips">' + (r.synonyms.length ? dictChipsHtml(r.synonyms) : '<span style="color:var(--ej-ink-soft);font-size:13px">동의어 없음</span>') + '</div>';
-          h += '<div class="ej-eyebrow" style="margin:12px 0 6px">반의어</div><div class="ej-dict-chips">' + (r.antonyms.length ? dictChipsHtml(r.antonyms) : '<span style="color:var(--ej-ink-soft);font-size:13px">반의어 없음</span>') + '</div>';
-          h += '<div style="margin-top:16px;text-align:right"><button type="button" id="dict-add" class="ej-btn ej-btn-ghost"' + (already ? ' disabled' : '') + '>' + (already ? '✓ 단어장에 있어요' : '＋ 단어장에 추가') + '</button></div>';
-          h += '</div>';
-          box.innerHTML = h;
-          const addBtn = box.querySelector('#dict-add');
-          if (addBtn && !already) addBtn.onclick = function () {
-            addBtn.disabled = true; addBtn.textContent = '저장하는 중…';
-            gsRun('addWord', STATE.studentClass, STATE.studentNumber, STATE.studentName, r.word, r.meaning || '', '').then(function (w) {
-              STATE.words.push(w);
-              addBtn.textContent = '✓ 단어장에 추가했어요';
-              render();
-            }).catch(function (err) {
-              addBtn.disabled = false; addBtn.textContent = '＋ 단어장에 추가';
-              let eb = box.querySelector('.ej-error');
-              if (!eb) { eb = document.createElement('div'); eb.className = 'ej-error'; box.appendChild(eb); }
-              eb.textContent = (err && err.message) ? err.message : '저장에 실패했어요. 다시 눌러주세요.';
-            });
-          };
-        }).catch(function (err) {
-          btn.disabled = false; btn.textContent = '검색';
-          box.innerHTML = '<div class="ej-error">' + esc((err && err.message) ? err.message : '검색에 실패했어요. 잠시 후 다시 시도해 주세요.') + '</div>';
-        });
-      };
-    }
-    function closeDictionaryModal() {
-      const overlay = document.getElementById('ej-dict-overlay');
-      if (overlay) overlay.remove();
-    }
 
     // ---- 칭찬 보너스 팝업 (학생 랭킹 화면에서 바로 지급) ----
     function bonusModalInnerHtml(cls, num, name) {
@@ -2659,9 +2592,6 @@
       byId('go-wordgame', function (el) {
         el.onclick = function () { openWordGameModal(); };
       });
-      byId('go-dictionary', function (el) {
-        el.onclick = function () { openDictionaryModal(); };
-      });
 
       byId('open-word-collector', function (el) {
         el.onclick = function () { openWordCollectorModal(); };
@@ -3312,11 +3242,6 @@
       deleteWord: function (id) { const d = demoLoad(); d.words = d.words.filter(function (w) { return String(w.id) !== String(id); }); return true; },
       listStudentAccounts: function () { return demoLoad().accounts.map(function (a) { return { className: a.className, studentNumber: a.studentNumber, studentName: a.studentName }; }); },
       resetStudentPassword: function (cls, num) { const d = demoLoad(); d.accounts = d.accounts.filter(function (a) { return !(a.className === cls && String(a.studentNumber) === String(num)); }); return true; },
-      lookupWord: function (q) {
-        const w = String(q || '').trim().toLowerCase(); const hit = DEMO_DICT[w];
-        if (!hit) return { word: w, pos: '', meaning: '', synonyms: [], antonyms: [] };
-        return { word: w, pos: hit[0], meaning: hit[1], synonyms: hit[2], antonyms: hit[3] };
-      },
       sendMail: function (target, title, message) { const d = demoLoad(); const m = { id: demoUid(), className: target, title: title, message: message, createdAt: Date.now() }; d.mails.push(m); return m; },
       submitMailReply: function (mailId, cls, num, name, text) { const d = demoLoad(); const r = { id: demoUid(), mailId: mailId, className: cls, studentNumber: demoNum(num), studentName: name, reply: text, createdAt: Date.now() }; d.mailReplies.push(r); return r; },
       sendStudyLink: function (target, url, title) { const d = demoLoad(); const l = { id: demoUid(), className: target, url: url, title: title || '', createdAt: Date.now() }; d.studyLinks.push(l); return l; },
@@ -3844,24 +3769,6 @@
         const bd = addObject('board', '학습방', '📎', g, 3.6, -3.9, -.35, 2.4, 1.05);
         const bang = new T.Group(); bang.add(mesh(new T.BoxGeometry(.14, .42, .14), mat(0xff5a4f, { emissive: 0xff3b30, emissiveIntensity: .4 }), 0, .26, 0)); bang.add(mesh(new T.BoxGeometry(.14, .14, .14), mat(0xff5a4f, { emissive: 0xff3b30, emissiveIntensity: .4 }), 0, -.08, 0));
         bang.position.set(0, 2.55, .2); bang.visible = false; g.add(bang); bd.bang = bang;
-
-        // 📚 책장 (단어사전)
-        g = new T.Group();
-        g.add(mesh(new T.BoxGeometry(1.5, 1.9, .55), woodD, 0, .95, 0));
-        g.add(mesh(new T.BoxGeometry(1.36, 1.76, .5), flat(0x6e4529), 0, .95, .04));
-        const roof2 = mesh(new T.BoxGeometry(1.75, .12, .8), flat(0x9b5b3a), 0, 1.95, .05); g.add(roof2);
-        const bc = [0xe2574c, 0x5ba8e0, 0xf5b83d, 0x6bbf59, 0xb07bd6, 0xff8fa8, 0x4fb3a9];
-        [.35, .95, 1.55].forEach(function (y, row) {
-          g.add(mesh(new T.BoxGeometry(1.36, .06, .5), wood, 0, y - .27, .05));
-          let x = -.6;
-          for (let i = 0; i < 7 && x < .58; i++) {
-            const w = .12 + Math.random() * .07, h = .36 + Math.random() * .14;
-            const b = mesh(new T.BoxGeometry(w, h, .34), flat(bc[(i + row * 3) % bc.length]), x + w / 2, y - .24 + h / 2, .12);
-            if (i === 4 && row === 1) b.rotation.z = .25;
-            g.add(b); x += w + .02;
-          }
-        });
-        addObject('shelf', '단어사전', '🔍', g, -6.6, -1.0, Math.PI / 2 - .1, 2.4, .8);
 
         // 🫙 유리병 (단어장)
         g = new T.Group();
@@ -5523,7 +5430,7 @@
       { type: 'statue', name: '황금 트로피', emoji: '🏆', stage: 5, max: 1 },
       { type: 'balloon', name: '열기구', emoji: '🎈', stage: 5, max: 1 }
     ];
-    const OBJECT_NAMES = { house: '🏠 집', mailbox: '📮 우체통', board: '📎 게시판', shelf: '🔍 책장', jar: '🫙 유리병', arcade: '🎮 오락기', desk: '📖 책상', calendar: '📅 달력', chest: '💰 보물상자' };
+    const OBJECT_NAMES = { house: '🏠 집', mailbox: '📮 우체통', board: '📎 게시판', jar: '🫙 유리병', arcade: '🎮 오락기', desk: '📖 책상', calendar: '📅 달력', chest: '💰 보물상자' };
     function layoutKey_() { return 'ei_layout_' + STATE.studentClass + '_' + STATE.studentNumber; }
     function loadLayoutRec() { try { return JSON.parse(localStorage.getItem(layoutKey_()) || 'null'); } catch (e) { return null; } }
     function saveLayoutRec(rec) { try { localStorage.setItem(layoutKey_(), JSON.stringify(rec)); } catch (e) { } }
@@ -5890,7 +5797,7 @@
     const GAME_MENU = [
       ['desk', '📖', '학습일지'], ['calendar', '📅', '캘린더·기록'], ['sep'],
       ['mailbox', '📮', '우편함'], ['board', '📎', '학습방'], ['sep'],
-      ['shelf', '🔍', '단어사전'], ['jar', '🫙', '단어장'], ['arcade', '🎮', '단어 게임'], ['sep'],
+      ['jar', '🫙', '단어장'], ['arcade', '🎮', '단어 게임'], ['sep'],
       ['boss', '⚔️', '보스전'], ['friends', '🏝️', '친구 섬 놀러가기'], ['sep'],
       ['chest', '💰', '보너스 기록'], ['pet', '🐾', '내 친구'], ['decorate', '🛠️', '섬 꾸미기'], ['house', '🚪', '나가기']
     ];
@@ -6126,7 +6033,6 @@
       if (STATE.studentPanel) { STATE.studentPanel = null; render(); }
       if (key === 'mailbox') { STATE.studentMailError = ''; openMailboxModal(); }
       else if (key === 'board') openStudyRoomModal();
-      else if (key === 'shelf') openDictionaryModal();
       else if (key === 'jar') openWordCollectorModal();
       else if (key === 'arcade') openWordGameModal();
     }

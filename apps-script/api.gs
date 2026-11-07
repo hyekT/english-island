@@ -14,7 +14,7 @@
 // 화면에서 부를 수 있는 함수 목록 (이 목록에 없는 함수는 실행되지 않아요)
 const API_ALLOWED = [
   'getAllData', 'studentLogin', 'addClassName', 'addEntry',
-  'addWord', 'deleteWord', 'lookupWord',
+  'addWord', 'deleteWord',
   'sendMail', 'submitMailReply', 'sendStudyLink',
   'startWordGame', 'submitWordGame',
   'verifyTeacherPassword', 'submitFeedback', 'updateFeedback', 'addBonus',

@@ -3789,7 +3789,8 @@
 
         // 📅 달력 표지판
         g = new T.Group();
-        g.add(mesh(new T.CylinderGeometry(.07, .09, 2.0, 6), woodD, 0, 1.0, 0));
+        // 막대는 판 뒤쪽에 붙여서 날짜를 가리지 않아요
+        g.add(mesh(new T.CylinderGeometry(.07, .09, 1.7, 6), woodD, 0, .85, -.12));
         const calTex = canvasTex(256, 256, function (c, w, h) {
           const d = new Date();
           c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h);

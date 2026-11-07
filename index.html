@@ -810,7 +810,7 @@
       { min: 0,   label: '알',     emoji: '🥚', color: '#B08A5A', bg: '#F6ECDD' },
       { min: 30,  label: '아기',   emoji: '🍼', color: '#5B8C51', bg: '#E7F0DF' },
       { min: 80,  label: '꼬마',   emoji: '🌱', color: '#2F8F4F', bg: '#DCEDE0' },
-      { min: 140, label: '어른',   emoji: '🌷', color: '#B0558B', bg: '#F5E1EE' },
+      { min: 140, label: '용사',   emoji: '🛡️', color: '#B0558B', bg: '#F5E1EE' },
       { min: 200, label: '전설',   emoji: '👑', color: '#7A4FA3', bg: '#EDE1F5' }
     ];
     function getBadge(points) {
@@ -3834,9 +3834,26 @@
         bear:   { body: 0xc1916a, belly: 0xe8cdae, accent: 0xf0a8a0, nose: 0x3a2e2a, egg: 0xf6e7d6, spot: 0xc1916a, muzzle: 0xf1dec6 },
         fox:    { body: 0xf09b52, belly: 0xfff7ec, accent: 0xf6b3a8, nose: 0x3a2e2a, egg: 0xffebd8, spot: 0xf09b52, tip: 0x5a3a28 }
       };
-      const STAGE_SCALE = [1.3, .98, 1.12, 1.22, 1.32, 1.42];
-      // 게임 단계(알·아기·꼬마·어른·전설 5단계) → 모델 체형 번호 (예전 청소년 체형 3번은 쓰지 않아요)
+      const STAGE_SCALE = [1.3, .88, 1.1, 1.22, 1.32, 1.44];
+      // 👑 전설 단계: 신수로 변신 (털 색이 바뀌고 glow 색 부분이 은은하게 빛나요)
+      const LEGEND = {
+        tiger:  { name: '백호', body: 0xf4f2ec, belly: 0xffffff, muzzle: 0xffffff, accent: 0xbcd4ff, stripe: 0x2457d6, glow: [0x2457d6], glowI: .35 },
+        wolf:   { name: '월광 늑대', body: 0xa9b8d4, belly: 0xeef3fb, muzzle: 0xeef3fb, accent: 0xc9d5ea, tip: 0x5e6f96, nose: 0x1f2433, moon: 0xffe680, tailGlow: 0xbfe0ff, glow: [0xffe680, 0xbfe0ff], glowI: .6 },
+        bear:   { name: '황금 반달곰', body: 0x3e322d, belly: 0x6b5848, muzzle: 0xcfae86, accent: 0xe8a0a0, moon: 0xffcf3d, glow: [0xffcf3d], glowI: .5 },
+        cat:    { name: '쌍꼬리 고양이', body: 0xdcc2ff, belly: 0xfaf5ff, accent: 0xf3b6e6, stripe: 0x8a3dff, whisker: 0x7a5aa6, tailGlow: 0xff9de8, glow: [0x8a3dff, 0xff9de8], glowI: .4 },
+        quokka: { name: '황금 쿼카', body: 0xcfaa6a, belly: 0xf3e6c8, muzzle: 0xe4cc9e, accent: 0xeaa896, rim: 0x9c7a46, paw: 0x6f5332, star: 0xfffbe6, glow: [0xfffbe6], glowI: .7 },
+        chick:  { name: '봉황', body: 0xff6b3d, belly: 0xffc04a, feather: 0xffd34d, comb: 0xe2302a, glow: [0xffd34d] }
+      };
+      function legendGlow(g, colors, k) {
+        const set = {}; colors.forEach(function (c) { set[c] = true; });
+        g.traverse(function (m) {
+          if (!m.isMesh || !m.material || !m.material.color || m.material.isMeshBasicMaterial) return;
+          const hex = m.material.color.getHex(); if (set[hex]) m.material = mat(hex, { emissive: hex, emissiveIntensity: k || .55 });
+        });
+      }
+      // 게임 단계(알·아기·꼬마·용사·전설 5단계) → 모델 체형 번호 (예전 청소년 체형 3번은 쓰지 않아요)
       const VIS = [0, 1, 2, 4, 5];
+      W.legendName = function (species) { return (LEGEND[species] || {}).name || ''; };
       function vis(s) { return VIS[Math.max(0, Math.min(VIS.length - 1, Number(s) || 0))]; }
       function sm(c) { return mat(c); }
       function ball(r, c, x, y, z, sx, sy, sz) {
@@ -3845,7 +3862,8 @@
       }
 
       function buildPet(species, stage) {
-        const S = SPC[species] || SPC.cat;
+        const legend = stage === 5;
+        const S = legend && LEGEND[species] ? Object.assign({}, SPC[species], LEGEND[species]) : (SPC[species] || SPC.cat);
         const g = new T.Group();
         const body = new T.Group(); g.add(body);
         const parts = { g: g, body: body };
@@ -3862,12 +3880,12 @@
           g.scale.setScalar(1);
           return parts;
         }
-        // 단계별 체형: 꼬마 → 청소년 → 어른으로 갈수록 몸이 길어지고, 다리가 보이고, 머리·눈 비율이 작아져요
-        const legH = [0, 0, 0, .12, .22, .22][stage];
-        const tSY = [0, .86, .9, 1.04, 1.14, 1.14][stage];      // 몸통 세로
-        const tSX = [0, .86, .9, .97, 1.0, 1.0][stage];         // 몸통 가로
-        const headS = [0, 1.0, .98, .93, .88, .9][stage];
-        const eyeS = [0, 1.15, 1.08, 1.0, .9, .9][stage];
+        // 단계별 체형: 아기 → 꼬마 → 용사 → 전설로 갈수록 몸이 길어지고, 다리가 보이고, 머리·눈 비율이 작아져요
+        const legH = [0, 0, .07, .12, .22, .24][stage];
+        const tSY = [0, .78, .9, 1.04, 1.14, 1.16][stage];      // 몸통 세로
+        const tSX = [0, .84, .92, .97, 1.0, 1.02][stage];       // 몸통 가로
+        const headS = [0, 1.1, .98, .93, .88, .9][stage];
+        const eyeS = [0, 1.25, 1.08, 1.0, .9, .9][stage];
         const ry = .46 * tSY, cy = .09 + legH + ry;              // 몸통 중심 높이
         const adult = stage >= 4;
         const torso = ball(.5, S.body, 0, cy, 0, tSX * (species === 'quokka' ? 1.08 : 1), .92 * tSY, .95 * tSX); body.add(torso);
@@ -3902,6 +3920,11 @@
           [-1, 1].forEach(function (sd) { head.add(ball(.17, S.muzzle, sd * .21, -.15, .43, 1, .85, .8)); });
         }
         const mouthM = new T.MeshBasicMaterial({ color: 0x3a2e2a });
+        if (species === 'wolf' && stage >= 2) {
+          // 늑대 얼굴 무늬 (꼬마부터): 눈 위 밝은 점
+          [-1, 1].forEach(function (sd) { head.add(ball(.08, S.belly, sd * .2, .2, .5, 1.2, .7, .4)); });
+        }
+        if (species === 'wolf' && legend) { const cr = mesh(new T.TorusGeometry(.085, .026, 6, 18, Math.PI * 1.25), sm(S.moon), 0, .3, .56); cr.rotation.z = -.9; head.add(cr); }
         if (species === 'wolf') {
           // 늑대: 앞으로 나온 주둥이
           const sn = 1 + (stage >= 3 ? .12 : 0) + (adult ? .1 : 0);
@@ -3922,8 +3945,8 @@
             [-.04, .04].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.04, .011, 4, 10, Math.PI), mouthM); m.position.set(x, -.14, species === 'bear' ? .62 : .59); m.rotation.z = Math.PI; head.add(m); });
           }
         }
-        if (species === 'tiger') {
-          // 호랑이 이마·볼 줄무늬
+        if (species === 'tiger' && stage >= 2) {
+          // 호랑이 이마·볼 줄무늬 (꼬마부터)
           const sc = sm(S.stripe);
           [[-.12, .44, .1], [0, .47, .17], [.12, .44, .1]].forEach(function (q) { head.add(mesh(new T.BoxGeometry(.05, q[2] + .08, .03), sc, q[0], q[1], .39)); });
           [-1, 1].forEach(function (sd) {
@@ -3932,33 +3955,33 @@
           if (adult) head.add(mesh(new T.BoxGeometry(.2, .04, .03), sc, 0, .32, .5));
         }
         if (species === 'cat') {
-          [-.1, 0, .1].forEach(function (x) { head.add(mesh(new T.BoxGeometry(.04, .14, .02), sm(S.stripe), x, .45, .38)); });
+          if (stage >= 2) [-.1, 0, .1].forEach(function (x) { head.add(mesh(new T.BoxGeometry(.04, .14, .02), sm(S.stripe), x, .45, .38)); });
           const wm = new T.MeshBasicMaterial({ color: S.whisker || 0x5e6780 });
           [[-1, .0], [-1, -.06], [1, 0], [1, -.06]].forEach(function (w) { const l = new T.Mesh(new T.BoxGeometry(.24 + (adult ? .06 : 0), .01, .01), wm); l.position.set(w[0] * .46, -.08 + w[1], .45); l.rotation.z = w[0] * (w[1] ? -.12 : .12); head.add(l); });
-          // 어른 고양이: 볼 털
+          // 용사 고양이: 볼 털
           if (adult) [-1, 1].forEach(function (s) { const c = mesh(new T.ConeGeometry(.09, .22, 4), sm(S.body), s * .6, -.12, .12); c.rotation.z = s * Math.PI / 2; head.add(c); });
         }
         // 귀 (자랄수록 길어지고 커져요)
         if (species === 'cat' || species === 'fox' || species === 'wolf') {
-          const h = species === 'cat' ? [0, .36, .4, .45, .5, .5][stage] : (species === 'wolf' ? [0, .5, .56, .64, .7, .7][stage] : [0, .48, .54, .6, .66, .66][stage]);
+          const h = species === 'cat' ? [0, .25, .4, .45, .5, .53][stage] : (species === 'wolf' ? [0, .32, .56, .64, .7, .76][stage] : [0, .48, .54, .6, .66, .66][stage]);
           const w = species === 'cat' ? .21 : .21 + (stage >= 3 ? .03 : 0);
           [-1, 1].forEach(function (s) {
             const ear = new T.Group(); ear.position.set(s * .36, .42, 0); ear.rotation.z = -s * (stage >= 3 ? .24 : .32);
             ear.add(mesh(new T.ConeGeometry(w, h, 4), sm(S.body), 0, h / 2, 0));
             ear.add(mesh(new T.ConeGeometry(w * .57, h * .7, 4), sm(S.accent), 0, h * .38, .08));
-            if (species === 'fox' || species === 'wolf') ear.add(mesh(new T.ConeGeometry(w * .43, h * .3, 4), sm(S.tip), 0, h * .85, 0));
+            if ((species === 'fox' || species === 'wolf') && stage >= 2) ear.add(mesh(new T.ConeGeometry(w * .43, h * .3, 4), sm(S.tip), 0, h * .85, 0));
             if (species === 'cat' && adult) ear.add(mesh(new T.ConeGeometry(.03, .14, 3), sm(S.stripe), 0, h + .04, 0));
             head.add(ear);
           });
         } else if (species === 'tiger') {
-          const er = [0, .15, .16, .18, .19, .19][stage];
+          const er = [0, .12, .16, .18, .19, .2][stage];
           [-1, 1].forEach(function (s) {
             head.add(ball(er, S.body, s * .43, .46, -.05));
             head.add(ball(er * .6, S.muzzle, s * .43, .46, .07, 1, 1, .4));
-            head.add(ball(er * .75, S.stripe, s * .43, .48, -.14, 1, 1, .4));
+            if (stage >= 2) head.add(ball(er * .75, S.stripe, s * .43, .48, -.14, 1, 1, .4));
           });
         } else if (species === 'quokka') {
-          const er = [0, .13, .14, .15, .16, .16][stage];
+          const er = [0, .1, .14, .15, .16, .17][stage];
           [-1, 1].forEach(function (sd) {
             const ear = new T.Group(); ear.position.set(sd * .4, .44, -.02); ear.rotation.z = -sd * .35;
             ear.add(ball(er, S.rim, 0, 0, 0, 1, 1, .55));
@@ -3967,7 +3990,7 @@
             head.add(ear);
           });
         } else {
-          const er = [0, .18, .19, .21, .23, .23][stage];
+          const er = [0, .15, .19, .21, .23, .24][stage];
           [-1, 1].forEach(function (s) { head.add(ball(er, S.body, s * .45, .45, -.05)); head.add(ball(er * .55, S.muzzle, s * .45, .45, .08, 1, 1, .4)); });
         }
         // 팔
@@ -3991,11 +4014,13 @@
         };
         const footL = mkFoot(-.22), footR = mkFoot(.22);
         parts.footL = footL; parts.footR = footR; parts.armL = armL; parts.armR = armR;
-        // 몸 무늬 (어른)
+        // 몸 무늬 (꼬마부터)
         if (species === 'tiger' && stage >= 2) {
           const n = adult ? 4 : 3;
-          for (let i = 0; i < n; i++) { const z = (i - (n - 1) / 2) * (adult ? .2 : .25); const st = mesh(new T.TorusGeometry(.43 * tSX, .035, 4, 16, Math.PI * .65), sm(S.stripe), 0, cy + z * .6 + .05, -.06); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .67; body.add(st); }
+          for (let i = 0; i < n; i++) { const z = (i - (n - 1) / 2) * (adult ? .2 : .25); const st = mesh(new T.TorusGeometry(.43 * tSX, legend ? .05 : .035, 4, 16, Math.PI * .65), sm(S.stripe), 0, cy + z * .6 + .05, -.06); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .67; body.add(st); }
           if (adult) body.add(ball(.2, S.belly, 0, cy + ry * .5, .38 * tSX, 1, .9, .6));
+          // 백호: 몸 앞쪽 옆구리에도 빛나는 줄무늬
+          if (legend) [-1, 1].forEach(function (sd) { [-.18, 0, .18].forEach(function (dy, i) { const b = mesh(new T.BoxGeometry(.045, .2 - i * .03, .03), sm(S.stripe), sd * .3 * tSX, cy + dy, .37 * tSX); b.rotation.y = sd * .65; b.rotation.z = sd * .3; body.add(b); }); });
         }
         if (adult && species === 'wolf') {
           const ruff = mesh(new T.ConeGeometry(.26, .42, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff);
@@ -4003,54 +4028,66 @@
         }
         if (adult && species === 'quokka') body.add(ball(.2, S.belly, 0, cy + ry * .45, .34 * tSX, 1.1, .8, .6));
         if (species === 'cat' && stage >= 2) { (adult ? [-.25, 0, .25] : [-.15, .15]).forEach(function (z) { const st = mesh(new T.TorusGeometry(.42 * tSX, .028, 4, 16, Math.PI * .6), sm(S.stripe), 0, cy + z * .5 + .05, -.06); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .7; body.add(st); }); }
-        if (adult && species === 'bear') { const moon = mesh(new T.TorusGeometry(.17, .045, 6, 14, Math.PI), sm(0xf6ead6), 0, cy + ry * .5, .44 * tSX); moon.rotation.z = Math.PI; body.add(moon); }
+        if (adult && species === 'bear') { const moon = mesh(new T.TorusGeometry(legend ? .2 : .17, legend ? .055 : .045, 6, 14, Math.PI), sm(S.moon || 0xf6ead6), 0, cy + ry * .5, .44 * tSX + (legend ? .02 : 0)); moon.rotation.z = Math.PI; body.add(moon); }
         if (adult && species === 'fox') { const ruff = mesh(new T.ConeGeometry(.24, .4, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff); }
         // 꼬리 (자랄수록 커져요)
-        const tg = [0, .85, .95, 1.1, 1.25, 1.3][stage];
+        const tg = [0, .55, .95, 1.1, 1.25, 1.35][stage];
         if (qk) { const qt = mesh(new T.ConeGeometry(.12 * tg, .5 * tg, 8), sm(S.body), 0, .14, -.62 * tSX); qt.rotation.x = -1.75; body.add(qt); }
         if (species === 'tiger') {
           // 고리 무늬가 있는 긴 꼬리
           const k = tg * .62, y0 = cy - .18;
           const curve = new T.CatmullRomCurve3([new T.Vector3(0, y0, -.42 * tSX), new T.Vector3(0, y0 - .04, -.42 - .32 * k), new T.Vector3(0, y0 + .22 * k, -.42 - .5 * k), new T.Vector3(0, y0 + .45 * k, -.42 - .42 * k)]);
           const tail = new T.Group();
-          for (let i = 0; i <= 7; i++) { const pt = curve.getPoint(i / 7); tail.add(ball(.085 - i * .002, i === 7 || i % 3 === 2 ? S.stripe : S.body, pt.x, pt.y, pt.z)); }
+          for (let i = 0; i <= 7; i++) { const pt = curve.getPoint(i / 7); tail.add(ball(.085 - i * .002, stage >= 2 && (i === 7 || i % 3 === 2) ? S.stripe : S.body, pt.x, pt.y, pt.z)); }
           body.add(tail); parts.tail = tail;
         }
         if (species === 'bear') body.add(ball(.12 * tg, S.body, 0, cy - .13, -.48 * tSX));
         if (species === 'cat') {
-          // 고양이 꼬리: 엉덩이에 붙어서 위로 부드럽게 올라가고, 끝으로 갈수록 가늘어지다 살짝 말려요
-          const k = tg, y0 = cy - .22, z0 = -.4 * tSX;
-          const curve = new T.CatmullRomCurve3([
-            new T.Vector3(0, y0, z0), new T.Vector3(0, y0 + .02, z0 - .2 * k), new T.Vector3(0, y0 + .28 * k, z0 - .32 * k),
-            new T.Vector3(0, y0 + .58 * k, z0 - .28 * k), new T.Vector3(.04, y0 + .74 * k, z0 - .12 * k)]);
-          const tail = new T.Group(), seg = 32, rad = 10;
-          // 끝으로 갈수록 가늘어지는 매끈한 관
-          const geo = new T.TubeGeometry(curve, seg, .085, rad, false), pos = geo.attributes.position, c = new T.Vector3(), v = new T.Vector3();
-          for (let i = 0; i <= seg; i++) {
-            const u = i / seg; c.copy(curve.getPointAt(u));
-            const f = 1 - u * .5;
-            for (let j = 0; j <= rad; j++) { const idx = i * (rad + 1) + j; v.fromBufferAttribute(pos, idx).sub(c).multiplyScalar(f).add(c); pos.setXYZ(idx, v.x, v.y, v.z); }
-          }
-          geo.computeVertexNormals();
-          tail.add(mesh(geo, sm(S.body)));
-          const tipP = curve.getPointAt(1); tail.add(ball(.085 * .5, S.stripe, tipP.x, tipP.y, tipP.z));
-          const tipStripe = mesh(new T.CylinderGeometry(.045, .047, .07, 10), sm(S.stripe));
-          const pT = curve.getPointAt(.93); tipStripe.position.copy(pT); tipStripe.lookAt(pT.clone().add(curve.getTangentAt(.93))); tipStripe.rotateX(Math.PI / 2); tail.add(tipStripe);
-          if (stage >= 2) [.35, .6].forEach(function (u) {
-            const pt = curve.getPointAt(u), r = .085 * (1 - u * .5) + .004;
-            const ringM = mesh(new T.CylinderGeometry(r, r, .045, 12), sm(S.stripe)); ringM.position.copy(pt);
-            ringM.lookAt(pt.clone().add(curve.getTangentAt(u))); ringM.rotateX(Math.PI / 2); tail.add(ringM);
-          });
-          body.add(tail); parts.tail = tail;
+          // 고양이 꼬리: 엉덩이에 붙어서 위로 부드럽게 올라가고, 끝으로 갈수록 가늘어지다 살짝 말려요 (전설은 꼬리가 두 개)
+          const tails = new T.Group();
+          const mkTail = function (xo, rz) {
+            const k = tg, y0 = cy - .22, z0 = -.4 * tSX;
+            const curve = new T.CatmullRomCurve3([
+              new T.Vector3(0, y0, z0), new T.Vector3(0, y0 + .02, z0 - .2 * k), new T.Vector3(0, y0 + .28 * k, z0 - .32 * k),
+              new T.Vector3(0, y0 + .58 * k, z0 - .28 * k), new T.Vector3(.04, y0 + .74 * k, z0 - .12 * k)]);
+            const tail = new T.Group(), seg = 32, rad = 10;
+            // 끝으로 갈수록 가늘어지는 매끈한 관
+            const geo = new T.TubeGeometry(curve, seg, .085, rad, false), pos = geo.attributes.position, c = new T.Vector3(), v = new T.Vector3();
+            for (let i = 0; i <= seg; i++) {
+              const u = i / seg; c.copy(curve.getPointAt(u));
+              const f = 1 - u * .5;
+              for (let j = 0; j <= rad; j++) { const idx = i * (rad + 1) + j; v.fromBufferAttribute(pos, idx).sub(c).multiplyScalar(f).add(c); pos.setXYZ(idx, v.x, v.y, v.z); }
+            }
+            geo.computeVertexNormals();
+            tail.add(mesh(geo, sm(S.body)));
+            const tipP = curve.getPointAt(1); tail.add(ball(.085 * (legend ? .62 : .5), legend ? S.tailGlow : (stage >= 2 ? S.stripe : S.body), tipP.x, tipP.y, tipP.z));
+            if (stage >= 2) { const tipStripe = mesh(new T.CylinderGeometry(.045, .047, .07, 10), sm(S.stripe));
+            const pT = curve.getPointAt(.93); tipStripe.position.copy(pT); tipStripe.lookAt(pT.clone().add(curve.getTangentAt(.93))); tipStripe.rotateX(Math.PI / 2); tail.add(tipStripe); }
+            if (stage >= 2) [.35, .6].forEach(function (u) {
+              const pt = curve.getPointAt(u), r = .085 * (1 - u * .5) + .004;
+              const ringM = mesh(new T.CylinderGeometry(r, r, .045, 12), sm(S.stripe)); ringM.position.copy(pt);
+              ringM.lookAt(pt.clone().add(curve.getTangentAt(u))); ringM.rotateX(Math.PI / 2); tail.add(ringM);
+            });
+            const piv = new T.Group(); piv.position.set(xo, y0, z0); piv.rotation.z = rz; tail.position.set(0, -y0, -z0); piv.add(tail); tails.add(piv);
+          };
+          if (legend) { mkTail(-.1, .55); mkTail(.1, -.55); } else mkTail(0, 0);
+          body.add(tails); parts.tail = tails;
         }
         if (species === 'fox' || species === 'wolf') {
           const wolf = species === 'wolf';
           const tail = new T.Group(); tail.position.set(0, cy - (wolf ? .05 : 0), -.5 * tSX); tail.rotation.x = (wolf ? -.45 : -.9) + (stage >= 3 ? .15 : 0);
           const ts = tg;
           tail.add(ball(.26 * ts, S.body, 0, 0, -.3 * ts, 1, 1, 1.9));
-          tail.add(ball(.17 * ts, wolf ? S.tip : S.belly, 0, 0, -.72 * ts, 1, 1, 1.1));
+          tail.add(ball(.17 * ts, wolf ? (legend ? S.tailGlow : S.tip) : S.belly, 0, 0, -.72 * ts, 1, 1, 1.1));
           body.add(tail); parts.tail = tail;
         }
+        if (legend && qk) {
+          // 황금 쿼카: 머리와 몸에 빛나는 별 무늬
+          const starM = sm(S.star);
+          [[head, .26, .3, .48, .9], [head, -.2, .4, .4, .8], [head, .05, .5, .2, .7]].forEach(function (q) { const s = starMesh(.06 * q[4], starM, .02); s.position.set(q[1], q[2], q[3]); s.lookAt(s.position.clone().multiplyScalar(2)); q[0].add(s); });
+          [[.3, .12, .38], [-.32, -.05, .34], [.38, -.2, .2], [-.2, .2, -.4], [.25, -.05, -.42]].forEach(function (q) { const s = starMesh(.065, starM, .02); s.position.set(q[0] * tSX, cy + q[1], q[2] * tSX); s.lookAt(new T.Vector3(q[0] * 3, cy + q[1] * 3, q[2] * 3)); body.add(s); });
+        }
+        if (legend && S.glow) legendGlow(g, S.glow, S.glowI);
         // 꾸미기 아이템을 붙일 자리 (머리는 반지름 .6 기준, 목은 몸통 좌표)
         parts.hR = .6; parts.faceY = qk ? .04 : 0;
         parts.neck = { y: cy + ry - .05, r: .4 * tSX, z: 0 };
@@ -4074,14 +4111,15 @@
 
       // ---------- 🐥 병아리 → 🐔 닭 (새는 몸 구조가 달라서 따로 만들어요) ----------
       function buildBird(stage) {
-        const S = SPC.chick;
+        const legend = stage === 5;
+        const S = legend ? Object.assign({}, SPC.chick, LEGEND.chick) : SPC.chick;
         const g = new T.Group();
         const body = new T.Group(); g.add(body);
         const parts = { g: g, body: body };
-        const legH = [0, 0, 0, .12, .22, .22][stage];
-        const br = [0, .46, .5, .5, .52, .52][stage];
-        const hr = [0, .42, .42, .37, .34, .34][stage];
-        const eyeS = [0, 1.15, 1.08, 1.0, .9, .9][stage];
+        const legH = [0, 0, .06, .12, .22, .24][stage];
+        const br = [0, .42, .5, .5, .52, .54][stage];
+        const hr = [0, .44, .42, .37, .34, .34][stage];
+        const eyeS = [0, 1.25, 1.08, 1.0, .9, .9][stage];
         const col = [0, S.chick, S.chick, S.teen, S.body, S.body][stage];
         const bel = [0, S.chickBelly, S.chickBelly, S.teenBelly, S.belly, S.belly][stage];
         const adult = stage >= 4;
@@ -4113,7 +4151,7 @@
         const bk = adult ? 1.15 : 1;
         const beakT = mesh(new T.ConeGeometry(.075 * bk, .16 * bk, 6), sm(S.beak), 0, -hr * .05, hr + .05); beakT.rotation.x = Math.PI / 2; beakT.scale.set(1.2, 1, .7); head.add(beakT);
         // 볏·턱볏 (자랄수록 커져요)
-        const combN = [0, 0, 1, 3, 4, 4][stage], combR = [0, 0, .06, .07, .085, .09][stage];
+        const combN = [0, 0, 1, 3, 4, 5][stage], combR = [0, 0, .06, .07, .085, .09][stage];
         for (let i = 0; i < combN; i++) {
           const t = combN === 1 ? 0 : i / (combN - 1);
           head.add(ball(combR * (1 - Math.abs(t - .35) * .4), S.comb, 0, hr * .92 + combR * .5, hr * (.45 - t * .7), .7, 1.1, 1));
@@ -4131,12 +4169,12 @@
         const tail = new T.Group(); tail.position.set(0, cy + br * .2, -br * sz * .85);
         if (stage <= 2) { const tf = mesh(new T.ConeGeometry(.08, .2, 6), sm(col), 0, .05, -.04); tf.rotation.x = -.9; tail.add(tf); }
         else {
-          const n = stage === 3 ? 3 : 5, len = stage === 3 ? .32 : .5;
+          const n = stage === 3 ? 3 : (legend ? 7 : 5), len = stage === 3 ? .32 : (legend ? .78 : .5);
           for (let i = 0; i < n; i++) {
             const a = (i - (n - 1) / 2) * .32;
             const f = new T.Group(); f.rotation.set(-.55, 0, a);
             f.add(ball(.09, col, 0, len * .5, 0, .7, len * 5.2, .4));
-            if (stage >= 4) f.add(ball(.07, stage === 5 ? 0xffc93c : S.feather, 0, len * .95, 0, .7, 1.6, .4));
+            if (stage >= 4) f.add(ball(legend ? .09 : .07, S.feather, 0, len * .95, 0, .7, legend ? 2.2 : 1.6, .4));
             tail.add(f);
           }
         }
@@ -4150,6 +4188,11 @@
           g.add(f); return f;
         };
         parts.footL = mkFoot(-.15); parts.footR = mkFoot(.15);
+        if (legend) {
+          // 봉황: 머리 뒤로 늘어진 금빛 깃 두 가닥
+          [-1, 1].forEach(function (sd) { const pl = ball(.05, S.feather, sd * .06, hr * .6, -hr * .9, .6, .6, 3.2); pl.rotation.x = .7; head.add(pl); });
+          legendGlow(g, S.glow);
+        }
         // 꾸미기 아이템을 붙일 자리
         parts.hR = hr; parts.faceY = 0;
         parts.neck = { y: head.position.y - hr * .85, r: hr * .85, z: head.position.z * .6 + br * sz * .42 };
@@ -5609,8 +5652,8 @@
     const PET_SPECIES_ORDER = ['tiger', 'wolf', 'chick', 'bear', 'cat', 'quokka'];
     // 병아리는 자라면 닭이 돼요: 단계에 따라 이름·이모지가 바뀌어요
     function petEmoji(species, stage) { if (species === 'chick') return stage >= 3 ? '🐔' : '🐥'; return (PET_SPECIES[species] || {}).emoji || '🐾'; }
-    function petKind(species, stage) { if (species === 'chick') return stage >= 3 ? '닭' : '병아리'; return (PET_SPECIES[species] || {}).name || ''; }
-    // 👕 캐릭터 꾸미기 아이템 (stage: 열리는 BADGE_TIERS 번호 — 1 아기, 2 꼬마, 3 어른, 4 전설)
+    function petKind(species, stage) { if (stage >= 4 && WORLD.legendName && WORLD.legendName(species)) return WORLD.legendName(species); if (species === 'chick') return stage >= 3 ? '닭' : '병아리'; return (PET_SPECIES[species] || {}).name || ''; }
+    // 👕 캐릭터 꾸미기 아이템 (stage: 열리는 BADGE_TIERS 번호 — 1 아기, 2 꼬마, 3 용사, 4 전설)
     const OUTFIT_SLOTS = [
       { id: 'head', name: '머리', emoji: '🎩' }, { id: 'face', name: '얼굴', emoji: '👓' }, { id: 'neck', name: '목', emoji: '🎀' },
       { id: 'hand', name: '손', emoji: '✋' }, { id: 'effect', name: '효과', emoji: '✨' }
@@ -6334,7 +6377,7 @@
         box.classList.remove('wait');
         box.querySelector('.g-evo-title').textContent = hatch ? '알이 부화했어요! 🐣' : (isMax ? '최종 진화! 👑' : '진화했어요! ✨');
         box.querySelector('.g-evo-sub').textContent = hatch ? josa(pet.name, '이', '가') + ' 알에서 깨어났어요. 반가워요! 💕'
-          : (isMax ? josa(pet.name, '이', '가') + ' 전설의 친구가 되었어요!' : josa(pet.name, '이', '가') + ' ' + tier.label + ' 단계로 자랐어요. 꾸준히 잘 쓰고 있어요!');
+          : (isMax ? josa(pet.name, '이', '가') + ' 전설의 ' + josa(petKind(pet.species, idx), '으로', '로') + ' 변신했어요! 👑' : josa(pet.name, '이', '가') + ' ' + tier.label + ' 단계로 자랐어요. 꾸준히 잘 쓰고 있어요!');
         const gifts = newOutfitBetween(prevIdx, idx);
         if (gifts.length) {
           const g = document.createElement('div'); g.className = 'g-evo-gift';

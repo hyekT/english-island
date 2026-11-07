@@ -4091,7 +4091,7 @@
         // 꾸미기 아이템을 붙일 자리 (머리는 반지름 .6 기준, 목은 몸통 좌표)
         parts.hR = .6; parts.faceY = qk ? .04 : 0;
         parts.neck = { y: cy + ry - .05, r: .4 * tSX, z: 0 };
-        parts.hand = handAnchor(armR, qk ? -.17 : -.13, qk ? .04 : .36);
+        parts.hand = handAnchor(armR, qk ? -.12 : -.06, qk ? .04 : .1, qk ? .14 : .17);
         parts.topY = head.position.y + .6 * hS;
         g.scale.setScalar(STAGE_SCALE[stage]);
         return parts;
@@ -4196,7 +4196,7 @@
         // 꾸미기 아이템을 붙일 자리
         parts.hR = hr; parts.faceY = 0;
         parts.neck = { y: head.position.y - hr * .85, r: hr * .85, z: head.position.z * .6 + br * sz * .42 };
-        parts.hand = handAnchor(parts.armR, -.2, .05);
+        parts.hand = handAnchor(parts.armR, -.14, .08, .08);
         parts.topY = head.position.y + hr;
         g.scale.setScalar(STAGE_SCALE[stage]);
         return parts;
@@ -4208,11 +4208,21 @@
       // 동물마다 크기에 맞춰 늘리거나 줄여서 붙여요.
       // =====================================================================
       // 팔(늘린 공) 끝에 손잡이 자리를 만들어요: 팔의 늘어남·기울기를 되돌려서 물건이 똑바로 서요
-      function handAnchor(arm, endY, fwd) {
-        const comp = new T.Group(); comp.position.set(0, endY, fwd || 0);
+      function handAnchor(arm, endY, fwd, side) {
+        const comp = new T.Group(); comp.position.set(side || 0, endY, fwd || 0);
         comp.scale.set(1 / arm.scale.x, 1 / arm.scale.y, 1 / arm.scale.z);
         const h = new T.Group(); h.quaternion.copy(arm.quaternion).invert();
         comp.add(h); arm.add(comp); return h;
+      }
+      // 안경다리: 렌즈 바깥쪽에서 뒤로 짧게 뻗어 머리 옆으로 쏙 들어가요
+      function bar(g, m, a, b, t) {
+        const A = new T.Vector3(a[0], a[1], a[2]), B = new T.Vector3(b[0], b[1], b[2]);
+        const k = mesh(new T.BoxGeometry(t, t, A.distanceTo(B)), m); k.position.copy(A).add(B).multiplyScalar(.5); k.lookAt(B); g.add(k);
+      }
+      function temples(g, m, y, x0, t) {
+        [-1, 1].forEach(function (s) {
+          bar(g, m, [s * x0, y, .63], [s * (x0 + .12), y, .34], t);
+        });
       }
       function goldMat() { return mat(0xffd34d, { emissive: 0xc98a1f, emissiveIntensity: .3 }); }
       function starShape(ro, ri) {
@@ -4304,8 +4314,8 @@
           [-1, 1].forEach(function (s) {
             g.add(mesh(new T.TorusGeometry(.12, .02, 6, 22), d, s * .22, .06, .63));
             g.add(mesh(new T.CircleGeometry(.11, 18), lens, s * .22, .06, .63, false));
-            const t = mesh(new T.BoxGeometry(.022, .022, .38), d, s * .43, .08, .46); t.rotation.y = s * .5; g.add(t);
           });
+          temples(g, d, .07, .335, .024);
           g.add(mesh(new T.BoxGeometry(.2, .022, .022), d, 0, .1, .645));
           return g; } },
         sunglasses: { slot: 'face', build: function () {
@@ -4313,8 +4323,8 @@
           [-1, 1].forEach(function (s) {
             const l = mesh(new T.BoxGeometry(.25, .16, .035), d, s * .21, .06, .64); l.rotation.y = -s * .12; g.add(l);
             g.add(mesh(new T.BoxGeometry(.06, .02, .01), shine, s * .21 - .06, .11, .662, false));
-            const t = mesh(new T.BoxGeometry(.024, .024, .4), d, s * .44, .1, .45); t.rotation.y = s * .5; g.add(t);
           });
+          temples(g, d, .1, .33, .028);
           g.add(mesh(new T.BoxGeometry(.62, .04, .035), d, 0, .14, .645));
           return g; } },
         starGlasses: { slot: 'face', build: function () {
@@ -4322,8 +4332,8 @@
           [-1, 1].forEach(function (s) {
             const st = starMesh(.17, gold, .035); st.position.set(s * .23, .07, .64); st.rotation.z = s * .1; g.add(st);
             const ln = new T.Mesh(new T.ShapeGeometry(starShape(.11, .05)), lens); ln.position.set(s * .23, .07, .662); ln.rotation.z = s * .1; g.add(ln);
-            const t = mesh(new T.BoxGeometry(.024, .024, .38), gold, s * .44, .1, .45); t.rotation.y = s * .5; g.add(t);
           });
+          temples(g, gold, .1, .37, .026);
           g.add(mesh(new T.BoxGeometry(.14, .03, .03), gold, 0, .1, .645));
           return g; } },
         // ---------- 목 ----------
@@ -4353,7 +4363,7 @@
           return g; } },
         // ---------- 손 ----------
         pencil: { slot: 'hand', build: function () {
-          const g = new T.Group(); g.position.set(0, .02, .06); g.rotation.x = .3;
+          const g = new T.Group(); g.position.set(0, .02, .04); g.rotation.set(.2, 0, -.25);
           g.add(mesh(new T.CylinderGeometry(.04, .04, .38, 6), sm(0xf5c542), 0, .14, 0));
           g.add(mesh(new T.ConeGeometry(.04, .09, 6), sm(0xf0d2a0), 0, .375, 0));
           g.add(mesh(new T.ConeGeometry(.014, .03, 6), sm(0x3a2e2a), 0, .41, 0));
@@ -4361,34 +4371,34 @@
           g.add(mesh(new T.CylinderGeometry(.04, .04, .07, 8), sm(0xff8fa8), 0, -.12, 0));
           return g; } },
         basketball: { slot: 'hand', build: function () {
-          const g = new T.Group(); g.position.set(0, .04, .14);
+          const g = new T.Group(); g.position.set(.08, .02, .06);
           g.add(mesh(new T.SphereGeometry(.16, 18, 14), sm(0xf08a3a), 0, 0, 0));
           const ln = sm(0x5a2e14);
           [0, Math.PI / 2].forEach(function (r) { const t = mesh(new T.TorusGeometry(.162, .009, 4, 28), ln, 0, 0, 0); t.rotation.y = r; g.add(t); });
           const eq = mesh(new T.TorusGeometry(.162, .009, 4, 28), ln, 0, 0, 0); eq.rotation.x = Math.PI / 2; g.add(eq);
           return g; } },
         book: { slot: 'hand', build: function () {
-          const g = new T.Group(); g.position.set(0, .1, .13); g.rotation.y = -.25;
+          const g = new T.Group(); g.position.set(.04, .08, .06); g.rotation.set(0, -.5, -.1);
           g.add(mesh(new T.BoxGeometry(.26, .32, .07), sm(0x3c6fd1), 0, 0, 0));
           g.add(mesh(new T.BoxGeometry(.24, .3, .072), sm(0xfffaf0), .015, 0, 0));
           g.add(mesh(new T.BoxGeometry(.14, .06, .01), sm(0xffd34d), 0, .07, .04));
           return g; } },
         sword: { slot: 'hand', build: function () {
-          const g = new T.Group(); g.position.set(0, 0, .07); g.rotation.x = .2;
+          const g = new T.Group(); g.position.set(0, -.02, .04); g.rotation.set(.25, 0, -.45);
           g.add(mesh(new T.CylinderGeometry(.028, .028, .15, 6), sm(0x7a4a2a), 0, .02, 0));
           g.add(mesh(new T.BoxGeometry(.2, .04, .06), sm(0x9b5b3a), 0, .11, 0));
           g.add(mesh(new T.BoxGeometry(.07, .5, .025), sm(0xe8c590), 0, .37, 0));
           const tip = mesh(new T.ConeGeometry(.05, .09, 4), sm(0xe8c590), 0, .66, 0); tip.rotation.y = Math.PI / 4; tip.scale.z = .36; g.add(tip);
           return g; } },
         trophy: { slot: 'hand', build: function () {
-          const g = new T.Group(); g.position.set(0, .02, .14); const gold = goldMat();
+          const g = new T.Group(); g.position.set(.06, .02, .06); const gold = goldMat();
           g.add(mesh(new T.BoxGeometry(.18, .06, .14), sm(0x6e4529), 0, -.03, 0));
           g.add(mesh(new T.CylinderGeometry(.03, .045, .1, 10), gold, 0, .05, 0));
           g.add(mesh(new T.CylinderGeometry(.13, .06, .17, 16), gold, 0, .18, 0));
           [-1, 1].forEach(function (s) { const h = mesh(new T.TorusGeometry(.06, .016, 6, 12, Math.PI), gold, s * .13, .2, 0); h.rotation.z = -s * Math.PI / 2; g.add(h); });
           return g; } },
         wand: { slot: 'hand', build: function () {
-          const g = new T.Group(); g.position.set(0, 0, .07); g.rotation.x = .25;
+          const g = new T.Group(); g.position.set(0, 0, .04); g.rotation.set(.25, 0, -.4);
           g.add(mesh(new T.CylinderGeometry(.02, .02, .44, 6), sm(0x5a3d7a), 0, .16, 0));
           const st = starMesh(.1, mat(0xffe27a, { emissive: 0xffc93c, emissiveIntensity: .7 }), .04); st.position.y = .44; g.add(st);
           const sp = fxSprite('spark'); sp.scale.set(.35, .35, 1); sp.position.y = .44; g.add(sp);

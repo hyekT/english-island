@@ -4131,10 +4131,30 @@
         }
         if (species === 'bear') body.add(ball(.12 * tg, S.body, 0, cy - .13, -.48 * tSX));
         if (species === 'cat') {
-          const k = tg, y0 = cy - .15;
-          const curve = new T.CatmullRomCurve3([new T.Vector3(0, y0, -.42 * tSX), new T.Vector3(0, y0 - .05, -.42 - .33 * k), new T.Vector3(0, y0 + .3 * k, -.42 - .48 * k), new T.Vector3(0, y0 + .6 * k, -.42 - .33 * k)]);
-          const tail = mesh(new T.TubeGeometry(curve, 16, .08, 8), sm(S.body)); body.add(tail); parts.tail = tail;
-          if (stage >= 3) body.add(ball(.09, S.stripe, 0, y0 + .6 * k, -.42 - .33 * k));
+          // 고양이 꼬리: 엉덩이에 붙어서 위로 부드럽게 올라가고, 끝으로 갈수록 가늘어지다 살짝 말려요
+          const k = tg, y0 = cy - .22, z0 = -.4 * tSX;
+          const curve = new T.CatmullRomCurve3([
+            new T.Vector3(0, y0, z0), new T.Vector3(0, y0 + .02, z0 - .2 * k), new T.Vector3(0, y0 + .28 * k, z0 - .32 * k),
+            new T.Vector3(0, y0 + .58 * k, z0 - .28 * k), new T.Vector3(.04, y0 + .74 * k, z0 - .12 * k)]);
+          const tail = new T.Group(), seg = 32, rad = 10;
+          // 끝으로 갈수록 가늘어지는 매끈한 관
+          const geo = new T.TubeGeometry(curve, seg, .085, rad, false), pos = geo.attributes.position, c = new T.Vector3(), v = new T.Vector3();
+          for (let i = 0; i <= seg; i++) {
+            const u = i / seg; c.copy(curve.getPointAt(u));
+            const f = 1 - u * .5;
+            for (let j = 0; j <= rad; j++) { const idx = i * (rad + 1) + j; v.fromBufferAttribute(pos, idx).sub(c).multiplyScalar(f).add(c); pos.setXYZ(idx, v.x, v.y, v.z); }
+          }
+          geo.computeVertexNormals();
+          tail.add(mesh(geo, sm(S.body)));
+          const tipP = curve.getPointAt(1); tail.add(ball(.085 * .5, S.stripe, tipP.x, tipP.y, tipP.z));
+          const tipStripe = mesh(new T.CylinderGeometry(.045, .047, .07, 10), sm(S.stripe));
+          const pT = curve.getPointAt(.93); tipStripe.position.copy(pT); tipStripe.lookAt(pT.clone().add(curve.getTangentAt(.93))); tipStripe.rotateX(Math.PI / 2); tail.add(tipStripe);
+          if (stage >= 2) [.35, .6].forEach(function (u) {
+            const pt = curve.getPointAt(u), r = .085 * (1 - u * .5) + .004;
+            const ringM = mesh(new T.CylinderGeometry(r, r, .045, 12), sm(S.stripe)); ringM.position.copy(pt);
+            ringM.lookAt(pt.clone().add(curve.getTangentAt(u))); ringM.rotateX(Math.PI / 2); tail.add(ringM);
+          });
+          body.add(tail); parts.tail = tail;
         }
         if (species === 'fox' || species === 'wolf') {
           const wolf = species === 'wolf';
@@ -4816,7 +4836,7 @@
         parts.body.scale.set(1, P.state === 'sleep' ? 1 + Math.sin(t * 1.6) * .03 : breathe, 1);
         parts.body.rotation.x = P.state === 'eat' ? .25 + Math.sin(t * 12) * .1 : (walking ? .06 : 0);
         parts.body.rotation.z = P.state === 'sleep' ? .12 : 0;
-        if (parts.tail && pet.species !== 'cat') parts.tail.rotation.y = Math.sin(t * (walking ? 10 : 3)) * .3;
+        if (parts.tail) parts.tail.rotation.y = Math.sin(t * (walking ? 10 : 3)) * (pet.species === 'cat' ? .18 : .3);
         if (parts.halo) parts.halo.rotation.z += dt;
         if (parts.orbit) parts.orbit.rotation.y += dt * 1.2;
         // 표정

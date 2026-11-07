@@ -3943,7 +3943,7 @@
       // ---------- 캐릭터 ----------
       const SPC = {
         tiger:  { body: 0xf29a3a, belly: 0xfff3e0, accent: 0xf6b3a0, nose: 0xc96a5e, egg: 0xffe7c4, spot: 0x3a2a22, stripe: 0x33251e, muzzle: 0xfff3e0 },
-        wolf:   { body: 0xb4bfcb, belly: 0xeef2f6, accent: 0xdde3ea, nose: 0x2a2d36, egg: 0xe9eef4, spot: 0x98a5b4, tip: 0x6f7c8d, muzzle: 0xeef2f6 },
+        wolf:   { body: 0x9fa5ac, belly: 0xe6e8eb, accent: 0xd2d6db, nose: 0x26282c, egg: 0xe8eaec, spot: 0x878e96, tip: 0x5b6169, muzzle: 0xe6e8eb },
         chick:  { chick: 0xffd54a, chickBelly: 0xffeb9c, teen: 0xfff1c9, teenBelly: 0xfffaea, body: 0xfbfaf4, belly: 0xffffff, feather: 0xe8e2d2, beak: 0xf59a2c, comb: 0xe2463c, blush: 0xffa8a0, egg: 0xfffdf6, spot: 0xffd54a },
         quokka: { body: 0x9a8670, belly: 0xd8c6ad, accent: 0xd9a090, nose: 0x231c18, egg: 0xefe6d8, spot: 0x8a735c, muzzle: 0xb79d80, paw: 0x4f4035, rim: 0x6a5846 },
         cat:    { body: 0xc9d0dd, belly: 0xf4f6fa, accent: 0xf2a7b5, nose: 0xf08aa0, egg: 0xeef1f7, spot: 0x9aa4b9, stripe: 0x8f99ae },
@@ -4199,7 +4199,7 @@
           if (!m.isMesh || !m.material || !m.material.color || m.material.isMeshBasicMaterial) return;
           const hex = m.material.color.getHex();
           if (colors.indexOf(hex) < 0) return;
-          m.material = silverCache[hex] || (silverCache[hex] = new T.MeshPhongMaterial({ color: hex, specular: 0x9aa6b8, shininess: 55 }));
+          m.material = silverCache[hex] || (silverCache[hex] = new T.MeshPhongMaterial({ color: hex, specular: 0x8e939a, shininess: 50 }));
         });
       }
 

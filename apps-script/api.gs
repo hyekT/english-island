@@ -48,7 +48,9 @@ const OUTFIT_IDS = {
   head: ['sprout', 'cap', 'headphones', 'flowerCrown', 'crown'],
   face: ['roundGlasses', 'sunglasses', 'starGlasses'],
   neck: ['bowtie', 'bell', 'scarf', 'medal'],
-  hand: ['pencil', 'basketball', 'book', 'sword', 'trophy', 'wand'],
+  back: ['backpack', 'babyWings', 'ballPack', 'swordShield', 'batWings', 'jetpack', 'dragonWings'],
+  feet: ['sneakers', 'skateboard', 'cloudRide', 'fireShoes', 'hoverboard'],
+  buddy: ['cloudBuddy', 'bee', 'ghost', 'drone', 'babyStar', 'babyDragon'],
   effect: ['sparkle', 'notes', 'hearts', 'lightning', 'aura', 'fire']
 };
 

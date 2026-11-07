@@ -729,7 +729,7 @@
     @media (max-width: 720px) { .g-quiz { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; transform: none; } .g-quiz-q { font-size: 24px; } }
 
     /* 👕 캐릭터 꾸미기 */
-    .g-worn { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 10px; }
+    .g-worn { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 10px; }
     .g-worn-slot { border: 2px dashed #E3D3B6; background: #FFFCF4; border-radius: 14px; padding: 6px 2px 5px; display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; font: inherit; }
     .g-worn-slot .e { font-size: 20px; line-height: 1.2; }
     .g-worn-slot:not(.on) .e { filter: grayscale(1); opacity: .45; }
@@ -3160,7 +3160,7 @@
       });
       // 체험용 반 친구들 (보스전 체험용)
       const mates = [
-        { num: 2, name: '이준호', pet: { species: 'bear', name: '든든이', outfit: { head: 'cap', back: 'ballPack', feet: 'sneakers' } }, pts: [25, 25, 30, 30, 30] },
+        { num: 2, name: '이준호', pet: { species: 'bear', name: '든든이', outfit: { head: 'cap', back: 'ballPack' } }, pts: [25, 25, 30, 30, 30] },
         { num: 3, name: '최민재', pet: { species: 'chick', name: '번개', outfit: { neck: 'bowtie' } }, pts: [20, 20] },
         { num: 4, name: '정우진', pet: { species: 'cat', name: '치즈', outfit: { face: 'sunglasses', buddy: 'bee', effect: 'hearts' } }, pts: [40, 40, 40, 40, 40] }
       ];
@@ -4204,7 +4204,7 @@
       }
 
       // =====================================================================
-      // 👕 캐릭터 꾸미기 — 머리·얼굴·목·등·발·꼬마 동료·효과 아이템
+      // 👕 캐릭터 꾸미기 — 머리·얼굴·목·등·꼬마 동료·효과 아이템
       // 머리/얼굴 아이템은 '반지름 .6짜리 머리' 기준, 목 아이템은 '반지름 .4 목' 기준으로 만들고
       // 동물마다 크기에 맞춰 늘리거나 줄여서 붙여요.
       // =====================================================================
@@ -4438,29 +4438,6 @@
           g.userData.fx = function (t) { flames.forEach(function (f, i) { const k = .26 + Math.abs(Math.sin(t * 22 + i * 2)) * .08; f.scale.set(k * .7, k, 1); }); };
           return g; } },
         dragonWings: { slot: 'back', build: function () { return wingPair(0xd8433a, 0xffb43d, 1.25, 2.2, true); } },
-        // ---------- 발 (신발·탈것) ----------
-        sneakers: { slot: 'feet', shoe: { color: 0xe2574c, sole: 0xffffff, toe: 0xffffff } },
-        skateboard: { slot: 'feet', lift: .17, build: function () {
-          const g = new T.Group();
-          const deck = mesh(new T.BoxGeometry(.62, .05, 1.1), sm(0x3d7be0), 0, .14, 0); g.add(deck);
-          [-1, 1].forEach(function (s) { const e = mesh(new T.CylinderGeometry(.31, .31, .05, 18, 1, false, 0, Math.PI), sm(0x3d7be0), 0, .14, s * .55); e.rotation.y = s > 0 ? -Math.PI / 2 : Math.PI / 2; g.add(e); });
-          g.add(mesh(new T.BoxGeometry(.58, .012, 1.06), sm(0x2f3542), 0, .168, 0));
-          [-1, 1].forEach(function (sz) { g.add(mesh(new T.BoxGeometry(.4, .04, .08), sm(0xaeb4bf), 0, .1, sz * .38));
-            [-1, 1].forEach(function (sx) { const w = mesh(new T.CylinderGeometry(.065, .065, .06, 12), sm(0xffd34d), sx * .22, .065, sz * .38); w.rotation.z = Math.PI / 2; g.add(w); }); });
-          return g; } },
-        cloudRide: { slot: 'feet', lift: .2, build: function (parts) {
-          const g = new T.Group(), c = new T.Group(); g.add(c);
-          [[0, 0, 0, .3], [.3, -.02, .12, .22], [-.3, -.02, .1, .22], [.15, .02, -.28, .22], [-.18, 0, -.25, .2], [.05, -.03, .32, .2]].forEach(function (q) { c.add(ball(q[3], 0xffffff, q[0], .1 + q[1], q[2], 1.25, .55, 1.25)); });
-          g.userData.fx = function (t) { const b = Math.sin(t * 2) * .03; c.position.y = b; parts.body.position.y = .2 + b; parts.footL.position.y = .2 + b; parts.footR.position.y = .2 + b; };
-          return g; } },
-        fireShoes: { slot: 'feet', shoe: { color: 0x3a2a2a, sole: 0xff7a2b, toe: 0xffb43d, flame: true } },
-        hoverboard: { slot: 'feet', lift: .34, build: function (parts) {
-          const g = new T.Group(), b = new T.Group(); g.add(b);
-          const deck = mesh(new T.CylinderGeometry(.5, .5, .07, 28), sm(0x2b2f3a), 0, .3, 0); deck.scale.z = 1.35; b.add(deck);
-          const rim = new T.Mesh(new T.TorusGeometry(.5, .025, 6, 32), mat(0x5ae0ff, { emissive: 0x5ae0ff, emissiveIntensity: .8 })); rim.rotation.x = Math.PI / 2; rim.scale.y = 1.35; rim.position.y = .3; b.add(rim);
-          const glow = fxSprite('spark', '#7fe8ff'); glow.position.y = .14; glow.scale.set(.9, .5, 1); b.add(glow);
-          g.userData.fx = function (t) { const k = Math.sin(t * 2.4) * .035; b.position.y = k; parts.body.position.y = .34 + k; parts.footL.position.y = .34 + k; parts.footR.position.y = .34 + k; glow.material.opacity = .6 + Math.sin(t * 6) * .2; };
-          return g; } },
         // ---------- 꼬마 동료 (옆에서 둥둥 떠다녀요) ----------
         cloudBuddy: { slot: 'buddy', build: function () {
           const g = new T.Group();
@@ -4572,35 +4549,13 @@
       };
       W.outfitIds = Object.keys(OUTFIT_3D);
 
-      // 장착: outfit = { head, face, neck, back, feet, buddy, effect } (아이템 id)
-      // 신발: 발 모양에 맞춰 감싸요
-      function shoeFor(parts, foot, spec, fx) {
-        const g = new T.Group();
-        if (parts.isBird) {
-          g.add(ball(.075, spec.color, 0, .05, .07, 1, .8, 1.35)); g.add(mesh(new T.BoxGeometry(.13, .025, .2), sm(spec.sole), 0, .015, .07));
-        } else {
-          const fb = foot.children[0], r = fb.geometry.parameters.radius, sc = fb.scale, p = fb.position;
-          g.add(ball(r * 1.08, spec.color, p.x, p.y, p.z + .01, sc.x * 1.06, sc.y * 1.18, sc.z * 1.06));
-          g.add(mesh(new T.BoxGeometry(r * 2.1 * sc.x, .045, r * 2.15 * sc.z), sm(spec.sole), p.x, .025, p.z + .01));
-          g.add(ball(r * .55, spec.toe, p.x, p.y - .015, p.z + r * sc.z * .78, 1.25, .62, .6));
-        }
-        if (spec.flame) {
-          const f = fxSprite('flame'), sd = foot.position.x >= 0 ? 1 : -1; f.position.set(sd * .3, .2, -.08); g.add(f);
-          fx.push(function (t) { const k = .26 + Math.abs(Math.sin(t * 18 + sd * 9)) * .1; f.scale.set(k * .75, k, 1); });
-        }
-        foot.add(g); return g;
-      }
-      function setLift(parts, y) { parts.body.position.y = y; parts.footL.position.y = y; parts.footR.position.y = y; }
+      // 장착: outfit = { head, face, neck, back, buddy, effect } (아이템 id)
       function attachOutfit(parts, outfit) {
         const res = { holders: [], fx: [] };
         if (!parts.head) return res;
-        setLift(parts, 0);
         if (!outfit) return res;
-        ['head', 'face', 'neck', 'back', 'feet', 'buddy', 'effect'].forEach(function (slot) {
+        ['head', 'face', 'neck', 'back', 'buddy', 'effect'].forEach(function (slot) {
           const def = OUTFIT_3D[outfit[slot]]; if (!def || def.slot !== slot) return;
-          if (def.shoe) { res.holders.push(shoeFor(parts, parts.footL, def.shoe, res.fx), shoeFor(parts, parts.footR, def.shoe, res.fx)); }
-          if (def.lift) setLift(parts, def.lift);
-          if (!def.build) return;
           const it = def.build(parts);
           const holder = new T.Group(); holder.add(it);
           if (slot === 'head' || slot === 'face') { holder.scale.setScalar(parts.hR / .6); if (slot === 'face') holder.position.y = parts.faceY * (parts.hR / .6); parts.head.add(holder); }
@@ -4727,7 +4682,6 @@
 
       W._project = function (x, y, z) { return project(x, y, z); };
       W._debug = function () { return { x: P.x, z: P.z, state: P.state, near: nearKey, obstacles: obstacles }; };
-      W._pet = function () { return pet; };
       W.setOffset = function (x, y) { CAM.wantX = x || 0; CAM.wantY = y || 0; };
       W.focus = function (on) {
         CAM.focus = !!on;
@@ -5809,14 +5763,13 @@
     // 👕 캐릭터 꾸미기 아이템 (stage: 열리는 BADGE_TIERS 번호 — 1 아기, 2 꼬마, 3 용사, 4 전설)
     const OUTFIT_SLOTS = [
       { id: 'head', name: '머리', emoji: '🎩' }, { id: 'face', name: '얼굴', emoji: '👓' }, { id: 'neck', name: '목', emoji: '🎀' },
-      { id: 'back', name: '등', emoji: '🎒' }, { id: 'feet', name: '발', emoji: '👟' }, { id: 'buddy', name: '동료', emoji: '🐝' },
+      { id: 'back', name: '등', emoji: '🎒' }, { id: 'buddy', name: '동료', emoji: '🐝' },
       { id: 'effect', name: '효과', emoji: '✨' }
     ];
     const OUTFIT_CATALOG = [
       { id: 'sprout', slot: 'head', name: '새싹', emoji: '🌱', stage: 1 },
       { id: 'bowtie', slot: 'neck', name: '나비넥타이', emoji: '🎀', stage: 1 },
       { id: 'backpack', slot: 'back', name: '책가방', emoji: '🎒', stage: 1 },
-      { id: 'sneakers', slot: 'feet', name: '운동화', emoji: '👟', stage: 1 },
       { id: 'cloudBuddy', slot: 'buddy', name: '꼬마 구름', emoji: '☁️', stage: 1 },
       { id: 'sparkle', slot: 'effect', name: '반짝반짝', emoji: '✨', stage: 1 },
       { id: 'cap', slot: 'head', name: '야구 모자', emoji: '🧢', stage: 2 },
@@ -5824,7 +5777,6 @@
       { id: 'bell', slot: 'neck', name: '방울 목걸이', emoji: '🔔', stage: 2 },
       { id: 'babyWings', slot: 'back', name: '아기 날개', emoji: '🪽', stage: 2 },
       { id: 'ballPack', slot: 'back', name: '농구공 가방', emoji: '🏀', stage: 2 },
-      { id: 'skateboard', slot: 'feet', name: '스케이트보드', emoji: '🛹', stage: 2 },
       { id: 'bee', slot: 'buddy', name: '꿀벌', emoji: '🐝', stage: 2 },
       { id: 'ghost', slot: 'buddy', name: '꼬마 유령', emoji: '👻', stage: 2 },
       { id: 'notes', slot: 'effect', name: '음표', emoji: '🎵', stage: 2 },
@@ -5834,7 +5786,6 @@
       { id: 'scarf', slot: 'neck', name: '빨간 목도리', emoji: '🧣', stage: 3 },
       { id: 'swordShield', slot: 'back', name: '검과 방패', emoji: '⚔️', stage: 3 },
       { id: 'batWings', slot: 'back', name: '박쥐 날개', emoji: '🦇', stage: 3 },
-      { id: 'cloudRide', slot: 'feet', name: '구름 방석', emoji: '☁️', stage: 3 },
       { id: 'drone', slot: 'buddy', name: '미니 드론', emoji: '🛸', stage: 3 },
       { id: 'babyStar', slot: 'buddy', name: '아기 별', emoji: '⭐', stage: 3 },
       { id: 'hearts', slot: 'effect', name: '하트', emoji: '💕', stage: 3 },
@@ -5844,8 +5795,6 @@
       { id: 'medal', slot: 'neck', name: '금메달', emoji: '🥇', stage: 4 },
       { id: 'jetpack', slot: 'back', name: '제트팩', emoji: '🚀', stage: 4 },
       { id: 'dragonWings', slot: 'back', name: '용 날개', emoji: '🐉', stage: 4 },
-      { id: 'fireShoes', slot: 'feet', name: '불꽃 신발', emoji: '🔥', stage: 4 },
-      { id: 'hoverboard', slot: 'feet', name: '호버보드', emoji: '🛸', stage: 4 },
       { id: 'babyDragon', slot: 'buddy', name: '아기 용', emoji: '🐲', stage: 4 },
       { id: 'aura', slot: 'effect', name: '전설의 오라', emoji: '🌠', stage: 4 },
       { id: 'fire', slot: 'effect', name: '불꽃', emoji: '🔥', stage: 4 }

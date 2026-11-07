@@ -49,7 +49,6 @@ const OUTFIT_IDS = {
   face: ['roundGlasses', 'sunglasses', 'starGlasses'],
   neck: ['bowtie', 'bell', 'scarf', 'medal'],
   back: ['backpack', 'babyWings', 'ballPack', 'swordShield', 'batWings', 'jetpack', 'dragonWings'],
-  feet: ['sneakers', 'skateboard', 'cloudRide', 'fireShoes', 'hoverboard'],
   buddy: ['cloudBuddy', 'bee', 'ghost', 'drone', 'babyStar', 'babyDragon'],
   effect: ['sparkle', 'notes', 'hearts', 'lightning', 'aura', 'fire']
 };

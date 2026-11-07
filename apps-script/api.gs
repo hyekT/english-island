@@ -19,7 +19,7 @@ const API_ALLOWED = [
   'startWordGame', 'submitWordGame',
   'verifyTeacherPassword', 'submitFeedback', 'updateFeedback', 'addBonus',
   'listStudentAccounts', 'resetStudentPassword',
-  'getIslandProfile', 'saveIslandLayout', 'saveIslandPet', 'getClassIslands', 'likeIsland',
+  'getIslandProfile', 'saveIslandPet', 'getClassIslands',
   'getBossAttacks', 'recordBossAttack'
 ];
 
@@ -38,11 +38,19 @@ function doPost(e) {
 }
 
 // ---------------------------------------------------------------
-// 🏝️ 내 섬 정보: 친구(동물)·꾸미기 배치·도장 (시트 'Islands'를 자동으로 만들어요)
+// 🏝️ 내 친구 정보: 동물 종류·이름·꾸미기 (시트 'Islands'를 자동으로 만들어요)
 // ---------------------------------------------------------------
 // 이 스크립트가 구글 시트에 붙어 있지 않다면(독립 스크립트) 시트 ID를 넣어 주세요.
 const ISLAND_SHEET_ID = '';
-const ISLAND_COLS = ['className', 'studentNumber', 'studentName', 'pet', 'layout', 'updatedAt', 'likes', 'likedBy'];
+const ISLAND_COLS = ['className', 'studentNumber', 'studentName', 'pet', 'updatedAt'];
+// 꾸미기 아이템 (화면의 OUTFIT_CATALOG와 같아요)
+const OUTFIT_IDS = {
+  head: ['sprout', 'cap', 'headphones', 'flowerCrown', 'crown'],
+  face: ['roundGlasses', 'sunglasses', 'starGlasses'],
+  neck: ['bowtie', 'bell', 'scarf', 'medal'],
+  hand: ['pencil', 'basketball', 'book', 'sword', 'trophy', 'wand'],
+  effect: ['sparkle', 'notes', 'hearts', 'lightning', 'aura', 'fire']
+};
 
 function islandSheet_() {
   const ss = ISLAND_SHEET_ID ? SpreadsheetApp.openById(ISLAND_SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
@@ -63,7 +71,7 @@ function islandUpdate_(className, studentNumber, studentName, fn) {
   try {
     const sh = islandSheet_(), rows = sh.getDataRange().getValues();
     let i = islandFind_(rows, className, studentNumber);
-    let row = i >= 0 ? rows[i].slice() : [className, Number(studentNumber), studentName || '', '', '', 0, 0, '{}'];
+    let row = i >= 0 ? rows[i].slice(0, ISLAND_COLS.length) : [className, Number(studentNumber), studentName || '', '', 0];
     while (row.length < ISLAND_COLS.length) row.push('');
     if (studentName) row[2] = studentName;
     const out = fn(row);
@@ -78,47 +86,29 @@ function islandUpdate_(className, studentNumber, studentName, fn) {
 function getIslandProfile(className, studentNumber) {
   const rows = islandRows_(), i = islandFind_(rows, className, studentNumber);
   if (i < 0) return null;
-  const r = rows[i];
-  return { pet: islandParse_(r[3]), layout: islandParse_(r[4]), updatedAt: Number(r[5]) || 0, likes: Number(r[6]) || 0 };
-}
-
-function saveIslandLayout(className, studentNumber, studentName, layoutJson) {
-  if (String(layoutJson).length > 20000) throw new Error('배치 정보가 너무 커요.');
-  const L = JSON.parse(layoutJson);
-  if (!L || L.v !== 1) throw new Error('배치 정보가 올바르지 않아요.');
-  return islandUpdate_(className, studentNumber, studentName, function (row) {
-    row[4] = layoutJson; row[5] = Date.now(); return { updatedAt: row[5] };
-  });
+  return { pet: islandParse_(rows[i][3]), updatedAt: Number(rows[i][4]) || 0 };
 }
 
 function saveIslandPet(className, studentNumber, studentName, petJson) {
   const p = JSON.parse(petJson);
   if (!p || ['tiger', 'wolf', 'chick', 'bear', 'cat', 'quokka'].indexOf(p.species) < 0) throw new Error('친구 정보가 올바르지 않아요.');
-  const clean = JSON.stringify({ species: p.species, name: String(p.name || '').slice(0, 8), adoptedAt: Number(p.adoptedAt) || Date.now() });
-  return islandUpdate_(className, studentNumber, studentName, function (row) { row[3] = clean; return true; });
+  const outfit = {};
+  Object.keys(OUTFIT_IDS).forEach(function (slot) {
+    const id = p.outfit && p.outfit[slot];
+    if (id && OUTFIT_IDS[slot].indexOf(id) >= 0) outfit[slot] = id;
+  });
+  const clean = JSON.stringify({ species: p.species, name: String(p.name || '').slice(0, 8), adoptedAt: Number(p.adoptedAt) || Date.now(), outfit: outfit });
+  return islandUpdate_(className, studentNumber, studentName, function (row) { row[3] = clean; row[4] = Date.now(); return true; });
 }
 
+// 같은 반 친구 목록 (보스 체력을 정할 때 반 인원 수로 써요)
 function getClassIslands(className) {
   const rows = islandRows_(), out = [];
   for (let i = 1; i < rows.length; i++) {
     if (rows[i][0] !== className) continue;
-    out.push({ studentNumber: Number(rows[i][1]), studentName: rows[i][2], pet: islandParse_(rows[i][3]), layout: islandParse_(rows[i][4]), likes: Number(rows[i][6]) || 0 });
+    out.push({ studentNumber: Number(rows[i][1]), studentName: rows[i][2], pet: islandParse_(rows[i][3]) });
   }
   return out;
-}
-
-// 친구 섬에 👍 도장: 한 친구 섬에 하루 한 번
-function likeIsland(className, targetNumber, visitorNumber) {
-  if (String(targetNumber) === String(visitorNumber)) throw new Error('내 섬에는 도장을 찍을 수 없어요.');
-  const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
-  const rows = islandRows_();
-  if (islandFind_(rows, className, targetNumber) < 0) throw new Error('친구 섬을 찾지 못했어요.');
-  return islandUpdate_(className, targetNumber, '', function (row) {
-    const by = islandParse_(row[7]) || {};
-    if (by[visitorNumber] === today) return { likes: Number(row[6]) || 0, already: true };
-    by[visitorNumber] = today; row[7] = JSON.stringify(by); row[6] = (Number(row[6]) || 0) + 1;
-    return { likes: row[6], already: false };
-  });
 }
 
 // ---------------------------------------------------------------

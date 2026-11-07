@@ -644,18 +644,12 @@
     .w-label.near .w-label-text { display: inline; }
     @media (hover: none) { .w-label-key { display: none !important; } }
     /* 섬 꾸미기 */
-    .g-deco-help { font-size: 13px; color: #6E5D4C; background: #FFF4D6; border-radius: 12px; padding: 9px 12px; line-height: 1.6; }
-    .g-deco-sel { margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 8px 12px; background: #fff; border: 2px dashed #EBDDC3; border-radius: 14px; font-size: 14px; color: #8A7660; }
-    .g-deco-sel b { color: #3B2F2A; }
-    .g-deco-actions { display: flex; gap: 6px; }
-    .g-deco-actions button { border: 2px solid #EBDDC3; background: #FFFDF7; border-radius: 10px; padding: 5px 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; color: #4A3A2C; box-shadow: 0 2px 0 #EBDDC3; }
     .g-props { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
     .g-prop { border: 2px solid #EBDDC3; background: #fff; border-radius: 14px; padding: 8px 4px 7px; cursor: pointer; font: inherit; display: flex; flex-direction: column; align-items: center; gap: 1px; box-shadow: 0 3px 0 #EBDDC3; color: #4A3A2C; }
     .g-prop:hover:not(.lock) { background: #FFF6E4; transform: translateY(-1px); }
     .g-prop .e { font-size: 26px; line-height: 1.15; }
     .g-prop .n { font-size: 13px; font-weight: 700; }
     .g-prop .c { font-size: 11px; color: #8A7660; }
-    .g-prop.full { opacity: .55; }
     .g-prop.lock { background: #F4EFE6; cursor: default; box-shadow: none; }
     .g-prop.lock .n { color: #A89A88; }
     body[data-edit] .w-label { pointer-events: none; opacity: .85; }
@@ -702,21 +696,6 @@
     .g-row .bar i { display: block; height: 100%; background: linear-gradient(90deg, #ff6b5a, #ffb34d); }
     .g-row.me { border-color: #8CCB79; background: #F4FBEF; }
     /* 🏝️ 친구 섬 */
-    .g-friend { display: flex; align-items: center; gap: 10px; padding: 9px 10px; background: #fff; border: 2px solid #EBDDC3; border-radius: 16px; margin-bottom: 8px; box-shadow: 0 3px 0 #EBDDC3; }
-    .g-friend .av { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(#DDF1F8, #BFE6A8); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
-    .g-friend .info { flex: 1; min-width: 0; }
-    .g-friend .nm { font-weight: 800; font-size: 14.5px; }
-    .g-friend .sub { font-size: 12px; color: var(--ej-ink-soft); }
-    .g-friend button { border: none; background: #5DAF4C; color: #fff; font: inherit; font-weight: 700; font-size: 13px; padding: 7px 12px; border-radius: 12px; cursor: pointer; box-shadow: 0 3px 0 #3F8A33; white-space: nowrap; }
-    .g-visitbar { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 25; display: flex; align-items: center; gap: 10px; background: rgba(255,251,242,.96); border: 3px solid #fff; border-radius: 20px; padding: 8px 10px 8px 14px; box-shadow: var(--g-shadow); max-width: calc(100vw - 24px); }
-    .g-visitbar .t { font-weight: 800; font-size: 15px; white-space: nowrap; }
-    .g-visitbar .s { font-size: 12px; color: var(--ej-ink-soft); }
-    .g-visitbar button { border: none; font: inherit; font-weight: 700; font-size: 13.5px; padding: 8px 12px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
-    .g-visit-like { background: #FFE3E0; color: #B5423A; box-shadow: 0 3px 0 #F1B5AD; }
-    .g-visit-like.done { background: #EEE; color: #888; box-shadow: none; cursor: default; }
-    .g-visit-home { background: #5DAF4C; color: #fff; box-shadow: 0 3px 0 #3F8A33; }
-    body[data-visit] .g-player, body[data-visit] .g-toasts, body[data-visit] .g-bossbar, body[data-visit] .g-menu, body[data-visit] .g-hint { display: none; }
-    @media (max-width: 720px) { .g-visitbar { top: auto; bottom: 12px; flex-wrap: wrap; justify-content: center; } }
     /* ⚔️ 보스 단어 대결 */
     .g-quiz { position: fixed; z-index: 9400; right: 240px; top: 50%; transform: translateY(-50%); width: min(430px, calc(100vw - 24px)); background: var(--g-cream); border: 4px solid #3B3355; border-radius: 26px; box-shadow: 0 8px 0 #2A2440, 0 24px 50px rgba(20,20,40,.4); overflow: hidden; animation: g-panel-in .3s cubic-bezier(.22,1.2,.4,1); }
     .g-quiz-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: linear-gradient(#4A4170, #3B3355); color: #fff; padding: 12px 16px; font-weight: 800; font-size: 17px; }
@@ -748,6 +727,23 @@
     .g-quiz-done { background: #EEF0F6; color: #4A4170; border-radius: 14px; padding: 10px 12px; font-size: 13.5px; margin-bottom: 14px; text-align: center; }
     @media (max-width: 980px) { .g-quiz { right: 12px; } }
     @media (max-width: 720px) { .g-quiz { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; transform: none; } .g-quiz-q { font-size: 24px; } }
+
+    /* 👕 캐릭터 꾸미기 */
+    .g-worn { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
+    .g-worn-slot { border: 2px dashed #E3D3B6; background: #FFFCF4; border-radius: 14px; padding: 6px 2px 5px; display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; font: inherit; }
+    .g-worn-slot .e { font-size: 22px; line-height: 1.2; }
+    .g-worn-slot:not(.on) .e { filter: grayscale(1); opacity: .45; }
+    .g-worn-slot .k { font-size: 10.5px; color: #A08C74; }
+    .g-worn-slot .n { font-size: 11px; color: #8A7660; font-weight: 700; }
+    .g-worn-slot.on { border-style: solid; border-color: #F2C94C; background: #FFF6D8; }
+    .g-worn-slot.cur { border-color: #5DAF4C; border-style: solid; box-shadow: 0 3px 0 #3F8A33; }
+    .g-dress-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 10px; }
+    .g-dress-tabs button { flex: 0 0 auto; border: 2px solid #EBDDC3; background: #fff; border-radius: 999px; padding: 6px 11px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; color: #5C4C3E; }
+    .g-dress-tabs button small { font-size: 11px; color: #A08C74; font-weight: 600; }
+    .g-dress-tabs button.sel { background: #5DAF4C; border-color: #5DAF4C; color: #fff; }
+    .g-dress-tabs button.sel small { color: #E6F5DF; }
+    .g-prop.on { border-color: #F2C94C; background: #FFF6D8; box-shadow: 0 3px 0 #EBCB6B; }
+    .g-prop.on .c { color: #A07A12; font-weight: 700; }
   </style>
   <!-- 3D 섬: Three.js (불러오지 못하면 글자 메뉴만으로도 모든 기능을 쓸 수 있어요) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
@@ -813,10 +809,9 @@
     const BADGE_TIERS = [
       { min: 0,   label: '알',     emoji: '🥚', color: '#B08A5A', bg: '#F6ECDD' },
       { min: 30,  label: '아기',   emoji: '🍼', color: '#5B8C51', bg: '#E7F0DF' },
-      { min: 90,  label: '꼬마',   emoji: '🌱', color: '#2F8F4F', bg: '#DCEDE0' },
-      { min: 130, label: '청소년', emoji: '🧣', color: '#C0485A', bg: '#F7E1E3' },
-      { min: 180, label: '어른',   emoji: '🌷', color: '#B0558B', bg: '#F5E1EE' },
-      { min: 250, label: '전설',   emoji: '👑', color: '#7A4FA3', bg: '#EDE1F5' }
+      { min: 80,  label: '꼬마',   emoji: '🌱', color: '#2F8F4F', bg: '#DCEDE0' },
+      { min: 140, label: '어른',   emoji: '🌷', color: '#B0558B', bg: '#F5E1EE' },
+      { min: 200, label: '전설',   emoji: '👑', color: '#7A4FA3', bg: '#EDE1F5' }
     ];
     function getBadge(points) {
       let tier = BADGE_TIERS[0];
@@ -3152,34 +3147,32 @@
     }
 
     // ---------------- 🧪 체험 모드 가짜 서버 ----------------
-    const DEMO_KEY = 'ei_demo_db_v3';
+    const DEMO_KEY = 'ei_demo_db_v4';
     let DEMO = null;
     function demoUid() { return 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
     function demoDay(k) { const d = new Date(); d.setDate(d.getDate() - k); const p = function (n) { return String(n).padStart(2, '0'); }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
     function demoSeed() {
       const now = Date.now(), C = '1학년 1반', N = '김하늘';
       const learned = ['현재완료 시제와 예문을 배웠다. 짝 활동에서 질문에 답했다.', 'to부정사의 명사적 용법을 배웠다.', '본문 1문단을 읽고 핵심어를 찾았다.', '관계대명사 who/which를 배웠다.', '모둠별로 본문 요약문을 만들었다.', '단어 퀴즈를 보고 틀린 단어를 정리했다.'];
-      const pts = [15, 20, 15, 10, 15, 15];
+      const pts = [30, 25, 25, 20, 25, 25];
       const entries = learned.map(function (t, i) {
         return { id: demoUid() + i, className: C, studentName: N, studentNumber: 1, date: demoDay(i + 1), learned: t, participation: '', feeling: ['재밌었다', '조금 헷갈렸지만 이해했다', '발표해서 뿌듯했다'][i % 3], message: i === 0 ? '다음 시간에 퀴즈 있나요?' : '', understanding: 3 + (i % 3), points: pts[i], feedback: ['잘 정리했어요!', '예문을 더 만들어 보면 좋아요 👍', '꾸준히 쓰는 모습 최고!'][i % 3], feedbackAt: now - (i + 1) * 80000000, createdAt: now - (i + 1) * 86400000 };
       });
-      // 체험용 반 친구들 (친구 섬 놀러 가기·보스전 체험용)
+      // 체험용 반 친구들 (보스전 체험용)
       const mates = [
-        { num: 2, name: '이준호', pet: { species: 'bear', name: '든든이' }, pts: [25, 25, 30, 30, 30], likes: 3,
-          layout: { v: 1, objects: { desk: { x: -3.2, z: 4.6, rot: .5 }, calendar: { x: 1.2, z: 6.0, rot: 0 } }, props: [{ type: 'bench', x: 1.5, z: 3.5, rot: 0 }, { type: 'flowerbed', x: -5.0, z: 5.5, rot: .6 }, { type: 'mushroom', x: 5.0, z: 5.6, rot: 0 }, { type: 'lamp', x: -1.0, z: 2.4, rot: 0 }] } },
-        { num: 3, name: '최민재', pet: { species: 'chick', name: '번개' }, pts: [20, 20], likes: 1, layout: null },
-        { num: 4, name: '정우진', pet: { species: 'cat', name: '치즈' }, pts: [40, 40, 40, 40, 40], likes: 7,
-          layout: { v: 1, objects: { arcade: { x: 5.5, z: 4.0, rot: -2.2 }, chest: { x: 6.8, z: -0.6, rot: -1.42 } }, props: [{ type: 'swing', x: 1.8, z: 3.2, rot: 0 }, { type: 'fountain', x: -0.2, z: 1.2, rot: 0 }, { type: 'lamp', x: -4.0, z: 4.8, rot: 0 }, { type: 'lamp', x: 3.4, z: 5.8, rot: 0 }, { type: 'flowerbed', x: -5.4, z: 0.9, rot: 1.57 }, { type: 'sign', x: 1.2, z: 6.6, rot: 0 }] } }
+        { num: 2, name: '이준호', pet: { species: 'bear', name: '든든이', outfit: { head: 'cap', hand: 'basketball' } }, pts: [25, 25, 30, 30, 30] },
+        { num: 3, name: '최민재', pet: { species: 'chick', name: '번개', outfit: { neck: 'bowtie' } }, pts: [20, 20] },
+        { num: 4, name: '정우진', pet: { species: 'cat', name: '치즈', outfit: { face: 'sunglasses', effect: 'hearts' } }, pts: [40, 40, 40, 40, 40] }
       ];
       const islands = {};
-      islands[C + '|1'] = { studentName: N, pet: null, layout: null, updatedAt: 0, likes: 2, likedBy: {} };
+      islands[C + '|1'] = { studentName: N, pet: null };
       const mateAccounts = [];
       mates.forEach(function (m) {
         mateAccounts.push({ className: C, studentNumber: m.num, studentName: m.name, password: '0000' });
         m.pts.forEach(function (pt, i) {
           entries.push({ id: demoUid() + m.num + i, className: C, studentName: m.name, studentNumber: m.num, date: demoDay(i * 4 + 1), learned: '체험용 일지', participation: '', feeling: '', message: '', understanding: 4, points: pt, feedback: '좋아요!', feedbackAt: now - i * 90000000, createdAt: now - (i * 4 + 1) * 86400000 });
         });
-        islands[C + '|' + m.num] = { studentName: m.name, pet: m.pet, layout: m.layout, updatedAt: now, likes: m.likes, likedBy: {} };
+        islands[C + '|' + m.num] = { studentName: m.name, pet: m.pet };
       });
       return {
         seeded: now,
@@ -3272,32 +3265,18 @@
       getIslandProfile: function (cls, num) {
         const d = demoLoad(); d.islands = d.islands || {};
         const r = d.islands[cls + '|' + num];
-        return r ? { pet: r.pet, layout: r.layout, updatedAt: r.updatedAt || 0, likes: r.likes || 0 } : null;
-      },
-      saveIslandLayout: function (cls, num, name, json) {
-        const d = demoLoad(); d.islands = d.islands || {};
-        const k = cls + '|' + num, r = d.islands[k] || (d.islands[k] = { likes: 0, likedBy: {} });
-        r.studentName = name; r.layout = JSON.parse(json); r.updatedAt = Date.now(); return { updatedAt: r.updatedAt };
+        return r ? { pet: r.pet } : null;
       },
       saveIslandPet: function (cls, num, name, json) {
         const d = demoLoad(); d.islands = d.islands || {};
-        const k = cls + '|' + num, r = d.islands[k] || (d.islands[k] = { likes: 0, likedBy: {}, layout: null });
+        const k = cls + '|' + num, r = d.islands[k] || (d.islands[k] = {});
         r.studentName = name; r.pet = JSON.parse(json); return true;
       },
       getClassIslands: function (cls) {
         const d = demoLoad(); d.islands = d.islands || {};
         return Object.keys(d.islands).filter(function (k) { return k.split('|')[0] === cls; }).map(function (k) {
-          const r = d.islands[k]; return { studentNumber: Number(k.split('|')[1]), studentName: r.studentName, pet: r.pet, layout: r.layout, likes: r.likes || 0 };
+          const r = d.islands[k]; return { studentNumber: Number(k.split('|')[1]), studentName: r.studentName, pet: r.pet };
         });
-      },
-      likeIsland: function (cls, targetNum, visitorNum) {
-        const d = demoLoad(); d.islands = d.islands || {};
-        const r = d.islands[cls + '|' + targetNum]; if (!r) throw new Error('친구 섬을 찾지 못했어요.');
-        r.likedBy = r.likedBy || {};
-        const today = demoDay(0);
-        if (r.likedBy[visitorNum] === today) return { likes: r.likes || 0, already: true };
-        r.likedBy[visitorNum] = today; r.likes = (r.likes || 0) + 1;
-        return { likes: r.likes, already: false };
       },
       // ⚔️ 보스 단어 대결 기록 (하루 1번, 최대 20 데미지)
       getBossAttacks: function (weekKey) {
@@ -3770,16 +3749,14 @@
         const bang = new T.Group(); bang.add(mesh(new T.BoxGeometry(.14, .42, .14), mat(0xff5a4f, { emissive: 0xff3b30, emissiveIntensity: .4 }), 0, .26, 0)); bang.add(mesh(new T.BoxGeometry(.14, .14, .14), mat(0xff5a4f, { emissive: 0xff3b30, emissiveIntensity: .4 }), 0, -.08, 0));
         bang.position.set(0, 2.55, .2); bang.visible = false; g.add(bang); bd.bang = bang;
 
-        // 🫙 유리병 (단어장)
+        // 📚 책장 (단어장) — 단어를 모을수록 책이 한 권씩 꽂혀요
         g = new T.Group();
-        g.add(mesh(new T.CylinderGeometry(.5, .56, .55, 9), flat(0xa9774e), 0, .27, 0));
-        g.add(mesh(new T.CylinderGeometry(.44, .44, .02, 9), flat(0xe0c08f), 0, .56, 0));
-        const glass = new T.Mesh(new T.CylinderGeometry(.34, .34, .75, 16, 1, true), new T.MeshLambertMaterial({ color: 0xcdeefe, transparent: true, opacity: .35, side: T.DoubleSide, depthWrite: false }));
-        glass.position.y = .95; g.add(glass);
-        g.add(mesh(new T.CylinderGeometry(.35, .35, .02, 16), new T.MeshLambertMaterial({ color: 0xcdeefe, transparent: true, opacity: .4 }), 0, .58, 0, false));
-        g.add(mesh(new T.CylinderGeometry(.26, .28, .14, 10), flat(0xc89a62), 0, 1.38, 0));
-        const beads = new T.Group(); g.add(beads);
-        const jar = addObject('jar', '단어장', '🫙', g, -5.5, 2.6, Math.PI / 2 + .5, 1.8, .6); jar.beads = beads;
+        g.add(mesh(new T.BoxGeometry(1.5, 1.9, .55), woodD, 0, .95, 0));
+        g.add(mesh(new T.BoxGeometry(1.36, 1.76, .5), flat(0x6e4529), 0, .95, .04));
+        g.add(mesh(new T.BoxGeometry(1.75, .12, .8), flat(0x9b5b3a), 0, 1.95, .05));
+        [.35, .95, 1.55].forEach(function (y) { g.add(mesh(new T.BoxGeometry(1.36, .06, .5), wood, 0, y - .27, .05)); });
+        const books = new T.Group(); g.add(books);
+        const jar = addObject('jar', '단어장', '📚', g, -6.6, -1.0, Math.PI / 2 - .1, 2.4, .8); jar.books = books;
 
         // 🕹️ 오락기 (단어 게임)
         g = new T.Group();
@@ -3858,6 +3835,9 @@
         fox:    { body: 0xf09b52, belly: 0xfff7ec, accent: 0xf6b3a8, nose: 0x3a2e2a, egg: 0xffebd8, spot: 0xf09b52, tip: 0x5a3a28 }
       };
       const STAGE_SCALE = [1.3, .98, 1.12, 1.22, 1.32, 1.42];
+      // 게임 단계(알·아기·꼬마·어른·전설 5단계) → 모델 체형 번호 (예전 청소년 체형 3번은 쓰지 않아요)
+      const VIS = [0, 1, 2, 4, 5];
+      function vis(s) { return VIS[Math.max(0, Math.min(VIS.length - 1, Number(s) || 0))]; }
       function sm(c) { return mat(c); }
       function ball(r, c, x, y, z, sx, sy, sz) {
         const m = mesh(new T.SphereGeometry(r, 18, 14), sm(c), x, y, z);
@@ -4071,49 +4051,11 @@
           tail.add(ball(.17 * ts, wolf ? S.tip : S.belly, 0, 0, -.72 * ts, 1, 1, 1.1));
           body.add(tail); parts.tail = tail;
         }
-        // 단계별 장식
-        if (stage === 2 || stage === 3) {
-          const sprout = new T.Group(); sprout.position.y = .56;
-          const big = stage === 3 ? 1.25 : 1;
-          sprout.add(mesh(new T.CylinderGeometry(.02, .025, .25 * big, 5), sm(0x4e8f3a), 0, .12 * big, 0));
-          const l1 = ball(.1 * big, 0x7cc35f, -.1 * big, .26 * big, 0, 1.4, .45, .8); l1.rotation.z = .4; sprout.add(l1);
-          const l2 = ball(.1 * big, 0x8fd06f, .1 * big, .28 * big, 0, 1.4, .45, .8); l2.rotation.z = -.4; sprout.add(l2);
-          head.add(sprout); parts.sprout = sprout;
-        }
-        if (stage === 3 || stage === 4) {
-          const ny = cy + ry - .05;
-          const scarf = mesh(new T.TorusGeometry(.4 * tSX, .1, 8, 18), sm(0xe46a6a), 0, ny, 0); scarf.rotation.x = Math.PI / 2; scarf.scale.set(1.05, 1, 1); body.add(scarf);
-          const tailS = mesh(new T.BoxGeometry(.16, .34, .07), sm(0xe46a6a), .18, ny - .17, .4 * tSX); tailS.rotation.z = .2; body.add(tailS);
-        }
-        if (stage === 4) {
-          // 꽃 화관: 머리 위를 한 바퀴 두르는 큼직한 꽃
-          const cols = [0xff9eb5, 0xffe07a, 0xffffff, 0xb9a4f5, 0xff8a7a];
-          const ring = new T.Group(); ring.position.y = .4; ring.rotation.x = -.18;
-          ring.add(mesh(new T.TorusGeometry(.5, .035, 6, 24), sm(0x6cb758), 0, 0, 0)).rotation.x = Math.PI / 2;
-          for (let i = 0; i < 9; i++) {
-            const a = i / 9 * Math.PI * 2;
-            const fl = new T.Group(); fl.position.set(Math.cos(a) * .5, .02, Math.sin(a) * .5);
-            for (let k = 0; k < 5; k++) { const pa = k / 5 * Math.PI * 2; fl.add(mesh(new T.SphereGeometry(.055, 6, 5), sm(cols[i % 5]), Math.cos(pa) * .06, .03, Math.sin(pa) * .06)); }
-            fl.add(mesh(new T.SphereGeometry(.04, 6, 5), sm(0xf6b53d), 0, .05, 0));
-            ring.add(fl);
-          }
-          head.add(ring);
-        }
-        if (stage === 5) {
-          const crown = new T.Group(); crown.position.y = .58;
-          const gold = mat(0xffd34d, { emissive: 0xc98a1f, emissiveIntensity: .25 });
-          crown.add(mesh(new T.CylinderGeometry(.26, .28, .14, 10, 1, true), gold, 0, 0, 0));
-          for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; crown.add(mesh(new T.ConeGeometry(.06, .18, 4), gold, Math.cos(a) * .25, .14, Math.sin(a) * .25)); }
-          crown.add(ball(.05, 0xe2557a, 0, .02, .27));
-          head.add(crown);
-          const glow = new T.PointLight(0xffe27a, .9, 4, 2); glow.position.set(0, 1.2, .5); g.add(glow);
-          const halo = new T.Mesh(new T.RingGeometry(.7, .95, 32), new T.MeshBasicMaterial({ color: 0xffe27a, transparent: true, opacity: .35, side: T.DoubleSide }));
-          halo.rotation.x = -Math.PI / 2; halo.position.y = .03; g.add(halo); parts.halo = halo;
-          // 반짝이는 별 3개가 머리 위를 맴돌아요
-          const orbit = new T.Group(); orbit.position.y = cy + ry + .9;
-          for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2; orbit.add(mesh(new T.OctahedronGeometry(.07, 0), new T.MeshBasicMaterial({ color: 0xffe27a }), Math.cos(a) * .75, 0, Math.sin(a) * .75, false)); }
-          g.add(orbit); parts.orbit = orbit;
-        }
+        // 꾸미기 아이템을 붙일 자리 (머리는 반지름 .6 기준, 목은 몸통 좌표)
+        parts.hR = .6; parts.faceY = qk ? .04 : 0;
+        parts.neck = { y: cy + ry - .05, r: .4 * tSX, z: 0 };
+        parts.hand = handAnchor(armR, qk ? -.17 : -.13, qk ? .04 : .36);
+        parts.topY = head.position.y + .6 * hS;
         g.scale.setScalar(STAGE_SCALE[stage]);
         return parts;
       }
@@ -4208,55 +4150,300 @@
           g.add(f); return f;
         };
         parts.footL = mkFoot(-.15); parts.footR = mkFoot(.15);
-        // 단계별 장식 (다른 친구들과 같아요)
-        if (stage === 2 || stage === 3) {
-          const sprout = new T.Group(); sprout.position.set(0, hr * .95, -hr * .35);
-          sprout.add(mesh(new T.CylinderGeometry(.02, .025, .22, 5), sm(0x4e8f3a), 0, .11, 0));
-          const l1 = ball(.09, 0x7cc35f, -.09, .24, 0, 1.4, .45, .8); l1.rotation.z = .4; sprout.add(l1);
-          const l2 = ball(.09, 0x8fd06f, .09, .25, 0, 1.4, .45, .8); l2.rotation.z = -.4; sprout.add(l2);
-          head.add(sprout);
-        }
-        if (stage === 3 || stage === 4) {
-          const ny = head.position.y - hr * .85;
-          const scarf = mesh(new T.TorusGeometry(hr * .85, .08, 8, 18), sm(0xe46a6a), 0, ny, head.position.z * .6); scarf.rotation.x = Math.PI / 2; body.add(scarf);
-          const ts = mesh(new T.BoxGeometry(.14, .3, .06), sm(0xe46a6a), .14, ny - .15, head.position.z * .6 + hr * .8); ts.rotation.z = .2; body.add(ts);
-        }
-        if (stage === 4) {
-          const cols = [0xff9eb5, 0xffe07a, 0xb9a4f5, 0xff8a7a, 0x9fd8f0];
-          const ring = new T.Group(); ring.position.y = hr * .72; ring.rotation.x = -.15;
-          ring.add(mesh(new T.TorusGeometry(hr * .95, .03, 6, 24), sm(0x6cb758), 0, 0, 0)).rotation.x = Math.PI / 2;
-          for (let i = 0; i < 9; i++) {
-            const a = i / 9 * Math.PI * 2, fl = new T.Group(); fl.position.set(Math.cos(a) * hr * .95, .02, Math.sin(a) * hr * .95);
-            for (let k = 0; k < 5; k++) { const pa = k / 5 * Math.PI * 2; fl.add(mesh(new T.SphereGeometry(.045, 6, 5), sm(cols[i % 5]), Math.cos(pa) * .05, .03, Math.sin(pa) * .05)); }
-            fl.add(mesh(new T.SphereGeometry(.033, 6, 5), sm(0xf6b53d), 0, .05, 0));
-            ring.add(fl);
-          }
-          head.add(ring);
-        }
-        if (stage === 5) {
-          const crown = new T.Group(); crown.position.set(0, hr * .98, -hr * .2);
-          const gold = mat(0xffd34d, { emissive: 0xc98a1f, emissiveIntensity: .25 });
-          crown.add(mesh(new T.CylinderGeometry(.2, .22, .12, 10, 1, true), gold, 0, 0, 0));
-          for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; crown.add(mesh(new T.ConeGeometry(.05, .15, 4), gold, Math.cos(a) * .2, .12, Math.sin(a) * .2)); }
-          head.add(crown);
-          const glow = new T.PointLight(0xffe27a, .9, 4, 2); glow.position.set(0, 1.2, .5); g.add(glow);
-          const halo = new T.Mesh(new T.RingGeometry(.7, .95, 32), new T.MeshBasicMaterial({ color: 0xffe27a, transparent: true, opacity: .35, side: T.DoubleSide }));
-          halo.rotation.x = -Math.PI / 2; halo.position.y = .03; g.add(halo); parts.halo = halo;
-          const orbit = new T.Group(); orbit.position.y = head.position.y + .75;
-          for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2; orbit.add(mesh(new T.OctahedronGeometry(.07, 0), new T.MeshBasicMaterial({ color: 0xffe27a }), Math.cos(a) * .75, 0, Math.sin(a) * .75, false)); }
-          g.add(orbit); parts.orbit = orbit;
-        }
+        // 꾸미기 아이템을 붙일 자리
+        parts.hR = hr; parts.faceY = 0;
+        parts.neck = { y: head.position.y - hr * .85, r: hr * .85, z: head.position.z * .6 + br * sz * .42 };
+        parts.hand = handAnchor(parts.armR, -.2, .05);
+        parts.topY = head.position.y + hr;
         g.scale.setScalar(STAGE_SCALE[stage]);
         return parts;
       }
 
-      function setPetModel(species, stage) {
-        if (pet && pet.species === species && pet.stage === stage) return;
+      // =====================================================================
+      // 👕 캐릭터 꾸미기 — 머리·얼굴·목·손·효과 아이템
+      // 머리/얼굴 아이템은 '반지름 .6짜리 머리' 기준, 목 아이템은 '반지름 .4 목' 기준으로 만들고
+      // 동물마다 크기에 맞춰 늘리거나 줄여서 붙여요.
+      // =====================================================================
+      // 팔(늘린 공) 끝에 손잡이 자리를 만들어요: 팔의 늘어남·기울기를 되돌려서 물건이 똑바로 서요
+      function handAnchor(arm, endY, fwd) {
+        const comp = new T.Group(); comp.position.set(0, endY, fwd || 0);
+        comp.scale.set(1 / arm.scale.x, 1 / arm.scale.y, 1 / arm.scale.z);
+        const h = new T.Group(); h.quaternion.copy(arm.quaternion).invert();
+        comp.add(h); arm.add(comp); return h;
+      }
+      function goldMat() { return mat(0xffd34d, { emissive: 0xc98a1f, emissiveIntensity: .3 }); }
+      function starShape(ro, ri) {
+        const s = new T.Shape();
+        for (let i = 0; i < 10; i++) { const a = Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? ri : ro; if (i) s.lineTo(Math.cos(a) * r, Math.sin(a) * r); else s.moveTo(Math.cos(a) * r, Math.sin(a) * r); }
+        s.closePath(); return s;
+      }
+      function starMesh(ro, m, depth) {
+        const geo = new T.ExtrudeGeometry(starShape(ro, ro * .45), { depth: depth || .03, bevelEnabled: false });
+        geo.translate(0, 0, -(depth || .03) / 2); return new T.Mesh(geo, m);
+      }
+      // 효과용 그림(스프라이트): 항상 화면을 바라봐요
+      const fxTex = {};
+      function fxSprite(kind, color) {
+        const key = kind + (color || '');
+        if (!fxTex[key]) {
+          fxTex[key] = canvasTex(128, 128, function (c, w, h) {
+            c.clearRect(0, 0, w, h); c.lineJoin = 'round';
+            if (kind === 'heart') {
+              c.fillStyle = color || '#ff6b9a'; c.beginPath(); c.moveTo(64, 108);
+              c.bezierCurveTo(10, 70, 14, 22, 44, 22); c.bezierCurveTo(56, 22, 62, 32, 64, 40);
+              c.bezierCurveTo(66, 32, 72, 22, 84, 22); c.bezierCurveTo(114, 22, 118, 70, 64, 108); c.fill();
+              c.fillStyle = 'rgba(255,255,255,.55)'; c.beginPath(); c.ellipse(42, 42, 9, 6, -.6, 0, 7); c.fill();
+            } else if (kind === 'note') {
+              c.fillStyle = color || '#5b6cff'; c.beginPath(); c.ellipse(46, 92, 20, 15, -.4, 0, 7); c.fill();
+              c.fillRect(60, 22, 9, 72); c.beginPath(); c.moveTo(69, 22); c.quadraticCurveTo(100, 34, 92, 64); c.quadraticCurveTo(88, 44, 69, 44); c.fill();
+            } else if (kind === 'spark') {
+              const g = c.createRadialGradient(64, 64, 0, 64, 64, 60); g.addColorStop(0, '#ffffff'); g.addColorStop(.3, color || '#fff3a0'); g.addColorStop(1, 'rgba(255,240,150,0)');
+              c.fillStyle = g; c.beginPath();
+              for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, r = i % 2 ? 14 : 60; c.lineTo(64 + Math.cos(a) * r, 64 + Math.sin(a) * r); }
+              c.closePath(); c.fill();
+            } else if (kind === 'bolt') {
+              c.fillStyle = color || '#ffe14d'; c.strokeStyle = '#fff'; c.lineWidth = 6;
+              c.beginPath(); c.moveTo(72, 6); c.lineTo(30, 70); c.lineTo(60, 70); c.lineTo(46, 122); c.lineTo(98, 50); c.lineTo(66, 50); c.lineTo(84, 6); c.closePath(); c.stroke(); c.fill();
+            } else if (kind === 'flame') {
+              const g = c.createLinearGradient(0, 120, 0, 10); g.addColorStop(0, '#ff5a2b'); g.addColorStop(.55, '#ff9a2b'); g.addColorStop(1, '#ffe46b');
+              c.fillStyle = g; c.beginPath(); c.moveTo(64, 6); c.bezierCurveTo(90, 44, 112, 66, 104, 92); c.bezierCurveTo(98, 116, 80, 124, 64, 124);
+              c.bezierCurveTo(48, 124, 30, 116, 24, 92); c.bezierCurveTo(16, 66, 40, 44, 64, 6); c.fill();
+              c.fillStyle = 'rgba(255,250,200,.85)'; c.beginPath(); c.ellipse(64, 96, 16, 22, 0, 0, 7); c.fill();
+            }
+          });
+        }
+        const sp = new T.Sprite(new T.SpriteMaterial({ map: fxTex[key], transparent: true, depthWrite: false }));
+        return sp;
+      }
+
+      const OUTFIT_3D = {
+        // ---------- 머리 ----------
+        sprout: { slot: 'head', build: function () {
+          const g = new T.Group(); g.position.y = .56;
+          g.add(mesh(new T.CylinderGeometry(.02, .025, .25, 5), sm(0x4e8f3a), 0, .12, 0));
+          const l1 = ball(.1, 0x7cc35f, -.1, .26, 0, 1.4, .45, .8); l1.rotation.z = .4; g.add(l1);
+          const l2 = ball(.1, 0x8fd06f, .1, .28, 0, 1.4, .45, .8); l2.rotation.z = -.4; g.add(l2);
+          return g; } },
+        cap: { slot: 'head', build: function () {
+          const g = new T.Group(), c = 0x3d7be0;
+          const dome = new T.Mesh(new T.SphereGeometry(.5, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2), sm(c)); dome.position.y = .3; dome.scale.set(1.06, .7, 1.06); g.add(dome);
+          const brim = mesh(new T.CylinderGeometry(.36, .36, .045, 20), sm(0x2f66c9), 0, .32, .5); brim.scale.set(1, 1, .8); brim.rotation.x = .22; g.add(brim);
+          g.add(ball(.05, 0xffffff, 0, .65, 0));
+          const logo = ball(.09, 0xffffff, 0, .5, .43, 1, 1, .25); logo.rotation.x = -.75; g.add(logo);
+          g.rotation.x = -.18; return g; } },
+        headphones: { slot: 'head', build: function () {
+          const g = new T.Group(), d = sm(0x2f3542), a = sm(0x5ac8fa);
+          g.add(mesh(new T.TorusGeometry(.67, .045, 6, 28, Math.PI), d, 0, .04, -.04));
+          [-1, 1].forEach(function (s) {
+            const cup = mesh(new T.CylinderGeometry(.17, .17, .13, 18), d, s * .66, .04, -.04); cup.rotation.z = Math.PI / 2; g.add(cup);
+            const pad = mesh(new T.CylinderGeometry(.11, .11, .02, 16), a, s * .735, .04, -.04); pad.rotation.z = Math.PI / 2; g.add(pad);
+          });
+          return g; } },
+        flowerCrown: { slot: 'head', build: function () {
+          const cols = [0xff9eb5, 0xffe07a, 0xffffff, 0xb9a4f5, 0xff8a7a];
+          const ring = new T.Group(); ring.position.y = .4; ring.rotation.x = -.18;
+          ring.add(mesh(new T.TorusGeometry(.5, .035, 6, 24), sm(0x6cb758), 0, 0, 0)).rotation.x = Math.PI / 2;
+          for (let i = 0; i < 9; i++) {
+            const a = i / 9 * Math.PI * 2, fl = new T.Group(); fl.position.set(Math.cos(a) * .5, .02, Math.sin(a) * .5);
+            for (let k = 0; k < 5; k++) { const pa = k / 5 * Math.PI * 2; fl.add(mesh(new T.SphereGeometry(.055, 6, 5), sm(cols[i % 5]), Math.cos(pa) * .06, .03, Math.sin(pa) * .06)); }
+            fl.add(mesh(new T.SphereGeometry(.04, 6, 5), sm(0xf6b53d), 0, .05, 0)); ring.add(fl);
+          }
+          return ring; } },
+        crown: { slot: 'head', build: function () {
+          const g = new T.Group(); g.position.y = .58; const gold = goldMat();
+          g.add(mesh(new T.CylinderGeometry(.26, .28, .14, 10, 1, true), gold, 0, 0, 0));
+          for (let i = 0; i < 5; i++) { const a = i / 5 * Math.PI * 2; g.add(mesh(new T.ConeGeometry(.06, .18, 4), gold, Math.cos(a) * .25, .14, Math.sin(a) * .25)); }
+          g.add(ball(.05, 0xe2557a, 0, .02, .27)); g.add(ball(.04, 0x4fb3e8, .2, .02, .17)); g.add(ball(.04, 0x4fb3e8, -.2, .02, .17));
+          return g; } },
+        // ---------- 얼굴 ----------
+        roundGlasses: { slot: 'face', build: function () {
+          const g = new T.Group(), d = sm(0x4a3a30), lens = new T.MeshBasicMaterial({ color: 0xdff3ff, transparent: true, opacity: .3, depthWrite: false });
+          [-1, 1].forEach(function (s) {
+            g.add(mesh(new T.TorusGeometry(.12, .02, 6, 22), d, s * .22, .06, .63));
+            g.add(mesh(new T.CircleGeometry(.11, 18), lens, s * .22, .06, .63, false));
+            const t = mesh(new T.BoxGeometry(.022, .022, .38), d, s * .43, .08, .46); t.rotation.y = s * .5; g.add(t);
+          });
+          g.add(mesh(new T.BoxGeometry(.2, .022, .022), d, 0, .1, .645));
+          return g; } },
+        sunglasses: { slot: 'face', build: function () {
+          const g = new T.Group(), d = sm(0x1d2230), shine = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .55 });
+          [-1, 1].forEach(function (s) {
+            const l = mesh(new T.BoxGeometry(.25, .16, .035), d, s * .21, .06, .64); l.rotation.y = -s * .12; g.add(l);
+            g.add(mesh(new T.BoxGeometry(.06, .02, .01), shine, s * .21 - .06, .11, .662, false));
+            const t = mesh(new T.BoxGeometry(.024, .024, .4), d, s * .44, .1, .45); t.rotation.y = s * .5; g.add(t);
+          });
+          g.add(mesh(new T.BoxGeometry(.62, .04, .035), d, 0, .14, .645));
+          return g; } },
+        starGlasses: { slot: 'face', build: function () {
+          const g = new T.Group(), gold = goldMat(), lens = new T.MeshBasicMaterial({ color: 0xff7ab8, transparent: true, opacity: .55, depthWrite: false });
+          [-1, 1].forEach(function (s) {
+            const st = starMesh(.17, gold, .035); st.position.set(s * .23, .07, .64); st.rotation.z = s * .1; g.add(st);
+            const ln = new T.Mesh(new T.ShapeGeometry(starShape(.11, .05)), lens); ln.position.set(s * .23, .07, .662); ln.rotation.z = s * .1; g.add(ln);
+            const t = mesh(new T.BoxGeometry(.024, .024, .38), gold, s * .44, .1, .45); t.rotation.y = s * .5; g.add(t);
+          });
+          g.add(mesh(new T.BoxGeometry(.14, .03, .03), gold, 0, .1, .645));
+          return g; } },
+        // ---------- 목 ----------
+        bowtie: { slot: 'neck', build: function () {
+          const g = new T.Group(), c = sm(0xff5d7a);
+          [-1, 1].forEach(function (s) { const k = mesh(new T.ConeGeometry(.1, .18, 4), c, s * .1, -.06, .48); k.rotation.z = s * Math.PI / 2; k.scale.z = .5; g.add(k); });
+          g.add(ball(.05, 0xd94262, 0, -.06, .5));
+          return g; } },
+        bell: { slot: 'neck', build: function () {
+          const g = new T.Group();
+          const col = mesh(new T.TorusGeometry(.42, .04, 6, 24), sm(0xe2574c), 0, -.02, 0); col.rotation.x = Math.PI / 2; g.add(col);
+          const gold = goldMat(); g.add(ball(.085, 0xffd34d, 0, -.12, .47)); g.children[g.children.length - 1].material = gold;
+          g.add(mesh(new T.BoxGeometry(.1, .012, .02), sm(0x8a6a1f), 0, -.14, .55));
+          return g; } },
+        scarf: { slot: 'neck', build: function () {
+          const g = new T.Group(), c = sm(0xe46a6a);
+          const s = mesh(new T.TorusGeometry(.42, .1, 8, 20), c, 0, 0, 0); s.rotation.x = Math.PI / 2; s.scale.set(1.05, 1, 1); g.add(s);
+          [[.14, .2], [.24, .05]].forEach(function (q, i) { const t = mesh(new T.BoxGeometry(.16, .32, .07), c, q[0], -.18 - i * .03, .44); t.rotation.z = q[1]; g.add(t); });
+          [0, 1, 2].forEach(function (i) { g.add(mesh(new T.BoxGeometry(.165, .025, .075), sm(0xffffff), .14, -.1 - i * .09, .445)); });
+          return g; } },
+        medal: { slot: 'neck', build: function () {
+          const g = new T.Group();
+          [[-1, 0x3d7be0], [1, 0xe2574c]].forEach(function (q) { const r = mesh(new T.BoxGeometry(.07, .3, .02), sm(q[1]), q[0] * .08, -.12, .46); r.rotation.z = q[0] * .4; g.add(r); });
+          const gold = goldMat();
+          const disc = mesh(new T.CylinderGeometry(.13, .13, .035, 20), gold, 0, -.3, .48); disc.rotation.x = Math.PI / 2; g.add(disc);
+          const st = starMesh(.07, sm(0xfff3b0), .02); st.position.set(0, -.3, .5); g.add(st);
+          return g; } },
+        // ---------- 손 ----------
+        pencil: { slot: 'hand', build: function () {
+          const g = new T.Group(); g.position.set(0, .02, .06); g.rotation.x = .3;
+          g.add(mesh(new T.CylinderGeometry(.04, .04, .38, 6), sm(0xf5c542), 0, .14, 0));
+          g.add(mesh(new T.ConeGeometry(.04, .09, 6), sm(0xf0d2a0), 0, .375, 0));
+          g.add(mesh(new T.ConeGeometry(.014, .03, 6), sm(0x3a2e2a), 0, .41, 0));
+          g.add(mesh(new T.CylinderGeometry(.042, .042, .04, 8), sm(0xb8bcc6), 0, -.07, 0));
+          g.add(mesh(new T.CylinderGeometry(.04, .04, .07, 8), sm(0xff8fa8), 0, -.12, 0));
+          return g; } },
+        basketball: { slot: 'hand', build: function () {
+          const g = new T.Group(); g.position.set(0, .04, .14);
+          g.add(mesh(new T.SphereGeometry(.16, 18, 14), sm(0xf08a3a), 0, 0, 0));
+          const ln = sm(0x5a2e14);
+          [0, Math.PI / 2].forEach(function (r) { const t = mesh(new T.TorusGeometry(.162, .009, 4, 28), ln, 0, 0, 0); t.rotation.y = r; g.add(t); });
+          const eq = mesh(new T.TorusGeometry(.162, .009, 4, 28), ln, 0, 0, 0); eq.rotation.x = Math.PI / 2; g.add(eq);
+          return g; } },
+        book: { slot: 'hand', build: function () {
+          const g = new T.Group(); g.position.set(0, .1, .13); g.rotation.y = -.25;
+          g.add(mesh(new T.BoxGeometry(.26, .32, .07), sm(0x3c6fd1), 0, 0, 0));
+          g.add(mesh(new T.BoxGeometry(.24, .3, .072), sm(0xfffaf0), .015, 0, 0));
+          g.add(mesh(new T.BoxGeometry(.14, .06, .01), sm(0xffd34d), 0, .07, .04));
+          return g; } },
+        sword: { slot: 'hand', build: function () {
+          const g = new T.Group(); g.position.set(0, 0, .07); g.rotation.x = .2;
+          g.add(mesh(new T.CylinderGeometry(.028, .028, .15, 6), sm(0x7a4a2a), 0, .02, 0));
+          g.add(mesh(new T.BoxGeometry(.2, .04, .06), sm(0x9b5b3a), 0, .11, 0));
+          g.add(mesh(new T.BoxGeometry(.07, .5, .025), sm(0xe8c590), 0, .37, 0));
+          const tip = mesh(new T.ConeGeometry(.05, .09, 4), sm(0xe8c590), 0, .66, 0); tip.rotation.y = Math.PI / 4; tip.scale.z = .36; g.add(tip);
+          return g; } },
+        trophy: { slot: 'hand', build: function () {
+          const g = new T.Group(); g.position.set(0, .02, .14); const gold = goldMat();
+          g.add(mesh(new T.BoxGeometry(.18, .06, .14), sm(0x6e4529), 0, -.03, 0));
+          g.add(mesh(new T.CylinderGeometry(.03, .045, .1, 10), gold, 0, .05, 0));
+          g.add(mesh(new T.CylinderGeometry(.13, .06, .17, 16), gold, 0, .18, 0));
+          [-1, 1].forEach(function (s) { const h = mesh(new T.TorusGeometry(.06, .016, 6, 12, Math.PI), gold, s * .13, .2, 0); h.rotation.z = -s * Math.PI / 2; g.add(h); });
+          return g; } },
+        wand: { slot: 'hand', build: function () {
+          const g = new T.Group(); g.position.set(0, 0, .07); g.rotation.x = .25;
+          g.add(mesh(new T.CylinderGeometry(.02, .02, .44, 6), sm(0x5a3d7a), 0, .16, 0));
+          const st = starMesh(.1, mat(0xffe27a, { emissive: 0xffc93c, emissiveIntensity: .7 }), .04); st.position.y = .44; g.add(st);
+          const sp = fxSprite('spark'); sp.scale.set(.35, .35, 1); sp.position.y = .44; g.add(sp);
+          g.userData.fx = function (t) { st.rotation.y = t * 2; const k = .28 + Math.abs(Math.sin(t * 4)) * .14; sp.scale.set(k, k, 1); };
+          return g; } },
+        // ---------- 효과 (몸 전체 기준) ----------
+        sparkle: { slot: 'effect', build: function (parts) {
+          const g = new T.Group(), list = [];
+          for (let i = 0; i < 5; i++) { const s = fxSprite('spark'); g.add(s); list.push({ s: s, ph: i * 1.3, h: .25 + (i / 4) * (parts.topY - .1) }); }
+          g.userData.fx = function (t) { list.forEach(function (o, i) { const a = t * .7 + o.ph; o.s.position.set(Math.cos(a) * .8, o.h + Math.sin(t * 1.3 + i) * .08, Math.sin(a) * .8); const k = .08 + Math.max(0, Math.sin(t * 3 + o.ph * 2)) * .22; o.s.scale.set(k, k, 1); }); };
+          return g; } },
+        notes: { slot: 'effect', build: function (parts) {
+          const g = new T.Group(), cols = ['#5b6cff', '#ff6b9a', '#2fb67c'], list = [];
+          for (let i = 0; i < 3; i++) { const s = fxSprite('note', cols[i]); g.add(s); list.push(s); }
+          g.userData.fx = function (t) { list.forEach(function (s, i) { const u = ((t / 2.4) + i / 3) % 1, sd = i % 2 ? 1 : -1; s.position.set(sd * (.45 + u * .25) + Math.sin(u * 9) * .06, parts.topY - .1 + u * .9, .1); s.material.opacity = Math.sin(u * Math.PI); s.scale.set(.26, .26, 1); }); };
+          return g; } },
+        hearts: { slot: 'effect', build: function (parts) {
+          const g = new T.Group(), list = [];
+          for (let i = 0; i < 4; i++) { const s = fxSprite('heart', i % 2 ? '#ff8fb8' : '#ff5d8a'); g.add(s); list.push(s); }
+          g.userData.fx = function (t) { list.forEach(function (s, i) { const u = ((t / 2.8) + i / 4) % 1, a = i * 1.7; s.position.set(Math.cos(a) * .55 + Math.sin(u * 7 + i) * .05, parts.topY * .55 + u * 1.0, Math.sin(a) * .3 + .15); s.material.opacity = Math.sin(u * Math.PI); const k = .16 + u * .1; s.scale.set(k, k, 1); }); };
+          return g; } },
+        lightning: { slot: 'effect', build: function (parts) {
+          const g = new T.Group(), list = [];
+          for (let i = 0; i < 4; i++) { const s = fxSprite('bolt'); g.add(s); list.push({ s: s, a: i * Math.PI / 2 + .4, next: 0 }); }
+          const glow = new T.PointLight(0xfff19a, 0, 3, 2); glow.position.y = parts.topY * .6; g.add(glow);
+          g.userData.fx = function (t) {
+            let on = 0;
+            list.forEach(function (o, i) {
+              const ph = (t * 1.7 + i * .37) % 1, vis = ph < .16;
+              o.s.visible = vis; if (vis) { on++; o.s.position.set(Math.cos(o.a + Math.floor(t * 1.7 + i * .37)) * .75, parts.topY * (.35 + (i % 2) * .4), Math.sin(o.a + Math.floor(t * 1.7 + i * .37)) * .5); o.s.scale.set(.32, .38, 1); o.s.material.rotation = (i % 2 ? .3 : -.3); }
+            });
+            glow.intensity = on ? .7 : 0;
+          };
+          return g; } },
+        aura: { slot: 'effect', build: function (parts) {
+          const g = new T.Group();
+          const halo = new T.Mesh(new T.RingGeometry(.7, .95, 32), new T.MeshBasicMaterial({ color: 0xffe27a, transparent: true, opacity: .35, side: T.DoubleSide, depthWrite: false }));
+          halo.rotation.x = -Math.PI / 2; halo.position.y = .03; g.add(halo);
+          const glow = new T.PointLight(0xffe27a, .8, 4, 2); glow.position.set(0, 1.2, .5); g.add(glow);
+          const orbit = new T.Group(); orbit.position.y = parts.topY + .25; g.add(orbit);
+          const stars = [];
+          for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI * 2; const s = fxSprite('spark', '#ffd84d'); s.position.set(Math.cos(a) * .75, 0, Math.sin(a) * .75); s.scale.set(.28, .28, 1); orbit.add(s); stars.push(s); }
+          g.userData.fx = function (t, dt) { halo.rotation.z += dt; orbit.rotation.y += dt * 1.2; stars.forEach(function (s, i) { const k = .22 + Math.abs(Math.sin(t * 3 + i)) * .12; s.scale.set(k, k, 1); }); halo.material.opacity = .28 + Math.sin(t * 2) * .08; };
+          return g; } },
+        fire: { slot: 'effect', build: function (parts) {
+          const g = new T.Group(), list = [];
+          for (let i = 0; i < 7; i++) { const s = fxSprite('flame'); g.add(s); list.push({ s: s, a: i / 7 * Math.PI * 2 }); }
+          const glow = new T.PointLight(0xff8a3a, .7, 3, 2); glow.position.y = .4; g.add(glow);
+          g.userData.fx = function (t) {
+            list.forEach(function (o, i) {
+              const u = ((t * 1.4) + i / 7) % 1, a = o.a + t * .8;
+              o.s.position.set(Math.cos(a) * (.6 - u * .15), .12 + u * .55, Math.sin(a) * (.6 - u * .15));
+              const k = (.34 - u * .22) * (1 + Math.sin(t * 20 + i) * .08); o.s.scale.set(k * .8, k, 1); o.s.material.opacity = 1 - u * .8;
+            });
+            glow.intensity = .55 + Math.sin(t * 17) * .15;
+          };
+          return g; } }
+      };
+      W.outfitIds = Object.keys(OUTFIT_3D);
+
+      // 장착: outfit = { head, face, neck, hand, effect } (아이템 id)
+      function attachOutfit(parts, outfit) {
+        const res = { holders: [], fx: [] };
+        if (!outfit || !parts.head) return res;
+        ['head', 'face', 'neck', 'hand', 'effect'].forEach(function (slot) {
+          const def = OUTFIT_3D[outfit[slot]]; if (!def || def.slot !== slot) return;
+          const it = def.build(parts);
+          const holder = new T.Group(); holder.add(it);
+          if (slot === 'head' || slot === 'face') { holder.scale.setScalar(parts.hR / .6); if (slot === 'face') holder.position.y = parts.faceY * (parts.hR / .6); parts.head.add(holder); }
+          else if (slot === 'neck') { holder.scale.setScalar(parts.neck.r / .4); holder.position.set(0, parts.neck.y, parts.neck.z); parts.body.add(holder); }
+          else if (slot === 'hand') parts.hand.add(holder);
+          else parts.g.add(holder);
+          holder.traverse(function (m) { if (m.isMesh) m.userData.key = '__pet'; if (m.userData.fx) res.fx.push(m.userData.fx); });
+          res.holders.push(holder);
+        });
+        return res;
+      }
+      function applyOutfit(outfit) {
+        if (!pet) return;
+        const sig = JSON.stringify(outfit || {});
+        if (pet.outfitSig === sig) return;
+        pet.outfitSig = sig;
+        (pet.outfit || []).forEach(function (o) { if (o.parent) o.parent.remove(o); });
+        pet.outfit = []; pet.fx = [];
+        if (pet.stage === 0) return;
+        const r = attachOutfit(pet.parts, outfit);
+        pet.outfit = r.holders; pet.fx = r.fx;
+      }
+      W.setOutfit = function (outfit) { if (W.home) W.home.outfit = outfit; applyOutfit(outfit); };
+
+      function setPetModel(species, stage, outfit) {
+        if (pet && pet.species === species && pet.stage === stage) { applyOutfit(outfit); return; }
         if (pet) root.remove(pet.parts.g);
         const parts = buildPet(species, stage);
         root.add(parts.g);
         pet = { parts: parts, species: species, stage: stage };
         parts.g.traverse(function (m) { if (m.isMesh) { m.userData.key = '__pet'; } });
+        applyOutfit(outfit);
         placePet();
       }
       function placePet() {
@@ -4283,9 +4470,10 @@
       // info: {species, stage, mood:{sad}, food, mail, study, words, feedback, bonus, wroteToday, greet}
       W.setHome = function (info) {
         const first = !W.home;
+        info = Object.assign({}, info, { stage: vis(info.stage) });
         W.home = info;
         if (!W.ready || W.visiting) return;
-        if (!P.evolving) setPetModel(info.species, info.stage);
+        if (!P.evolving) setPetModel(info.species, info.stage, info.outfit);
         setStageDecor(info.stage);
         setBadge('mailbox', info.mail > 0 ? info.mail : '');
         if (objects.mailbox) objects.mailbox.flag.rotation.z = info.mail > 0 ? 0 : -Math.PI / 2;
@@ -4296,7 +4484,7 @@
         setBadge('jar', info.words > 0 ? info.words : '');
         setBadge('chest', info.bonus > 0 ? info.bonus : '');
         if (objects.chest) { objects.chest.coins.visible = info.bonus > 0; objects.chest.lid.rotation.x = info.bonus > 0 ? -.55 : 0; }
-        buildBeads(info.words || 0);
+        buildBooks(info.words || 0);
         if (food) { food.visible = !!info.food && info.stage > 0; food.userData.fruit.visible = true; }
         if (first) {
           P.x = .6; P.z = 1.6; P.state = 'idle'; P.until = performance.now() + 1500;
@@ -4316,16 +4504,21 @@
         b.style.display = b.textContent ? '' : 'none';
         o.label.classList.toggle('has-badge', !!b.textContent);
       }
-      let beadCount = -1;
-      function buildBeads(n) {
-        const o = objects.jar; if (!o) return;
-        const k = Math.min(n, 36); if (k === beadCount) return; beadCount = k;
-        while (o.beads.children.length) o.beads.remove(o.beads.children[0]);
-        const cols = [0xff8fa8, 0xffd34d, 0x7cc6e8, 0x9fe0a7, 0xb79cf0, 0xff9f6a];
+      // 단어 수만큼 책장에 책을 꽂아요 (한 칸에 7권, 최대 21권)
+      let bookCount = -1;
+      function buildBooks(n) {
+        const o = objects.jar; if (!o || !o.books) return;
+        const k = Math.min(n, 21); if (k === bookCount) return; bookCount = k;
+        while (o.books.children.length) o.books.remove(o.books.children[0]);
+        const cols = [0xe2574c, 0x5ba8e0, 0xf5b83d, 0x6bbf59, 0xb07bd6, 0xff8fa8, 0x4fb3a9];
+        const rows = [.35, .95, 1.55];
         for (let i = 0; i < k; i++) {
-          const layer = Math.floor(i / 6), a = (i % 6) / 6 * 6.28 + layer;
-          const b = mesh(new T.SphereGeometry(.075, 8, 6), mat(cols[i % cols.length], { emissive: cols[i % cols.length], emissiveIntensity: .25 }), Math.cos(a) * .19, .66 + layer * .11, Math.sin(a) * .19, false);
-          o.beads.add(b);
+          const row = Math.floor(i / 7), j = i % 7, y = rows[row];
+          const w = .13 + ((i * 37) % 5) * .012, h = .36 + ((i * 53) % 7) * .02;
+          const x = -.6 + j * .172;
+          const b = mesh(new T.BoxGeometry(w, h, .34), flat(cols[(j + row * 3) % cols.length]), x + w / 2, y - .24 + h / 2, .12);
+          if (j === 6 && i === k - 1) b.rotation.z = .2;
+          o.books.add(b);
         }
       }
 
@@ -4381,9 +4574,10 @@
       // 진화 연출: 이전 단계 → 빛나며 회전 → 새 단계
       W.evolve = function (fromStage, toStage, done) {
         if (!W.ready || !W.home) { if (done) done(); return; }
+        fromStage = vis(fromStage); toStage = vis(toStage);
         const sp = W.home.species;
         P.evolving = true;
-        setPetModel(sp, fromStage);
+        setPetModel(sp, fromStage, W.home.outfit);
         P.state = 'idle'; P.until = performance.now() + 99999;
         W.focus(true);
         hideBubble();
@@ -4403,7 +4597,7 @@
             requestAnimationFrame(step);
           } else if (!swapped) {
             swapped = true;
-            setPetModel(sp, toStage);
+            setPetModel(sp, toStage, W.home.outfit);
             pet.parts.g.rotation.y = 0; P.dir = 0;
             burst();
             if (flash) setTimeout(function () { flash.classList.remove('on'); }, 120);
@@ -4744,8 +4938,7 @@
         parts.body.rotation.x = P.state === 'eat' ? .25 + Math.sin(t * 12) * .1 : (walking ? .06 : 0);
         parts.body.rotation.z = P.state === 'sleep' ? .12 : 0;
         if (parts.tail) parts.tail.rotation.y = Math.sin(t * (walking ? 10 : 3)) * (pet.species === 'cat' ? .18 : .3);
-        if (parts.halo) parts.halo.rotation.z += dt;
-        if (parts.orbit) parts.orbit.rotation.y += dt * 1.2;
+        if (pet.fx) pet.fx.forEach(function (f) { f(t, dt); });
         // 표정
         const blink = (t % 4.3) > 4.15;
         let ey = 1;
@@ -5415,32 +5608,50 @@
     };
     const PET_SPECIES_ORDER = ['tiger', 'wolf', 'chick', 'bear', 'cat', 'quokka'];
     // 병아리는 자라면 닭이 돼요: 단계에 따라 이름·이모지가 바뀌어요
-    function petEmoji(species, stage) { if (species === 'chick') return stage >= 4 ? '🐔' : '🐥'; return (PET_SPECIES[species] || {}).emoji || '🐾'; }
-    function petKind(species, stage) { if (species === 'chick') return stage >= 4 ? '닭' : (stage === 3 ? '중닭' : '병아리'); return (PET_SPECIES[species] || {}).name || ''; }
-    // 🎁 진화 단계마다 열리는 꾸미기 소품 (stage: BADGE_TIERS 번호, max: 놓을 수 있는 개수)
-    const PROP_CATALOG = [
-      { type: 'flowerbed', name: '꽃밭', emoji: '🌷', stage: 1, max: 3 },
-      { type: 'stool', name: '통나무 의자', emoji: '🪵', stage: 1, max: 2 },
-      { type: 'bench', name: '벤치', emoji: '🪑', stage: 2, max: 2 },
-      { type: 'mushroom', name: '버섯', emoji: '🍄', stage: 2, max: 3 },
-      { type: 'lamp', name: '가로등', emoji: '💡', stage: 3, max: 2 },
-      { type: 'sign', name: '이름 표지판', emoji: '🪧', stage: 3, max: 1 },
-      { type: 'swing', name: '그네', emoji: '🎠', stage: 4, max: 1 },
-      { type: 'fountain', name: '분수', emoji: '⛲', stage: 4, max: 1 },
-      { type: 'statue', name: '황금 트로피', emoji: '🏆', stage: 5, max: 1 },
-      { type: 'balloon', name: '열기구', emoji: '🎈', stage: 5, max: 1 }
+    function petEmoji(species, stage) { if (species === 'chick') return stage >= 3 ? '🐔' : '🐥'; return (PET_SPECIES[species] || {}).emoji || '🐾'; }
+    function petKind(species, stage) { if (species === 'chick') return stage >= 3 ? '닭' : '병아리'; return (PET_SPECIES[species] || {}).name || ''; }
+    // 👕 캐릭터 꾸미기 아이템 (stage: 열리는 BADGE_TIERS 번호 — 1 아기, 2 꼬마, 3 어른, 4 전설)
+    const OUTFIT_SLOTS = [
+      { id: 'head', name: '머리', emoji: '🎩' }, { id: 'face', name: '얼굴', emoji: '👓' }, { id: 'neck', name: '목', emoji: '🎀' },
+      { id: 'hand', name: '손', emoji: '✋' }, { id: 'effect', name: '효과', emoji: '✨' }
     ];
-    const OBJECT_NAMES = { house: '🏠 집', mailbox: '📮 우체통', board: '📎 게시판', jar: '🫙 유리병', arcade: '🎮 오락기', desk: '📖 책상', calendar: '📅 달력', chest: '💰 보물상자' };
-    function layoutKey_() { return 'ei_layout_' + STATE.studentClass + '_' + STATE.studentNumber; }
-    function loadLayoutRec() { try { return JSON.parse(localStorage.getItem(layoutKey_()) || 'null'); } catch (e) { return null; } }
-    function saveLayoutRec(rec) { try { localStorage.setItem(layoutKey_(), JSON.stringify(rec)); } catch (e) { } }
-    function saveIslandLayout(L) {
-      const rec = { layout: L, updatedAt: Date.now() };
-      saveLayoutRec(rec);
-      gsRun('saveIslandLayout', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(L)).catch(function () { });
+    const OUTFIT_CATALOG = [
+      { id: 'sprout', slot: 'head', name: '새싹', emoji: '🌱', stage: 1 },
+      { id: 'bowtie', slot: 'neck', name: '나비넥타이', emoji: '🎀', stage: 1 },
+      { id: 'pencil', slot: 'hand', name: '연필', emoji: '✏️', stage: 1 },
+      { id: 'sparkle', slot: 'effect', name: '반짝반짝', emoji: '✨', stage: 1 },
+      { id: 'cap', slot: 'head', name: '야구 모자', emoji: '🧢', stage: 2 },
+      { id: 'roundGlasses', slot: 'face', name: '동그란 안경', emoji: '👓', stage: 2 },
+      { id: 'bell', slot: 'neck', name: '방울 목걸이', emoji: '🔔', stage: 2 },
+      { id: 'basketball', slot: 'hand', name: '농구공', emoji: '🏀', stage: 2 },
+      { id: 'book', slot: 'hand', name: '영어책', emoji: '📘', stage: 2 },
+      { id: 'notes', slot: 'effect', name: '음표', emoji: '🎵', stage: 2 },
+      { id: 'headphones', slot: 'head', name: '헤드폰', emoji: '🎧', stage: 3 },
+      { id: 'flowerCrown', slot: 'head', name: '꽃 화관', emoji: '💐', stage: 3 },
+      { id: 'sunglasses', slot: 'face', name: '선글라스', emoji: '🕶️', stage: 3 },
+      { id: 'scarf', slot: 'neck', name: '빨간 목도리', emoji: '🧣', stage: 3 },
+      { id: 'sword', slot: 'hand', name: '나무 검', emoji: '🗡️', stage: 3 },
+      { id: 'hearts', slot: 'effect', name: '하트', emoji: '💕', stage: 3 },
+      { id: 'lightning', slot: 'effect', name: '번개', emoji: '⚡', stage: 3 },
+      { id: 'crown', slot: 'head', name: '왕관', emoji: '👑', stage: 4 },
+      { id: 'starGlasses', slot: 'face', name: '별 안경', emoji: '🌟', stage: 4 },
+      { id: 'medal', slot: 'neck', name: '금메달', emoji: '🥇', stage: 4 },
+      { id: 'trophy', slot: 'hand', name: '트로피', emoji: '🏆', stage: 4 },
+      { id: 'wand', slot: 'hand', name: '마법봉', emoji: '🪄', stage: 4 },
+      { id: 'aura', slot: 'effect', name: '전설의 오라', emoji: '🌠', stage: 4 },
+      { id: 'fire', slot: 'effect', name: '불꽃', emoji: '🔥', stage: 4 }
+    ];
+    function outfitItem(id) { return OUTFIT_CATALOG.find(function (o) { return o.id === id; }) || null; }
+    // 지금 단계에서 쓸 수 있는 것만 남겨요 (점수가 깎여서 잠긴 아이템은 잠시 벗겨져요)
+    function wornOutfit(pet, stage) {
+      const out = {}, o = (pet && pet.outfit) || {};
+      OUTFIT_SLOTS.forEach(function (s) { const it = outfitItem(o[s.id]); if (it && it.slot === s.id && stage >= it.stage) out[s.id] = it.id; });
+      return out;
     }
-    // 로그인하면 서버(또는 체험 서버)의 내 섬 정보(친구·배치)를 받아와요. 다른 기기에서 고른 친구도 그대로!
-    function syncIslandLayoutFromServer() {
+    function newOutfitBetween(from, to) { return OUTFIT_CATALOG.filter(function (p) { return p.stage > from && p.stage <= to; }); }
+    const OBJECT_NAMES = { house: '🏠 집', mailbox: '📮 우체통', board: '📎 게시판', jar: '📚 책장', arcade: '🎮 오락기', desk: '📖 책상', calendar: '📅 달력', chest: '💰 보물상자' };
+    // 로그인하면 서버(또는 체험 서버)의 내 친구 정보(종류·이름·꾸미기)를 받아와요. 다른 기기에서 고른 친구도 그대로!
+    function syncIslandFromServer() {
       const owner = STATE.studentClass + '|' + STATE.studentNumber;
       if (STATE.layoutSyncedFor === owner) return;
       STATE.layoutSyncedFor = owner;
@@ -5453,10 +5664,7 @@
         } else if (localPet && (!r || !r.pet)) {
           gsRun('saveIslandPet', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(localPet)).catch(function () { });
         }
-        const local = loadLayoutRec();
-        if (r && r.layout && (!local || (r.updatedAt || 0) > (local.updatedAt || 0))) { saveLayoutRec({ layout: r.layout, updatedAt: r.updatedAt || Date.now() }); changed = true; }
-        else if (local && local.layout && (!r || !r.layout)) gsRun('saveIslandLayout', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(local.layout)).catch(function () { });
-        if (changed && STATE.screen === 'studentHome' && !(WORLD.isEditing && WORLD.isEditing())) render();
+        if (changed && STATE.screen === 'studentHome') render();
       }).catch(function () { });
       loadClassIslands();
     }
@@ -5464,7 +5672,7 @@
       gsRun('getClassIslands', STATE.studentClass).then(function (list) {
         STATE.classIslands = Array.isArray(list) ? list : [];
         STATE.classIslandsAt = Date.now();
-        if (cb) cb(); else if (STATE.screen === 'studentHome' && (STATE.studentPanel === 'friends' || STATE.studentPanel === 'boss')) render();
+        if (cb) cb(); else if (STATE.screen === 'studentHome' && STATE.studentPanel === 'boss') render();
       }).catch(function () { STATE.classIslands = STATE.classIslands || []; if (cb) cb(); });
     }
 
@@ -5527,7 +5735,7 @@
     function bossSeenKey_(b) { return 'ei_boss_seen_' + b.cls + '_' + b.week.key; }
     // 데미지가 늘어난 만큼 친구가 보스를 공격하는 연출
     function playBossProgress(b) {
-      if (!WORLD.ready || STATE.visit || STATE.studentPanel === 'adopt') return;
+      if (!WORLD.ready || STATE.studentPanel === 'adopt') return;
       let seen = null; try { const v = localStorage.getItem(bossSeenKey_(b)); seen = v === null ? null : Number(v); } catch (e) { }
       if (seen !== null && b.dmg <= seen) return;
       const before = seen || 0, diff = b.dmg - before;
@@ -5546,9 +5754,10 @@
       }, 1300);
     }
 
-    function decoSeenKey_() { return 'ei_deco_seen_' + STATE.studentClass + '_' + STATE.studentNumber; }
-    function decoSeenStage() { try { const v = localStorage.getItem(decoSeenKey_()); return v === null ? -1 : Number(v); } catch (e) { return -1; } }
-    function newPropsBetween(from, to) { return PROP_CATALOG.filter(function (p) { return p.stage > from && p.stage <= to; }); }
+    // 새로 열린 꾸미기 아이템이 있으면 메뉴에 NEW 표시
+    function dressSeenKey_() { return 'ei_dress_seen_' + STATE.studentClass + '_' + STATE.studentNumber; }
+    function dressSeenStage() { try { const v = localStorage.getItem(dressSeenKey_()); return v === null ? 0 : Number(v); } catch (e) { return 0; } }
+    function markDressSeen(stage) { try { localStorage.setItem(dressSeenKey_(), String(stage)); } catch (e) { } }
     STATE.studentPanel = null;
     STATE.adoptSel = null;
     STATE.menuOpen = false;
@@ -5634,7 +5843,7 @@
       else lines.push('오늘 일지 아직이지? 책상에서 기다릴게~', '오늘은 무엇을 배웠어?');
       if (c.streak >= 3) lines.push(c.streak + '일 연속이라니! 대단해 🔥');
       if (c.next) lines.push('앞으로 ' + (c.next.min - c.points) + 'P면 나 진화할 수 있어!'); else lines.push('나 이제 전설의 친구야 👑');
-      if (c.words > 0) lines.push('유리병에 단어가 ' + c.words + '개나 모였어!');
+      if (c.words > 0) lines.push('책장에 단어책이 ' + c.words + '권이나 모였어!');
       if (c.mood.sad) lines.push('요즘 일지가 없어서 심심했어…');
       lines.push('섬 산책 좋아~ 🌼', '오락기에서 단어 게임 한 판 어때? 🎮', '영어 단어 하나 알려 줄래?');
       return pick(lines);
@@ -5710,31 +5919,20 @@
       bindGame();
       if (mode === 'teacher') { refreshTeacherAccounts(); loadBossAttacks(); }
       if (mode !== 'teacher' && mode !== 'loading') STATE.accountsFetchedAt = 0;
-      if (mode !== 'home') STATE.visit = null;
-      if (STATE.visit) document.body.setAttribute('data-visit', '1'); else document.body.removeAttribute('data-visit');
-      if (mode === 'home' && STATE.visit) {
-        WORLD.setVisit(STATE.visit);
-        WORLD.setBoss(bossFor(STATE.studentClass));
-        WORLD.focus(false); WORLD.setOffset(0, 0);
-      } else if (mode === 'home') {
-        WORLD.setVisit(null);
+      if (mode === 'home') {
         const c = gameCtx();
         WORLD.setHome({
           species: c.pet.species, stage: (STATE.studentPanel === 'adopt' && c.stage === 0) ? 2 : c.stage, mood: c.mood, wroteToday: c.wroteToday,
+          outfit: wornOutfit(c.pet, c.stage),
           food: c.wroteToday && !c.fed, mail: c.mail, study: c.study, words: c.words, feedback: c.feedback, bonus: c.bonus,
           greet: STATE.studentPanel === 'adopt' ? '' : petLine('greet')
         });
-        if (WORLD.ready && !WORLD.isEditing()) { const rec = loadLayoutRec(); WORLD.setLayout(rec ? rec.layout : null, c.pet.name); }
-        if (WORLD.ready) {
-          if (STATE.studentPanel === 'decorate' && !WORLD.isEditing()) WORLD.startEdit();
-          if (STATE.studentPanel !== 'decorate' && WORLD.isEditing()) WORLD.stopEdit(false);
-        }
-        syncIslandLayoutFromServer();
+        syncIslandFromServer();
         loadBossAttacks();
         const bInfo = bossFor(STATE.studentClass);
         WORLD.setBoss(bInfo);
         playBossProgress(bInfo);
-        WORLD.focus(STATE.studentPanel === 'pet' || STATE.studentPanel === 'adopt');
+        WORLD.focus(STATE.studentPanel === 'pet' || STATE.studentPanel === 'adopt' || STATE.studentPanel === 'dress');
         const wide = window.innerWidth >= 720;
         WORLD.setOffset(STATE.studentPanel && wide ? 250 : 0, STATE.studentPanel && !wide ? Math.round(window.innerHeight * .27) : 0);
       } else { WORLD.setOffset(0, 0); WORLD.setBoss && WORLD.setBoss(null); }
@@ -5797,11 +5995,11 @@
     const GAME_MENU = [
       ['desk', '📖', '학습일지'], ['calendar', '📅', '캘린더·기록'], ['sep'],
       ['mailbox', '📮', '우편함'], ['board', '📎', '학습방'], ['sep'],
-      ['jar', '🫙', '단어장'], ['arcade', '🎮', '단어 게임'], ['sep'],
-      ['boss', '⚔️', '보스전'], ['friends', '🏝️', '친구 섬 놀러가기'], ['sep'],
-      ['chest', '💰', '보너스 기록'], ['pet', '🐾', '내 친구'], ['decorate', '🛠️', '섬 꾸미기'], ['house', '🚪', '나가기']
+      ['jar', '📚', '단어장'], ['arcade', '🎮', '단어 게임'], ['sep'],
+      ['boss', '⚔️', '보스전'], ['sep'],
+      ['pet', '🐾', '내 친구'], ['dress', '👕', '캐릭터 꾸미기'], ['chest', '💰', '보너스 기록'], ['house', '🚪', '나가기']
     ];
-    const PANEL_OF = { desk: 'journal', calendar: 'calendar', chest: 'bonus', house: 'leave', pet: 'pet', decorate: 'decorate', boss: 'boss', friends: 'friends' };
+    const PANEL_OF = { desk: 'journal', calendar: 'calendar', chest: 'bonus', house: 'leave', pet: 'pet', dress: 'dress', boss: 'boss' };
 
     function studentHomeHtml() {
       const c = gameCtx();
@@ -5835,7 +6033,7 @@
         desk: c.feedback > 0 ? ['🔔' + c.feedback, ''] : (!c.wroteToday ? ['오늘!', 'soft'] : null),
         mailbox: c.mail > 0 ? [c.mail, ''] : null, board: c.study ? ['NEW', ''] : null,
         jar: c.words > 0 ? [c.words, 'soft'] : null, chest: c.bonus > 0 ? [c.bonus, 'soft'] : null,
-        decorate: newPropsBetween(decoSeenStage(), c.stage).length ? ['NEW', ''] : null,
+        dress: newOutfitBetween(dressSeenStage(), c.stage).length ? ['NEW', ''] : null,
         boss: (function () { const b = bossFor(STATE.studentClass); return b.defeated ? ['🏆', 'soft'] : (!myBossAttackToday() ? ['⚔️', ''] : null); })()
       };
       h += '<nav class="g-menu ui' + (STATE.menuOpen ? ' open' : '') + '"><div class="g-menu-head"><span class="t">🧭 메뉴</span><button type="button" class="g-menu-toggle" id="g-menu-toggle">' + (STATE.menuOpen ? '✕ 닫기' : '☰ 메뉴') + '</button></div><div class="g-menu-list">';
@@ -5848,12 +6046,6 @@
       h += '</div></nav>';
       h += '<div class="g-hint">' + (RUN_MODE === 'demo' ? '🧪 체험 모드 · ' : '') + '⌨️ 방향키로 움직이고 사물 앞에서 Space · 🖱️ 드래그로 섬 돌리기</div>';
       if (STATE.studentPanel) h += gamePanelHtml(STATE.studentPanel, c);
-      if (STATE.visit) {
-        const v = STATE.visit, t = BADGE_TIERS[v.stage], sp = PET_SPECIES[v.species];
-        h += '<div class="g-visitbar ui"><div><div class="t">🏝️ ' + esc(v.ownerName) + '네 섬 구경 중</div><div class="s">' + petEmoji(v.species, v.stage) + ' ' + esc(v.petName) + ' · ' + t.emoji + ' ' + t.label + ' · 👍 ' + (v.likes || 0) + '</div></div>' +
-          '<button type="button" class="g-visit-like' + (v.liked ? ' done' : '') + '" id="g-visit-like">' + (v.liked ? '👍 도장 완료' : '👍 도장 찍기') + '</button>' +
-          '<button type="button" class="g-visit-home" id="g-visit-home">🏠 내 섬으로</button></div>';
-      }
       return h;
     }
 
@@ -5905,7 +6097,7 @@
           '<div class="ej-card" style="padding:12px 12px 4px;margin-bottom:12px"><div class="ej-eyebrow" style="margin-bottom:4px">성장 로드맵</div>' + road +
           '<div style="font-size:13.5px;text-align:center;margin:-4px 0 10px;color:var(--ej-ink-soft)">' + nextLine + '</div></div>' +
           '<div style="font-size:12.5px;color:var(--ej-ink-soft);line-height:1.6;margin-bottom:12px">✏️ 일지를 쓰면 섬에 밥그릇이 생기고, 선생님 피드백 포인트와 보너스로 친구가 자라요. 오래 안 오면 친구가 시무룩해져요.</div>' +
-          '<div class="g-big-btns"><button type="button" class="ej-btn ej-btn-primary" id="g-pet-poke">💕 쓰다듬기</button><button type="button" class="ej-btn ej-btn-ghost" id="g-pet-edit">✏️ 이름·종류 바꾸기</button></div>');
+          '<div class="g-big-btns"><button type="button" class="ej-btn ej-btn-primary" id="g-pet-poke">💕 쓰다듬기</button><button type="button" class="ej-btn ej-btn-ghost" data-go="dress">👕 꾸미기</button><button type="button" class="ej-btn ej-btn-ghost" id="g-pet-edit">✏️ 이름·종류 바꾸기</button></div>');
       }
       if (kind === 'boss') {
         const b = bossFor(STATE.studentClass);
@@ -5938,41 +6130,31 @@
         }
         return panelFrame('⚔️ 반 대항 보스전', body);
       }
-      if (kind === 'friends') {
-        const list = (STATE.classIslands || []).filter(function (i) { return String(i.studentNumber) !== String(STATE.studentNumber); })
-          .sort(function (a, b) { return (a.studentNumber || 0) - (b.studentNumber || 0); });
-        let body = '<div class="g-deco-help" style="margin-bottom:12px">🏝️ 같은 반 친구의 섬을 구경하고 👍 도장을 찍어 주세요. 한 친구 섬에 하루 한 번 찍을 수 있어요.</div>';
-        if (!STATE.classIslandsAt) body += '<div class="ej-card ej-empty">친구 섬을 불러오는 중…</div>';
-        else if (!list.length) body += '<div class="ej-card ej-empty">아직 섬을 만든 친구가 없어요.<br>친구들이 들어와서 동물 친구를 고르면 여기 나타나요!</div>';
-        list.forEach(function (f) {
-          const pts = studentTotalPoints(STATE.studentClass, f.studentName), st = stageIndexOf(pts), t = BADGE_TIERS[st];
-          const sp = f.pet && PET_SPECIES[f.pet.species] ? PET_SPECIES[f.pet.species] : null;
-          body += '<div class="g-friend"><div class="av">' + (st === 0 || !sp ? '🥚' : petEmoji(f.pet.species, st)) + '</div><div class="info"><div class="nm">' + (f.studentNumber ? f.studentNumber + '번 ' : '') + esc(f.studentName || '') + '</div>' +
-            '<div class="sub">' + (sp ? esc(f.pet.name) + ' · ' : '') + t.emoji + ' ' + t.label + ' · 👍 ' + (f.likes || 0) + '</div></div>' +
-            (sp ? '<button type="button" data-visit="' + f.studentNumber + '">놀러가기 ▶</button>' : '<span style="font-size:12px;color:var(--ej-ink-soft)">준비 중</span>') + '</div>';
+      if (kind === 'dress') {
+        const worn = wornOutfit(c.pet, c.stage);
+        const tab = STATE.dressTab || 'head';
+        let body = '';
+        if (c.stage === 0) body += '<div class="g-evo-gift" style="margin:0 0 12px">🥚 알에서 깨어나면 꾸밀 수 있어요! <b>' + BADGE_TIERS[1].min + 'P</b>를 모으면 첫 아이템이 열려요.</div>';
+        // 칸 고르기: 지금 입은 아이템이 보여요
+        body += '<div class="g-worn">';
+        OUTFIT_SLOTS.forEach(function (s) {
+          const it = outfitItem(worn[s.id]), all = OUTFIT_CATALOG.filter(function (o) { return o.slot === s.id; }), open = all.filter(function (o) { return c.stage >= o.stage; }).length;
+          body += '<button type="button" class="g-worn-slot' + (it ? ' on' : '') + (tab === s.id ? ' cur' : '') + '" data-dress-tab="' + s.id + '"><span class="e">' + (it ? it.emoji : s.emoji) + '</span><span class="n">' + s.name + '</span><span class="k">' + open + '/' + all.length + '</span></button>';
         });
-        const mine = (STATE.classIslands || []).find(function (i) { return String(i.studentNumber) === String(STATE.studentNumber); });
-        body += '<div style="font-size:12.5px;color:var(--ej-ink-soft);margin-top:10px;text-align:center">내 섬이 받은 도장 👍 ' + ((mine && mine.likes) || 0) + '개</div>';
-        return panelFrame('🏝️ 친구 섬 놀러가기', body);
-      }
-      if (kind === 'decorate') {
-        let inv = '<div class="g-props">';
-        PROP_CATALOG.forEach(function (p) {
-          const locked = c.stage < p.stage;
-          const used = WORLD.propCount ? WORLD.propCount(p.type) : 0;
-          inv += '<button type="button" class="g-prop' + (locked ? ' lock' : '') + (used >= p.max ? ' full' : '') + '" data-prop="' + p.type + '"' + (locked ? ' disabled' : '') + '>' +
-            '<span class="e">' + (locked ? '🔒' : p.emoji) + '</span><span class="n">' + p.name + '</span>' +
-            '<span class="c">' + (locked ? BADGE_TIERS[p.stage].emoji + ' ' + BADGE_TIERS[p.stage].label + ' 단계' : used + ' / ' + p.max) + '</span></button>';
+        body += '</div><div class="g-props">';
+        OUTFIT_CATALOG.filter(function (o) { return o.slot === tab; }).forEach(function (o) {
+          const locked = c.stage < o.stage, on = worn[o.slot] === o.id;
+          body += '<button type="button" class="g-prop' + (locked ? ' lock' : '') + (on ? ' on' : '') + '" data-outfit="' + o.id + '"' + (locked ? ' disabled' : '') + '>' +
+            '<span class="e">' + (locked ? '🔒' : o.emoji) + '</span><span class="n">' + o.name + '</span>' +
+            '<span class="c">' + (locked ? BADGE_TIERS[o.stage].emoji + ' ' + BADGE_TIERS[o.stage].label + ' 단계' : (on ? '✓ 착용 중' : '입어 보기')) + '</span></button>';
         });
-        inv += '</div>';
-        const unlocked = PROP_CATALOG.filter(function (p) { return c.stage >= p.stage; }).length;
-        return panelFrame('🛠️ 섬 꾸미기',
-          '<div class="g-deco-help">✋ 사물을 끌어서 옮겨요 · <b>R</b> 또는 ↻ 로 돌리기<br>빨간 표시가 뜨는 곳(겹치는 곳·섬 밖)에는 놓을 수 없어요.</div>' +
-          '<div id="g-deco-sel" class="g-deco-sel">사물을 눌러서 골라 보세요</div>' +
-          '<div class="ej-eyebrow" style="margin:14px 0 6px">🎁 꾸미기 소품 · ' + unlocked + ' / ' + PROP_CATALOG.length + ' 열림</div>' + inv +
-          (unlocked < PROP_CATALOG.length ? '<div style="font-size:12.5px;color:var(--ej-ink-soft);margin-top:8px">친구가 진화할 때마다 새 소품이 열려요!</div>' : '') +
-          '<div class="g-big-btns" style="margin-top:14px"><button type="button" class="ej-btn ej-btn-primary" id="g-deco-save">💾 저장</button>' +
-          '<button type="button" class="ej-btn ej-btn-ghost" id="g-deco-cancel">취소</button><button type="button" class="ej-btn ej-btn-ghost" id="g-deco-reset">↺ 처음 배치로</button></div>');
+        body += '</div>';
+        const open = OUTFIT_CATALOG.filter(function (o) { return c.stage >= o.stage; }).length;
+        const nextT = BADGE_TIERS[c.stage + 1], nextN = nextT ? OUTFIT_CATALOG.filter(function (o) { return o.stage === c.stage + 1; }).length : 0;
+        body += '<div style="font-size:12.5px;color:var(--ej-ink-soft);margin:10px 2px 0;line-height:1.6">🎁 아이템 ' + open + ' / ' + OUTFIT_CATALOG.length + '개 열림' +
+          (nextT ? ' · <b>' + nextT.emoji + ' ' + nextT.label + '</b> 단계(' + nextT.min + 'P)가 되면 ' + nextN + '개가 더 열려요!' : ' · 모든 아이템을 모았어요 👑') + '<br>한 번 더 누르면 벗어요. 바꾸면 바로 저장돼요.</div>';
+        if (Object.keys(worn).length) body += '<div class="g-big-btns" style="margin-top:12px"><button type="button" class="ej-btn ej-btn-ghost" id="g-dress-clear">모두 벗기</button></div>';
+        return panelFrame('👕 캐릭터 꾸미기', body);
       }
       if (kind === 'adopt') {
         const saved = loadPet(STATE.studentClass, STATE.studentNumber);
@@ -6001,20 +6183,24 @@
       render();
     }
 
-    function openDecorate() {
-      if (!WORLD.ready) { alert('이 기기에서는 3D 섬을 불러오지 못해서 꾸미기를 할 수 없어요.'); return; }
-      try { localStorage.setItem(decoSeenKey_(), String(stageIndexOf(studentTotalPoints(STATE.studentClass, STATE.studentName)))); } catch (e) { }
-      openGamePanel('decorate');
+    // 꾸미기 저장: 이 기기 + 서버(다른 기기에서도 그대로)
+    let dressSaveTimer = null;
+    function setOutfitItem(id) {
+      const it = outfitItem(id); if (!it) return;
+      const pet = loadPet(STATE.studentClass, STATE.studentNumber); if (!pet) return;
+      const stage = stageIndexOf(studentTotalPoints(STATE.studentClass, STATE.studentName));
+      if (stage < it.stage) return;
+      const outfit = Object.assign({}, wornOutfit(pet, stage));
+      const wearing = outfit[it.slot] !== it.id;
+      if (wearing) outfit[it.slot] = it.id; else delete outfit[it.slot];
+      saveOutfit(pet, outfit);
+      if (wearing && Math.random() < .6) WORLD.say(['어때? 잘 어울려? ✨', '오, 마음에 들어!', it.emoji + ' 멋지다!'][Math.floor(Math.random() * 3)], 2200);
     }
-    function updateDecoSel(info) {
-      const el = document.getElementById('g-deco-sel'); if (!el) return;
-      if (!info) { el.innerHTML = '사물을 눌러서 골라 보세요'; return; }
-      let name = OBJECT_NAMES[info.id] || '';
-      if (info.kind === 'prop') { const p = PROP_CATALOG.find(function (q) { return q.type === info.type; }); name = p ? p.emoji + ' ' + p.name : info.type; }
-      el.innerHTML = '<b>' + esc(name) + '</b><span class="g-deco-actions"><button type="button" id="g-deco-rot">↻ 돌리기</button>' +
-        (info.kind === 'prop' ? '<button type="button" id="g-deco-del">🗑️ 넣기</button>' : '') + '</span>';
-      byId('g-deco-rot', function (b) { b.onclick = function () { WORLD.editRotate(); }; });
-      byId('g-deco-del', function (b) { b.onclick = function () { WORLD.editRemove(); render(); }; });
+    function saveOutfit(pet, outfit) {
+      pet.outfit = outfit; savePet(STATE.studentClass, STATE.studentNumber, pet);
+      render();
+      clearTimeout(dressSaveTimer);
+      dressSaveTimer = setTimeout(function () { gsRun('saveIslandPet', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(pet)).catch(function () { }); }, 800);
     }
     function decoToast(msg) {
       let t = document.getElementById('g-deco-toast');
@@ -6022,12 +6208,10 @@
       t.textContent = msg; t.classList.add('show');
       clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove('show'); }, 2200);
     }
-    WORLD.onEditSelect = updateDecoSel;
-    WORLD.onEditBlocked = function (why) { decoToast(why === 'rotate' ? '그 방향은 앞이 막혀서 돌릴 수 없어요' : '거기는 겹치거나 다른 사물 앞을 막아서 놓을 수 없어요'); };
 
     // 사물(또는 메뉴) → 기능 열기
     function onWorldObject(key) {
-      if (STATE.screen !== 'studentHome' || STATE.visit) return;
+      if (STATE.screen !== 'studentHome') return;
       if (STATE.studentPanel === 'adopt') return;
       if (PANEL_OF[key]) { openGamePanel(PANEL_OF[key]); return; }
       if (STATE.studentPanel) { STATE.studentPanel = null; render(); }
@@ -6036,11 +6220,14 @@
       else if (key === 'jar') openWordCollectorModal();
       else if (key === 'arcade') openWordGameModal();
     }
+    function openDress() {
+      markDressSeen(stageIndexOf(studentTotalPoints(STATE.studentClass, STATE.studentName)));
+      openGamePanel('dress');
+    }
     function menuGo(key) {
       if (key === 'pet') { openGamePanel('pet'); return; }
-      if (key === 'decorate') { openDecorate(); return; }
+      if (key === 'dress') { openDress(); return; }
       if (key === 'boss') { openGamePanel('boss'); return; }
-      if (key === 'friends') { openGamePanel('friends'); loadClassIslands(); return; }
       if (WORLD.ready) WORLD.activate(key, true); else onWorldObject(key);
     }
 
@@ -6051,44 +6238,11 @@
       byId('g-menu-toggle', function (el) { el.onclick = function () { STATE.menuOpen = !STATE.menuOpen; render(); }; });
       byId('g-panel-close', function (el) { el.onclick = closeGamePanel; });
       byId('g-panel-cancel', function (el) { el.onclick = function () { STATE.studentPanel = STATE.studentPanel === 'adopt' ? 'pet' : null; STATE.adoptSel = null; render(); }; });
-      document.querySelectorAll('[data-prop]').forEach(function (el) {
-        el.onclick = function () {
-          const type = el.getAttribute('data-prop'); const p = PROP_CATALOG.find(function (q) { return q.type === type; });
-          if (!p || el.disabled) return;
-          if (WORLD.propCount(type) >= p.max) { decoToast(p.name + '은(는) ' + p.max + '개까지 놓을 수 있어요'); return; }
-          if (!WORLD.addProp(type)) { decoToast('빈자리가 없어요. 다른 사물을 옮겨 보세요'); return; }
-          render();
-        };
-      });
-      byId('g-deco-save', function (el) { el.onclick = function () { const L = WORLD.stopEdit(true); if (L) saveIslandLayout(L); STATE.studentPanel = null; render(); decoToast('내 섬 배치를 저장했어요 ✨'); setTimeout(function () { WORLD.say('우와, 섬이 새로워졌다! 🌷', 2800); }, 400); }; });
-      byId('g-deco-cancel', function (el) { el.onclick = function () { STATE.studentPanel = null; render(); }; });
-      byId('g-deco-reset', function (el) { el.onclick = function () { WORLD.resetLayoutInEdit(); render(); decoToast('처음 배치로 돌려 놨어요. 저장을 눌러야 적용돼요'); }; });
-      if (STATE.studentPanel === 'decorate' && WORLD.ready && WORLD.isEditing()) { /* 선택 상태 유지 */ }
+      document.querySelectorAll('[data-dress-tab]').forEach(function (el) { el.onclick = function () { STATE.dressTab = el.getAttribute('data-dress-tab'); render(); }; });
+      document.querySelectorAll('[data-outfit]').forEach(function (el) { el.onclick = function () { if (!el.disabled) setOutfitItem(el.getAttribute('data-outfit')); }; });
+      byId('g-dress-clear', function (el) { el.onclick = function () { const pet = loadPet(STATE.studentClass, STATE.studentNumber); if (pet) saveOutfit(pet, {}); }; });
       byId('g-bossbar', function (el) { el.onclick = function () { openGamePanel('boss'); }; });
       byId('g-quiz-open', function (el) { el.onclick = openBossQuiz; });
-      document.querySelectorAll('[data-visit]').forEach(function (el) {
-        el.onclick = function () {
-          const num = el.getAttribute('data-visit');
-          const f = (STATE.classIslands || []).find(function (i) { return String(i.studentNumber) === String(num); });
-          if (!f || !f.pet) return;
-          const pts = studentTotalPoints(STATE.studentClass, f.studentName);
-          STATE.visit = { key: STATE.studentClass + '|' + num + '|' + Date.now(), num: f.studentNumber, ownerName: f.studentName, petName: f.pet.name, species: f.pet.species, stage: stageIndexOf(pts), layout: f.layout, likes: f.likes || 0, liked: false };
-          STATE.studentPanel = null; render();
-        };
-      });
-      byId('g-visit-home', function (el) { el.onclick = function () { STATE.visit = null; STATE.studentPanel = 'friends'; render(); loadClassIslands(); }; });
-      byId('g-visit-like', function (el) {
-        el.onclick = function () {
-          const v = STATE.visit; if (!v || v.liked) return;
-          el.disabled = true;
-          gsRun('likeIsland', STATE.studentClass, v.num, STATE.studentNumber).then(function (r) {
-            v.liked = true; v.likes = r.likes;
-            const f = (STATE.classIslands || []).find(function (i) { return String(i.studentNumber) === String(v.num); }); if (f) f.likes = r.likes;
-            render(); WORLD.pokePet();
-            decoToast(r.already ? '오늘은 이미 도장을 찍었어요' : '👍 도장 쾅! ' + v.ownerName + '에게 전해졌어요');
-          }).catch(function (e) { el.disabled = false; decoToast((e && e.message) || '도장을 찍지 못했어요'); });
-        };
-      });
       byId('g-boss-reward', function (el) { el.onclick = function () { giveBossReward(el.getAttribute('data-class')); }; });
       byId('g-pet-poke', function (el) { el.onclick = function () { WORLD.pokePet(); }; });
       byId('g-pet-edit', function (el) { el.onclick = function () { STATE.adoptSel = null; openGamePanel('adopt'); }; });
@@ -6105,7 +6259,7 @@
           const saved = loadPet(STATE.studentClass, STATE.studentNumber);
           const sp = STATE.adoptSel || (saved && saved.species); if (!sp) return;
           const name = ((document.getElementById('g-pet-name') || {}).value || '').trim().slice(0, 8) || PET_SPECIES[sp].suggest;
-          const newPet = { species: sp, name: name, adoptedAt: (saved && saved.adoptedAt) || Date.now() };
+          const newPet = { species: sp, name: name, adoptedAt: (saved && saved.adoptedAt) || Date.now(), outfit: (saved && saved.outfit) || {} };
           savePet(STATE.studentClass, STATE.studentNumber, newPet);
           gsRun('saveIslandPet', STATE.studentClass, STATE.studentNumber, STATE.studentName, JSON.stringify(newPet)).catch(function () { });
           STATE.adoptSel = null; STATE.studentPanel = null; render();
@@ -6126,7 +6280,6 @@
       });
     }
     document.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Escape' && STATE.screen === 'studentHome' && STATE.visit && !STATE.studentPanel) { STATE.visit = null; render(); return; }
       if (ev.key === 'Escape' && STATE.screen === 'studentHome' && STATE.studentPanel && !document.querySelector('.ej-mail-overlay, .ej-word-overlay')) closeGamePanel();
     });
 
@@ -6182,12 +6335,12 @@
         box.querySelector('.g-evo-title').textContent = hatch ? '알이 부화했어요! 🐣' : (isMax ? '최종 진화! 👑' : '진화했어요! ✨');
         box.querySelector('.g-evo-sub').textContent = hatch ? josa(pet.name, '이', '가') + ' 알에서 깨어났어요. 반가워요! 💕'
           : (isMax ? josa(pet.name, '이', '가') + ' 전설의 친구가 되었어요!' : josa(pet.name, '이', '가') + ' ' + tier.label + ' 단계로 자랐어요. 꾸준히 잘 쓰고 있어요!');
-        const gifts = newPropsBetween(prevIdx, idx);
+        const gifts = newOutfitBetween(prevIdx, idx);
         if (gifts.length) {
           const g = document.createElement('div'); g.className = 'g-evo-gift';
-          g.innerHTML = '🎁 새 꾸미기 소품: <b>' + gifts.map(function (p) { return p.emoji + ' ' + p.name; }).join(', ') + '</b><br><button type="button" class="g-evo-gift-btn">🛠️ 섬 꾸미러 가기</button>';
+          g.innerHTML = '🎁 새 꾸미기 아이템: <b>' + gifts.map(function (p) { return p.emoji + ' ' + p.name; }).join(', ') + '</b><br><button type="button" class="g-evo-gift-btn">👕 꾸미러 가기</button>';
           box.insertBefore(g, box.querySelector('.ej-btn'));
-          g.querySelector('button').onclick = function () { box.remove(); WORLD.focus(false); openDecorate(); };
+          g.querySelector('button').onclick = function () { box.remove(); openDress(); };
         }
         if (WORLD.ready) WORLD.say(hatch ? '안녕! 드디어 만났다! 💕' : '나 좀 봐! 멋지지? ✨', 3500);
       };
@@ -6198,8 +6351,8 @@
       setTimeout(function () { if (document.body.contains(box) && !box.classList.contains('wait')) close(); }, 14000);
     }
 
-    WORLD.onBoss = function () { if (!STATE.visit && STATE.screen === 'studentHome' && !QUIZ) openBossQuiz(); };
-    WORLD.onKeyMove = function () { if (STATE.studentPanel === 'pet') { STATE.studentPanel = null; render(); } };
+    WORLD.onBoss = function () { if (STATE.screen === 'studentHome' && !QUIZ) openBossQuiz(); };
+    WORLD.onKeyMove = function () { if (STATE.studentPanel === 'pet' || STATE.studentPanel === 'dress') { STATE.studentPanel = null; render(); } };
     WORLD.lineFor = petLine;
     WORLD.onObject = onWorldObject;
     WORLD.onPet = function () { if (STATE.studentPanel !== 'adopt' && STATE.studentPanel !== 'pet') { /* 친구 정보는 플레이어 카드·메뉴에서 */ } };

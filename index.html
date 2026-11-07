@@ -3994,8 +3994,7 @@
         [-.22, .22].forEach(function (x) {
           const e = new T.Group(); e.position.set(qk ? x * 1.1 : x, qk ? .1 : .06, qk ? .53 : .55);
           const eb = new T.Group(); eb.scale.setScalar(eyeS * (qk ? .85 : 1)); e.add(eb);
-          eb.add(mesh(new T.SphereGeometry(.078, 12, 10), species === 'wolf' ? sm(S.iris) : eyeM, 0, 0, 0)); eb.children[0].scale.set(1, 1.25, .6);
-          if (species === 'wolf') { const pu = mesh(new T.SphereGeometry(.05, 10, 8), eyeM, 0, -.005, .03); pu.scale.set(1, 1.25, .6); eb.add(pu); }
+          eb.add(mesh(new T.SphereGeometry(.078, 12, 10), eyeM, 0, 0, 0)); eb.children[0].scale.set(1, 1.25, .6);
           eb.add(mesh(new T.SphereGeometry(.026, 6, 5), hiM, .025, .04, .045));
           if (stage <= 2) eb.add(mesh(new T.SphereGeometry(.014, 5, 4), hiM, -.025, -.03, .045));
           head.add(e); eyes.push(e);
@@ -4121,10 +4120,10 @@
         if (qk) { const qt = mesh(new T.ConeGeometry(.12 * tg, .5 * tg, 8), sm(S.body), 0, .14, -.62 * tSX); qt.rotation.x = -1.75; body.add(qt); }
         if (species === 'tiger') {
           // 고리 무늬가 있는 긴 꼬리
-          const k = tg * 1.1, y0 = cy - .15;
-          const curve = new T.CatmullRomCurve3([new T.Vector3(0, y0, -.42 * tSX), new T.Vector3(0, y0 - .08, -.42 - .35 * k), new T.Vector3(0, y0 + .28 * k, -.42 - .55 * k), new T.Vector3(0, y0 + .62 * k, -.42 - .4 * k)]);
+          const k = tg * .62, y0 = cy - .18;
+          const curve = new T.CatmullRomCurve3([new T.Vector3(0, y0, -.42 * tSX), new T.Vector3(0, y0 - .04, -.42 - .32 * k), new T.Vector3(0, y0 + .22 * k, -.42 - .5 * k), new T.Vector3(0, y0 + .45 * k, -.42 - .42 * k)]);
           const tail = new T.Group();
-          for (let i = 0; i <= 10; i++) { const pt = curve.getPoint(i / 10); tail.add(ball(.085 - i * .002, i === 10 || i % 3 === 2 ? S.stripe : S.body, pt.x, pt.y, pt.z)); }
+          for (let i = 0; i <= 7; i++) { const pt = curve.getPoint(i / 7); tail.add(ball(.085 - i * .002, i === 7 || i % 3 === 2 ? S.stripe : S.body, pt.x, pt.y, pt.z)); }
           body.add(tail); parts.tail = tail;
         }
         if (species === 'bear') body.add(ball(.12 * tg, S.body, 0, cy - .13, -.48 * tSX));

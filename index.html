@@ -3944,7 +3944,7 @@
       const SPC = {
         tiger:  { body: 0xf29a3a, belly: 0xfff3e0, accent: 0xf6b3a0, nose: 0xc96a5e, egg: 0xffe7c4, spot: 0x3a2a22, stripe: 0x33251e, muzzle: 0xfff3e0 },
         wolf:   { body: 0x9aa5b1, belly: 0xeef1f4, accent: 0xd3d9e0, nose: 0x2a2a30, egg: 0xe7ecf2, spot: 0x7a8794, tip: 0x5a6470, muzzle: 0xeef1f4, iris: 0xf2b632 },
-        quokka: { body: 0xa8957e, belly: 0xefe6d8, accent: 0xe9a39c, nose: 0x2e2622, egg: 0xf1ebe1, spot: 0x8c7a64, muzzle: 0xf3ece2 },
+        quokka: { body: 0x9a8670, belly: 0xd8c6ad, accent: 0xd9a090, nose: 0x231c18, egg: 0xefe6d8, spot: 0x8a735c, muzzle: 0xb79d80, paw: 0x4f4035, rim: 0x6a5846 },
         cat:    { body: 0xc9d0dd, belly: 0xf4f6fa, accent: 0xf2a7b5, nose: 0xf08aa0, egg: 0xeef1f7, spot: 0x9aa4b9, stripe: 0x8f99ae },
         bear:   { body: 0xc1916a, belly: 0xe8cdae, accent: 0xf0a8a0, nose: 0x3a2e2a, egg: 0xf6e7d6, spot: 0xc1916a, muzzle: 0xf1dec6 },
         fox:    { body: 0xf09b52, belly: 0xfff7ec, accent: 0xf6b3a8, nose: 0x3a2e2a, egg: 0xffebd8, spot: 0xf09b52, tip: 0x5a3a28 }
@@ -3981,16 +3981,19 @@
         const eyeS = [0, 1.15, 1.08, 1.0, .9, .9][stage];
         const ry = .46 * tSY, cy = .09 + legH + ry;              // 몸통 중심 높이
         const adult = stage >= 4;
-        const torso = ball(.5, S.body, 0, cy, 0, tSX, .92 * tSY, .95 * tSX); body.add(torso);
+        const torso = ball(.5, S.body, 0, cy, 0, tSX * (species === 'quokka' ? 1.08 : 1), .92 * tSY, .95 * tSX); body.add(torso);
+        if (species === 'quokka') body.add(ball(.42, S.body, 0, cy - ry * .45, -.02, tSX * 1.15, .6 * tSY, tSX));
         body.add(ball(.36, S.belly, 0, cy - .05, .3 * tSX, tSX * (species === 'bear' && stage >= 3 ? 1.1 : 1), tSY, .5));
-        const head = new T.Group(); head.position.y = cy + ry + .31 * headS; head.scale.setScalar(headS); body.add(head); parts.head = head;
+        const qk = species === 'quokka';
+        const hS = headS * (qk ? .93 : 1);
+        const head = new T.Group(); head.position.y = cy + ry + (qk ? .2 : .31) * hS; head.scale.setScalar(hS); body.add(head); parts.head = head;
         head.add(ball(.62, S.body, 0, 0, 0, 1.05, .95, 1));
         // 눈 (어릴수록 커요)
         const eyeM = sm(0x3a2e2a), hiM = sm(0xffffff);
         const eyes = [];
         [-.22, .22].forEach(function (x) {
-          const e = new T.Group(); e.position.set(x, .06, .55);
-          const eb = new T.Group(); eb.scale.setScalar(eyeS); e.add(eb);
+          const e = new T.Group(); e.position.set(qk ? x * 1.1 : x, qk ? .1 : .06, qk ? .53 : .55);
+          const eb = new T.Group(); eb.scale.setScalar(eyeS * (qk ? .85 : 1)); e.add(eb);
           eb.add(mesh(new T.SphereGeometry(.078, 12, 10), species === 'wolf' ? sm(S.iris) : eyeM, 0, 0, 0)); eb.children[0].scale.set(1, 1.25, .6);
           if (species === 'wolf') { const pu = mesh(new T.SphereGeometry(.05, 10, 8), eyeM, 0, -.005, .03); pu.scale.set(1, 1.25, .6); eb.add(pu); }
           eb.add(mesh(new T.SphereGeometry(.026, 6, 5), hiM, .025, .04, .045));
@@ -4001,10 +4004,14 @@
         const brows = new T.Group();
         [-.22, .22].forEach(function (x) { const b = mesh(new T.BoxGeometry(.14, .025, .02), eyeM, x, .2, .56); b.rotation.z = x < 0 ? .35 : -.35; brows.add(b); });
         brows.visible = false; head.add(brows); parts.brows = brows;
-        [-.38, .38].forEach(function (x) { head.add(ball(.1, S.accent, x, -.1, .48, 1, .6, .4)); });
+        if (!qk) [-.38, .38].forEach(function (x) { head.add(ball(.1, S.accent, x, -.1, .48, 1, .6, .4)); });
         if (species === 'bear') head.add(ball(.2 * (adult ? 1.12 : 1), S.muzzle, 0, -.12, .5, 1, .75, .6));
         if (species === 'fox' || species === 'tiger') { const m = adult ? 1.12 : 1, r = species === 'tiger' ? .17 : .2; head.add(ball(r * m, S.belly, -.15, -.14, .48, 1, .78, .6)); head.add(ball(r * m, S.belly, .15, -.14, .48, 1, .78, .6)); }
-        if (species === 'quokka') { head.add(ball(.22, S.muzzle, 0, -.15, .49, 1.25, .8, .62)); [-1, 1].forEach(function (sd) { head.add(ball(.15, S.body, sd * .36, -.12, .4, 1, .85, .7)); }); }
+        if (qk) {
+          // 쿼카: 짧고 동그란 주둥이 + 통통한 볼
+          head.add(ball(.21, S.muzzle, 0, -.1, .5, 1.05, .82, 1.05));
+          [-1, 1].forEach(function (sd) { head.add(ball(.17, S.muzzle, sd * .21, -.15, .43, 1, .85, .8)); });
+        }
         const mouthM = new T.MeshBasicMaterial({ color: 0x3a2e2a });
         if (species === 'wolf') {
           // 늑대: 앞으로 나온 주둥이
@@ -4014,14 +4021,14 @@
           head.add(ball(.065, S.nose, 0, -.05, .55 + .23 * sn, 1.2, .8, .8));
           [-.035, .035].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.035, .01, 4, 10, Math.PI), mouthM); m.position.set(x, -.22, .55 + .17 * sn); m.rotation.z = Math.PI; head.add(m); });
         } else {
-          const nz = species === 'bear' ? .66 : (species === 'quokka' ? .64 : .61);
-          head.add(ball(species === 'cat' ? .045 : .062, S.nose, 0, -.04, nz, 1.2, .8, .8));
+          const nz = species === 'bear' ? .66 : (species === 'quokka' ? .71 : .61);
+          head.add(ball(species === 'cat' ? .045 : (species === 'quokka' ? .07 : .062), S.nose, 0, species === 'quokka' ? -.04 : -.04, nz, 1.3, .85, .8));
           if (species === 'quokka') {
-            // 쿼카: 활짝 웃는 입
-            const w = adult ? .14 : .12;
-            const smile = new T.Mesh(new T.TorusGeometry(w, .022, 5, 16, Math.PI), mouthM); smile.position.set(0, -.11, .655); smile.rotation.z = Math.PI; smile.rotation.x = -.25; head.add(smile);
-            const mouthIn = ball(w * .8, 0x5a2a2a, 0, -.17, .62, 1.2, .5, .3); head.add(mouthIn);
-            head.add(ball(.05, 0xe86a7a, 0, -.2, .635, 1.4, .6, .4));
+            // 쿼카 미소: 입꼬리가 올라간 작은 입 (입을 벌리지 않아요)
+            const smile = new T.Mesh(new T.TorusGeometry(.085, .019, 5, 16, Math.PI * .9), mouthM);
+            smile.position.set(0, -.115, .705); smile.rotation.z = Math.PI + Math.PI * .05; smile.rotation.x = -.35; head.add(smile);
+            [-1, 1].forEach(function (sd) { const c = new T.Mesh(new T.TorusGeometry(.025, .011, 4, 8, Math.PI * .6), mouthM); c.position.set(sd * .078, -.105, .675); c.rotation.z = sd > 0 ? Math.PI * .1 : Math.PI * .3; head.add(c); });
+            head.add(mesh(new T.BoxGeometry(.012, .05, .01), mouthM, 0, -.13, .7, false));
           } else {
             [-.04, .04].forEach(function (x) { const m = new T.Mesh(new T.TorusGeometry(.04, .011, 4, 10, Math.PI), mouthM); m.position.set(x, -.14, species === 'bear' ? .62 : .59); m.rotation.z = Math.PI; head.add(m); });
           }
@@ -4062,8 +4069,14 @@
             head.add(ball(er * .75, S.stripe, s * .43, .48, -.14, 1, 1, .4));
           });
         } else if (species === 'quokka') {
-          const er = [0, .12, .13, .14, .15, .15][stage];
-          [-1, 1].forEach(function (s) { head.add(ball(er, S.body, s * .5, .4, -.04, 1, 1, .6)); head.add(ball(er * .6, S.accent, s * .5, .4, .03, 1, 1, .3)); });
+          const er = [0, .13, .14, .15, .16, .16][stage];
+          [-1, 1].forEach(function (sd) {
+            const ear = new T.Group(); ear.position.set(sd * .4, .44, -.02); ear.rotation.z = -sd * .35;
+            ear.add(ball(er, S.rim, 0, 0, 0, 1, 1, .55));
+            ear.add(ball(er * .78, S.body, 0, 0, .02, 1, 1, .5));
+            ear.add(ball(er * .5, S.accent, 0, 0, .05, 1, 1, .3));
+            head.add(ear);
+          });
         } else {
           const er = [0, .18, .19, .21, .23, .23][stage];
           [-1, 1].forEach(function (s) { head.add(ball(er, S.body, s * .45, .45, -.05)); head.add(ball(er * .55, S.muzzle, s * .45, .45, .08, 1, 1, .4)); });
@@ -4072,11 +4085,18 @@
         const armLen = 1.5 + (stage >= 3 ? .25 : 0) + (adult ? .15 : 0);
         const armL = ball(.13, S.body, -.45 * tSX, cy + .07, .1, 1, armLen, 1), armR = ball(.13, S.body, .45 * tSX, cy + .07, .1, 1, armLen, 1);
         armL.rotation.z = .5; armR.rotation.z = -.5; body.add(armL); body.add(armR);
+        if (qk) {
+          [[armL, -1], [armR, 1]].forEach(function (q) {
+            const a = q[0], sd = q[1];
+            a.position.set(sd * .17, cy + ry * .3, .38 * tSX); a.rotation.set(-1.0, 0, -sd * .35); a.scale.set(.9, 1.1, .9); a.userData.rx = -1.0;
+            a.add(ball(.07, S.paw, 0, -.12, 0, 1.2, .8, 1));
+          });
+        }
         // 다리·발 (청소년부터 다리가 보여요)
         const sockC = species === 'fox' && stage >= 3 ? S.tip : S.body;
         const mkFoot = function (x) {
           const f = new T.Group(); f.position.set(x, 0, .06);
-          f.add(ball(.17 * (adult ? 1.12 : 1), sockC, 0, .1, species === 'quokka' ? .05 : 0, 1, .6, species === 'quokka' ? 1.7 : 1.3));
+          f.add(ball(.17 * (adult ? 1.12 : 1), qk ? S.paw : sockC, 0, .1, qk ? .08 : 0, qk ? .85 : 1, .55, qk ? 1.9 : 1.3));
           if (legH > 0) f.add(mesh(new T.CylinderGeometry(.11 * tSX, .12, legH + .14, 10), sm(sockC), 0, .12 + (legH + .14) / 2, -.04));
           g.add(f); return f;
         };
@@ -4092,13 +4112,13 @@
           const ruff = mesh(new T.ConeGeometry(.26, .42, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff);
           body.add(ball(.42, S.tip, 0, cy + .12, -.2, 1.05 * tSX, .7, .8));
         }
-        if (adult && species === 'quokka') body.add(ball(.22, S.belly, 0, cy + ry * .35, .36 * tSX, 1, 1.1, .6));
+        if (adult && species === 'quokka') body.add(ball(.2, S.belly, 0, cy + ry * .45, .34 * tSX, 1.1, .8, .6));
         if (adult && species === 'cat') { [-.25, 0, .25].forEach(function (z) { const st = mesh(new T.TorusGeometry(.42 * tSX, .03, 4, 16, Math.PI * .7), sm(S.stripe), 0, cy + z * .5 + .05, -.05); st.rotation.y = Math.PI / 2; st.rotation.z = Math.PI * .65; body.add(st); }); }
         if (adult && species === 'bear') { const moon = mesh(new T.TorusGeometry(.17, .045, 6, 14, Math.PI), sm(0xf6ead6), 0, cy + ry * .5, .44 * tSX); moon.rotation.z = Math.PI; body.add(moon); }
         if (adult && species === 'fox') { const ruff = mesh(new T.ConeGeometry(.24, .4, 8), sm(S.belly), 0, cy + ry * .45, .3 * tSX); ruff.rotation.x = Math.PI + .25; body.add(ruff); }
         // 꼬리 (자랄수록 커져요)
         const tg = [0, .85, .95, 1.1, 1.25, 1.3][stage];
-        if (species === 'quokka') { const qt = mesh(new T.ConeGeometry(.08, .45 * tg, 6), sm(S.body), 0, cy - .3, -.55 * tSX); qt.rotation.x = -2.1; body.add(qt); }
+        if (qk) { const qt = mesh(new T.ConeGeometry(.12 * tg, .5 * tg, 8), sm(S.body), 0, .14, -.62 * tSX); qt.rotation.x = -1.75; body.add(qt); }
         if (species === 'tiger') {
           // 고리 무늬가 있는 긴 꼬리
           const k = tg * 1.1, y0 = cy - .15;
@@ -4656,8 +4676,8 @@
         g.rotation.y = P.dir;
         parts.footL.position.z = .06 + (walking ? Math.sin(t * sp) * .16 : 0);
         parts.footR.position.z = .06 - (walking ? Math.sin(t * sp) * .16 : 0);
-        parts.armL.rotation.x = walking ? Math.sin(t * sp) * .6 : 0;
-        parts.armR.rotation.x = walking ? -Math.sin(t * sp) * .6 : 0;
+        parts.armL.rotation.x = (parts.armL.userData.rx || 0) + (walking ? Math.sin(t * sp) * (parts.armL.userData.rx ? .2 : .6) : 0);
+        parts.armR.rotation.x = (parts.armR.userData.rx || 0) + (walking ? -Math.sin(t * sp) * (parts.armR.userData.rx ? .2 : .6) : 0);
         const breathe = 1 + Math.sin(t * 2.4) * .02;
         parts.body.scale.set(1, P.state === 'sleep' ? 1 + Math.sin(t * 1.6) * .03 : breathe, 1);
         parts.body.rotation.x = P.state === 'eat' ? .25 + Math.sin(t * 12) * .1 : (walking ? .06 : 0);

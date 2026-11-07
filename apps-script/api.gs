@@ -19,7 +19,8 @@ const API_ALLOWED = [
   'startWordGame', 'submitWordGame',
   'verifyTeacherPassword', 'submitFeedback', 'updateFeedback', 'addBonus',
   'listStudentAccounts', 'resetStudentPassword',
-  'getIslandProfile', 'saveIslandLayout', 'saveIslandPet', 'getClassIslands', 'likeIsland'
+  'getIslandProfile', 'saveIslandLayout', 'saveIslandPet', 'getClassIslands', 'likeIsland',
+  'getBossAttacks', 'recordBossAttack'
 ];
 
 function doPost(e) {
@@ -118,4 +119,49 @@ function likeIsland(className, targetNumber, visitorNumber) {
     by[visitorNumber] = today; row[7] = JSON.stringify(by); row[6] = (Number(row[6]) || 0) + 1;
     return { likes: row[6], already: false };
   });
+}
+
+// ---------------------------------------------------------------
+// ⚔️ 보스 단어 대결 기록 (시트 'BossAttacks'를 자동으로 만들어요)
+//   학생 한 명당 하루 1번, 한 번에 최대 20 데미지
+// ---------------------------------------------------------------
+const BOSS_COLS = ['className', 'studentNumber', 'studentName', 'date', 'weekKey', 'dmg', 'correct', 'createdAt'];
+function bossSheet_() {
+  const ss = ISLAND_SHEET_ID ? SpreadsheetApp.openById(ISLAND_SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName('BossAttacks');
+  if (!sh) { sh = ss.insertSheet('BossAttacks'); sh.appendRow(BOSS_COLS); sh.setFrozenRows(1); }
+  return sh;
+}
+function bossDateStr_(v) {
+  return v instanceof Date ? Utilities.formatDate(v, Session.getScriptTimeZone(), 'yyyy-MM-dd') : String(v);
+}
+
+function getBossAttacks(weekKey) {
+  const rows = bossSheet_().getDataRange().getValues(), out = [];
+  for (let i = 1; i < rows.length; i++) {
+    if (bossDateStr_(rows[i][4]) !== String(weekKey)) continue;
+    out.push({ className: rows[i][0], studentNumber: Number(rows[i][1]), studentName: rows[i][2], date: bossDateStr_(rows[i][3]), weekKey: String(weekKey), dmg: Number(rows[i][5]) || 0, correct: Number(rows[i][6]) || 0 });
+  }
+  return out;
+}
+
+function recordBossAttack(className, studentNumber, studentName, weekKey, dmg, correct) {
+  const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sh = bossSheet_(), rows = sh.getDataRange().getValues();
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][0] === className && String(rows[i][1]) === String(studentNumber) && bossDateStr_(rows[i][3]) === today) {
+        throw new Error('오늘은 이미 보스와 대결했어요. 내일 다시 도전해요!');
+      }
+    }
+    const row = [className, Number(studentNumber), studentName, today, String(weekKey), Math.max(0, Math.min(20, Math.round(Number(dmg) || 0))), Number(correct) || 0, Date.now()];
+    // 날짜가 자동으로 Date로 바뀌지 않게 글자로 저장해요
+    sh.appendRow(row);
+    sh.getRange(sh.getLastRow(), 4, 1, 2).setNumberFormat('@').setValues([[today, String(weekKey)]]);
+    return { className: className, studentNumber: Number(studentNumber), studentName: studentName, date: today, weekKey: String(weekKey), dmg: row[5], correct: row[6] };
+  } finally {
+    lock.releaseLock();
+  }
 }

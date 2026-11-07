@@ -717,6 +717,37 @@
     .g-visit-home { background: #5DAF4C; color: #fff; box-shadow: 0 3px 0 #3F8A33; }
     body[data-visit] .g-player, body[data-visit] .g-toasts, body[data-visit] .g-bossbar, body[data-visit] .g-menu, body[data-visit] .g-hint { display: none; }
     @media (max-width: 720px) { .g-visitbar { top: auto; bottom: 12px; flex-wrap: wrap; justify-content: center; } }
+    /* ⚔️ 보스 단어 대결 */
+    .g-quiz { position: fixed; z-index: 9400; right: 240px; top: 50%; transform: translateY(-50%); width: min(430px, calc(100vw - 24px)); background: var(--g-cream); border: 4px solid #3B3355; border-radius: 26px; box-shadow: 0 8px 0 #2A2440, 0 24px 50px rgba(20,20,40,.4); overflow: hidden; animation: g-panel-in .3s cubic-bezier(.22,1.2,.4,1); }
+    .g-quiz-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: linear-gradient(#4A4170, #3B3355); color: #fff; padding: 12px 16px; font-weight: 800; font-size: 17px; }
+    .g-quiz-x { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,.6); background: rgba(255,255,255,.12); color: #fff; cursor: pointer; font: inherit; }
+    .g-quiz-body { padding: 16px; text-align: center; }
+    .g-quiz-body p { font-size: 14px; line-height: 1.7; color: #4A3A2C; margin: 6px 0 12px; }
+    .g-quiz-big { font-size: 46px; line-height: 1.1; }
+    .g-quiz-tip { font-size: 12px; color: var(--ej-ink-soft); margin-top: 8px; }
+    .g-quiz-hp { height: 16px; border-radius: 99px; background: #EFE3CC; overflow: hidden; position: relative; margin: 0 0 14px; border: 2px solid #fff; }
+    .g-quiz-hp i { display: block; height: 100%; background: linear-gradient(90deg, #ff6b5a, #ffb34d); }
+    .g-quiz-hp b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+    .g-quiz-timer { height: 12px; border-radius: 99px; background: #EFE3CC; overflow: hidden; margin-bottom: 8px; }
+    .g-quiz-timer i { display: block; height: 100%; background: linear-gradient(90deg, #5DAF4C, #F5B83D); transition: width .1s linear; }
+    .g-quiz-stats { display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 800; color: #4A3A2C; margin-bottom: 10px; }
+    .g-quiz-stats .hot { color: #E05A4F; animation: w-pop .6s ease-in-out infinite; }
+    .g-quiz-q { background: #fff; border: 3px solid #EBDDC3; border-radius: 18px; padding: 14px 10px; font-size: 30px; font-weight: 800; color: #3B2F2A; margin-bottom: 12px; word-break: keep-all; }
+    .g-quiz-q small { display: block; font-size: 12.5px; font-weight: 700; color: var(--ej-ink-soft); margin-bottom: 4px; }
+    .g-quiz-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .g-quiz-choice { display: flex; align-items: center; gap: 8px; text-align: left; border: 3px solid #EBDDC3; background: #fff; border-radius: 14px; padding: 11px 10px; font: inherit; font-size: 14.5px; font-weight: 700; color: #3B2F2A; cursor: pointer; box-shadow: 0 3px 0 #EBDDC3; min-height: 56px; word-break: keep-all; }
+    .g-quiz-choice span { flex-shrink: 0; width: 22px; height: 22px; border-radius: 7px; background: #F4EBDA; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #8A6A45; }
+    .g-quiz-choice:hover:not(:disabled) { background: #FFF6E4; transform: translateY(-1px); }
+    .g-quiz-choice.right { border-color: #5DAF4C; background: #E6F6DE; box-shadow: 0 3px 0 #8CCB79; }
+    .g-quiz-choice.wrong { border-color: #E05A4F; background: #FFE3E0; box-shadow: 0 3px 0 #F1B5AD; animation: g-shake .35s; }
+    @keyframes g-shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+    .g-quiz-res { display: flex; gap: 8px; margin: 10px 0 6px; }
+    .g-quiz-res div { flex: 1; background: #fff; border: 2px solid #EBDDC3; border-radius: 14px; padding: 8px; }
+    .g-quiz-res b { display: block; font-size: 24px; }
+    .g-quiz-res span { font-size: 12px; color: var(--ej-ink-soft); }
+    .g-quiz-done { background: #EEF0F6; color: #4A4170; border-radius: 14px; padding: 10px 12px; font-size: 13.5px; margin-bottom: 14px; text-align: center; }
+    @media (max-width: 980px) { .g-quiz { right: 12px; } }
+    @media (max-width: 720px) { .g-quiz { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; transform: none; } .g-quiz-q { font-size: 24px; } }
   </style>
   <!-- 3D 섬: Three.js (불러오지 못하면 글자 메뉴만으로도 모든 기능을 쓸 수 있어요) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
@@ -3343,6 +3374,18 @@
         r.likedBy[visitorNum] = today; r.likes = (r.likes || 0) + 1;
         return { likes: r.likes, already: false };
       },
+      // ⚔️ 보스 단어 대결 기록 (하루 1번, 최대 20 데미지)
+      getBossAttacks: function (weekKey) {
+        const d = demoLoad(); d.bossAttacks = d.bossAttacks || [];
+        return d.bossAttacks.filter(function (a) { return a.weekKey === weekKey; });
+      },
+      recordBossAttack: function (cls, num, name, weekKey, dmg, correct) {
+        const d = demoLoad(); d.bossAttacks = d.bossAttacks || [];
+        const today = demoDay(0);
+        if (d.bossAttacks.some(function (a) { return a.className === cls && String(a.studentNumber) === String(num) && a.date === today; })) throw new Error('오늘은 이미 보스와 대결했어요. 내일 다시 도전해요!');
+        const row = { className: cls, studentNumber: demoNum(num), studentName: name, date: today, weekKey: weekKey, dmg: Math.max(0, Math.min(20, Math.round(Number(dmg) || 0))), correct: Number(correct) || 0, createdAt: Date.now() };
+        d.bossAttacks.push(row); return row;
+      },
       addBonus: function (cls, num, name, points, reason) { const d = demoLoad(); const b = { id: demoUid(), className: cls, studentNumber: demoNum(num), studentName: name, points: Number(points), reason: reason || '', createdAt: Date.now() }; d.bonuses.push(b); return b; }
     };
 
@@ -4436,7 +4479,7 @@
       function typingOrBlocked(ev) {
         const t = ev.target;
         if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return true;
-        if (document.querySelector('.ej-mail-overlay, .ej-word-overlay, .ej-celebrate-overlay')) return true;
+        if (document.querySelector('.ej-mail-overlay, .ej-word-overlay, .ej-celebrate-overlay, .g-quiz')) return true;
         return W.mode !== 'home';
       }
       let eggWarned = 0;
@@ -5149,6 +5192,13 @@
           });
         })();
       };
+      // 단어 대결: 정답 하나마다 바로 한 방
+      W.bossStrike = function (dmg, label) {
+        if (!W.ready || !BOSS.group || !BOSS.group.visible) return;
+        if (pet && pet.stage > 0) P.hopT = 0;
+        shot(function () { BOSS.shake = Math.min(2, BOSS.shake + .8); BOSS.flash = 1; bossBurst(0xffe27a, 8); dmgPopup('-' + dmg + (label ? ' ' + label : ''), dmg >= 3); });
+      };
+      W.bossTaunt = function () { if (BOSS.group && BOSS.group.visible) { BOSS.shake = .5; } };
       W.bossDefeat = function (done) {
         if (!BOSS.group) { if (done) done(); return; }
         BOSS.group.visible = true; BOSS.dying = 0; BOSS.shake = 2;
@@ -5163,7 +5213,7 @@
         })();
       };
       function updateBoss(dt, t) {
-        if (!BOSS.group || !BOSS.group.visible) { if (BOSS.label) BOSS.label.style.display = BOSS.info && W.mode === 'home' && BOSS.info.defeated ? '' : 'none'; return; }
+        if (!BOSS.group || !BOSS.group.visible) { if (BOSS.label) BOSS.label.style.display = 'none'; return; }
         const a = bossAnchor(), g = BOSS.group;
         BOSS.shake = Math.max(0, BOSS.shake - dt * 2.5);
         BOSS.flash = Math.max(0, BOSS.flash - dt * 4);
@@ -5326,6 +5376,10 @@
         const reason = String(b.reason || '');
         if (reason.indexOf('⚔️') === 0) return; // 보스 격파 보상은 제외
         add(b.studentName, reason.indexOf('단어 게임') >= 0 ? BOSS_RULES.game : BOSS_RULES.bonus);
+      });
+      (STATE.bossAttacks || []).forEach(function (a) {
+        if (a.className !== cls || a.weekKey !== wk.key) return;
+        add(a.studentName, Math.max(0, Math.min(20, Number(a.dmg) || 0)));
       });
       return { id: boss.id, name: boss.name, emoji: boss.emoji, desc: boss.desc, maxHp: maxHp, dmg: dmg, hp: Math.max(0, maxHp - dmg), defeated: dmg >= maxHp, by: by, week: wk, members: members.length, cls: cls };
     }
@@ -5517,7 +5571,7 @@
       else if (STATE.screen === 'teacherDetail') app.innerHTML = teacherDetailHtml();
       bindEvents();
       bindGame();
-      if (mode === 'teacher') refreshTeacherAccounts();
+      if (mode === 'teacher') { refreshTeacherAccounts(); loadBossAttacks(); }
       if (mode !== 'teacher' && mode !== 'loading') STATE.accountsFetchedAt = 0;
       if (mode !== 'home') STATE.visit = null;
       if (STATE.visit) document.body.setAttribute('data-visit', '1'); else document.body.removeAttribute('data-visit');
@@ -5539,6 +5593,7 @@
           if (STATE.studentPanel !== 'decorate' && WORLD.isEditing()) WORLD.stopEdit(false);
         }
         syncIslandLayoutFromServer();
+        loadBossAttacks();
         const bInfo = bossFor(STATE.studentClass);
         WORLD.setBoss(bInfo);
         playBossProgress(bInfo);
@@ -5631,7 +5686,7 @@
       // 보스 체력 바
       const bb = bossFor(STATE.studentClass);
       h += '<div class="g-bossbar ui' + (bb.defeated ? ' win' : '') + '" id="g-bossbar" title="보스전 보기">' +
-        '<div class="g-bossbar-top"><span>' + (bb.defeated ? '🏆 ' + esc(bb.name) + ' 격파!' : bb.emoji + ' 이번 주 보스 · ' + esc(bb.name)) + '</span><span>' + timeLeftLabel_(bb.week.endsAt) + '</span></div>' +
+        '<div class="g-bossbar-top"><span>' + (bb.defeated ? '🏆 이번 주 보스 격파!' : bb.emoji + ' 이번 주 보스 · ' + esc(bb.name)) + '</span><span>' + (bb.defeated ? '다음 보스는 월요일에' : timeLeftLabel_(bb.week.endsAt)) + '</span></div>' +
         '<div class="g-bossbar-track"><div class="g-bossbar-fill" style="width:' + (bb.hp / bb.maxHp * 100) + '%"></div><b>HP ' + bb.hp + ' / ' + bb.maxHp + '</b></div></div>';
       // 알림
       let toasts = '';
@@ -5644,7 +5699,7 @@
         mailbox: c.mail > 0 ? [c.mail, ''] : null, board: c.study ? ['NEW', ''] : null,
         jar: c.words > 0 ? [c.words, 'soft'] : null, chest: c.bonus > 0 ? [c.bonus, 'soft'] : null,
         decorate: newPropsBetween(decoSeenStage(), c.stage).length ? ['NEW', ''] : null,
-        boss: (function () { const b = bossFor(STATE.studentClass); return b.defeated ? ['🏆', 'soft'] : (!b.by[STATE.studentName] ? ['!', ''] : null); })()
+        boss: (function () { const b = bossFor(STATE.studentClass); return b.defeated ? ['🏆', 'soft'] : (!myBossAttackToday() ? ['⚔️', ''] : null); })()
       };
       h += '<nav class="g-menu ui' + (STATE.menuOpen ? ' open' : '') + '"><div class="g-menu-head"><span class="t">🧭 메뉴</span><button type="button" class="g-menu-toggle" id="g-menu-toggle">' + (STATE.menuOpen ? '✕ 닫기' : '☰ 메뉴') + '</button></div><div class="g-menu-list">';
       GAME_MENU.forEach(function (m) {
@@ -5720,8 +5775,14 @@
         let body = '<div class="g-boss-hero"><div class="e">' + (b.defeated ? '🏆' : b.emoji) + '</div><div class="n">' + esc(b.name) + (b.defeated ? ' 격파!' : '') + '</div><div class="d">' + esc(b.desc) + '</div></div>';
         body += '<div class="g-boss-big"><i style="width:' + (b.hp / b.maxHp * 100) + '%"></i><b>HP ' + b.hp + ' / ' + b.maxHp + '</b></div>';
         body += '<div style="text-align:center;font-size:12.5px;color:var(--ej-ink-soft);margin-bottom:12px">' + esc(STATE.studentClass) + ' · ' + b.week.mon.slice(5).replace('-', '/') + ' ~ ' + b.week.sun.slice(5).replace('-', '/') + ' · ' + timeLeftLabel_(b.week.endsAt) + '</div>';
-        if (b.defeated) body += '<div class="g-evo-gift" style="margin:0 0 12px">🎉 이번 주 보스를 쓰러뜨렸어요! 선생님이 반 전체에 보너스를 줄 수 있어요. 섬의 집 지붕에 승리 깃발이 꽂혔어요.</div>';
+        if (b.defeated) body += '<div class="g-evo-gift" style="margin:0 0 12px">🎉 이번 주 보스를 쓰러뜨렸어요! 보스는 사라졌고, 다음 보스는 월요일에 나타나요. 선생님이 반 전체에 보너스를 줄 수 있어요.</div>';
+        else {
+          const todayAtk = myBossAttackToday();
+          body += todayAtk ? '<div class="g-quiz-done">⚔️ 오늘 단어 대결 완료! <b>-' + todayAtk.dmg + '</b> (정답 ' + todayAtk.correct + '개) · 내일 다시 도전할 수 있어요</div>'
+            : '<button type="button" class="ej-btn ej-btn-primary g-start" id="g-quiz-open" style="margin-bottom:14px">⚔️ 단어 대결 시작 (30초)</button>';
+        }
         body += '<div class="ej-eyebrow" style="margin-bottom:6px">⚔️ 공격하는 방법</div><div class="g-rule">' +
+          '<span>⚔️ 보스 단어 대결 (하루 1번)</span><b>최대 -' + QUIZ_RULES.maxDmg + '</b>' +
           '<span>📖 일지 쓰기 (하루 1번까지)</span><b>-' + BOSS_RULES.entry + '</b><span>🎮 단어 게임 만점</span><b>-' + BOSS_RULES.game + '</b><span>💰 선생님 칭찬 보너스</span><b>-' + BOSS_RULES.bonus + '</b></div>' +
           '<div style="font-size:12px;color:var(--ej-ink-soft);margin:6px 2px 14px">보스 체력은 우리 반 인원 × ' + BOSS_RULES.hpPer + ' (최소 ' + BOSS_RULES.hpMin + ')이에요. 매주 월요일에 새 보스가 나타나요.</div>';
         const top = Object.keys(b.by).map(function (n) { return { n: n, d: b.by[n] }; }).sort(function (x, y) { return y.d - x.d; });
@@ -5868,6 +5929,7 @@
       byId('g-deco-reset', function (el) { el.onclick = function () { WORLD.resetLayoutInEdit(); render(); decoToast('처음 배치로 돌려 놨어요. 저장을 눌러야 적용돼요'); }; });
       if (STATE.studentPanel === 'decorate' && WORLD.ready && WORLD.isEditing()) { /* 선택 상태 유지 */ }
       byId('g-bossbar', function (el) { el.onclick = function () { openGamePanel('boss'); }; });
+      byId('g-quiz-open', function (el) { el.onclick = openBossQuiz; });
       document.querySelectorAll('[data-visit]').forEach(function (el) {
         el.onclick = function () {
           const num = el.getAttribute('data-visit');
@@ -6000,13 +6062,203 @@
       setTimeout(function () { if (document.body.contains(box) && !box.classList.contains('wait')) close(); }, 14000);
     }
 
-    WORLD.onBoss = function () { if (!STATE.visit && STATE.screen === 'studentHome') openGamePanel('boss'); };
+    WORLD.onBoss = function () { if (!STATE.visit && STATE.screen === 'studentHome' && !QUIZ) openBossQuiz(); };
     WORLD.onKeyMove = function () { if (STATE.studentPanel === 'pet') { STATE.studentPanel = null; render(); } };
     WORLD.lineFor = petLine;
     WORLD.onObject = onWorldObject;
     WORLD.onPet = function () { if (STATE.studentPanel !== 'adopt' && STATE.studentPanel !== 'pet') { /* 친구 정보는 플레이어 카드·메뉴에서 */ } };
     WORLD.onFed = function () { try { localStorage.setItem(petFedKey_(), todayStr()); } catch (e) { } };
     WORLD.init();
+
+
+    // =================================================================
+    // ⚔️ 보스 단어 대결: 30초 동안 뜻을 맞히면 정답마다 보스에게 데미지
+    // =================================================================
+    const QUIZ_RULES = { seconds: 30, perHit: 2, comboFrom: 3, comboBonus: 1, maxDmg: 20 };
+    // 기본 단어 은행 (반 친구들이 모은 단어장 단어와 섞어서 나와요)
+    const QUIZ_BANK = [
+      ['achieve', '성취하다'], ['admire', '존경하다'], ['advantage', '장점, 이점'], ['affect', '영향을 미치다'], ['allow', '허락하다'],
+      ['ancient', '고대의'], ['anxious', '불안한'], ['appreciate', '감사하다'], ['arrange', '정리하다, 배열하다'], ['attention', '주의, 관심'],
+      ['available', '이용할 수 있는'], ['avoid', '피하다'], ['aware', '알고 있는'], ['benefit', '혜택, 이익'], ['brave', '용감한'],
+      ['calm', '침착한'], ['career', '직업, 경력'], ['challenge', '도전'], ['character', '성격, 등장인물'], ['comfortable', '편안한'],
+      ['compare', '비교하다'], ['confident', '자신감 있는'], ['consider', '고려하다'], ['create', '창조하다'], ['culture', '문화'],
+      ['curious', '호기심 많은'], ['decide', '결정하다'], ['decrease', '감소하다'], ['describe', '묘사하다'], ['develop', '발달시키다'],
+      ['disappear', '사라지다'], ['effort', '노력'], ['encourage', '격려하다'], ['environment', '환경'], ['escape', '탈출하다'],
+      ['experience', '경험'], ['explain', '설명하다'], ['familiar', '익숙한'], ['focus', '집중하다'], ['force', '힘, 강요하다'],
+      ['generous', '관대한'], ['goal', '목표'], ['habit', '습관'], ['honest', '정직한'], ['improve', '향상시키다'],
+      ['include', '포함하다'], ['increase', '증가하다'], ['influence', '영향(력)'], ['information', '정보'], ['journey', '여행, 여정'],
+      ['knowledge', '지식'], ['limit', '한계, 제한하다'], ['memory', '기억'], ['mistake', '실수'], ['necessary', '필요한'],
+      ['opinion', '의견'], ['opportunity', '기회'], ['patient', '참을성 있는'], ['perform', '공연하다, 수행하다'], ['prepare', '준비하다'],
+      ['prevent', '막다, 예방하다'], ['protect', '보호하다'], ['purpose', '목적'], ['realize', '깨닫다'], ['reduce', '줄이다'],
+      ['relationship', '관계'], ['remain', '남아 있다'], ['respect', '존중하다'], ['responsible', '책임 있는'], ['result', '결과'],
+      ['share', '공유하다'], ['solve', '해결하다'], ['support', '지지하다'], ['survive', '살아남다'], ['tradition', '전통'],
+      ['valuable', '귀중한'], ['various', '다양한'], ['volunteer', '자원봉사자'], ['wisdom', '지혜'], ['bond', '유대, 끈']
+    ];
+    let QUIZ = null;
+
+    function myBossAttackToday() {
+      const today = ymd_(new Date());
+      return (STATE.bossAttacks || []).find(function (a) { return a.className === STATE.studentClass && String(a.studentNumber) === String(STATE.studentNumber) && a.date === today; });
+    }
+    function loadBossAttacks(force) {
+      const wk = bossWeek_();
+      if (!force && STATE.bossAttacksWeek === wk.key && STATE.bossAttacksAt && Date.now() - STATE.bossAttacksAt < 60000) return;
+      STATE.bossAttacksWeek = wk.key; STATE.bossAttacksAt = Date.now();
+      gsRun('getBossAttacks', wk.key).then(function (list) {
+        const before = JSON.stringify(STATE.bossAttacks || []);
+        STATE.bossAttacks = Array.isArray(list) ? list : [];
+        if (JSON.stringify(STATE.bossAttacks) !== before && !QUIZ) render();
+      }).catch(function () { STATE.bossAttacks = STATE.bossAttacks || []; });
+    }
+    function quizPool_() {
+      const seen = {}, pool = [];
+      const add = function (w, m) {
+        w = String(w || '').trim(); m = String(m || '').trim();
+        if (!w || !m || seen[w.toLowerCase()]) return;
+        seen[w.toLowerCase()] = true; pool.push({ word: w, meaning: m });
+      };
+      // 내가 모은 단어 → 우리 반이 모은 단어 → 기본 단어 순서로 섞어요
+      const mine = (STATE.words || []).filter(function (w) { return w.className === STATE.studentClass && String(w.studentNumber) === String(STATE.studentNumber); });
+      const cls = (STATE.words || []).filter(function (w) { return w.className === STATE.studentClass; });
+      demoShuffle(mine).forEach(function (w) { add(w.word, w.meaning); });
+      demoShuffle(cls).forEach(function (w) { add(w.word, w.meaning); });
+      demoShuffle(QUIZ_BANK).forEach(function (b) { add(b[0], b[1]); });
+      return pool;
+    }
+    function quizNext_() {
+      const q = QUIZ;
+      if (q.idx >= q.pool.length) q.idx = 0;
+      const item = q.pool[q.idx++];
+      const reverse = Math.random() < .3; // 가끔은 뜻 → 단어
+      const others = demoShuffle(q.pool.filter(function (p) { return p.word !== item.word; })).slice(0, 3);
+      const choices = demoShuffle([item].concat(others));
+      q.cur = { item: item, reverse: reverse, choices: choices, answered: false };
+    }
+    function openBossQuiz() {
+      const b = bossFor(STATE.studentClass);
+      if (b.defeated) { decoToast('이번 주 보스는 이미 쓰러졌어요! 다음 보스는 월요일에 나타나요'); return; }
+      const done = myBossAttackToday();
+      if (done) { decoToast('오늘은 이미 대결했어요 (-' + done.dmg + '). 내일 다시 도전해요!'); openGamePanel('boss'); return; }
+      STATE.studentPanel = null; render();
+      QUIZ = { phase: 'ready', boss: b, pool: quizPool_(), idx: 0, dmg: 0, correct: 0, wrong: 0, combo: 0, best: 0, left: QUIZ_RULES.seconds * 1000, timer: null };
+      paintQuiz();
+      WORLD.say('덤벼라! ' + b.name + '! ⚔️', 2200);
+    }
+    function closeQuiz() {
+      if (QUIZ && QUIZ.timer) clearInterval(QUIZ.timer);
+      QUIZ = null;
+      const el = document.getElementById('g-quiz'); if (el) el.remove();
+      render();
+    }
+    function quizEl_() {
+      let el = document.getElementById('g-quiz');
+      if (!el) { el = document.createElement('div'); el.id = 'g-quiz'; el.className = 'g-quiz'; document.body.appendChild(el); }
+      return el;
+    }
+    function paintQuiz() {
+      const q = QUIZ; if (!q) return;
+      const el = quizEl_(), b = q.boss;
+      const head = '<div class="g-quiz-head"><span>' + b.emoji + ' ' + esc(b.name) + '와(과) 단어 대결!</span>' + (q.phase !== 'play' ? '<button type="button" class="g-quiz-x" id="g-quiz-x">✕</button>' : '') + '</div>';
+      if (q.phase === 'ready') {
+        el.innerHTML = head + '<div class="g-quiz-body"><div class="g-quiz-big">⚔️</div>' +
+          '<p><b>' + QUIZ_RULES.seconds + '초</b> 동안 단어 뜻을 맞혀요.<br>정답마다 보스에게 <b>-' + QUIZ_RULES.perHit + '</b>, ' + QUIZ_RULES.comboFrom + '연속부터는 콤보 <b>+' + QUIZ_RULES.comboBonus + '</b>!<br>한 번에 최대 <b>-' + QUIZ_RULES.maxDmg + '</b>까지, <b>하루 한 번</b> 도전할 수 있어요.</p>' +
+          '<div class="g-quiz-hp"><i style="width:' + (b.hp / b.maxHp * 100) + '%"></i><b>HP ' + b.hp + ' / ' + b.maxHp + '</b></div>' +
+          '<button type="button" class="ej-btn ej-btn-primary g-start" id="g-quiz-go">대결 시작 ▶</button>' +
+          '<div class="g-quiz-tip">키보드 1~4로도 고를 수 있어요</div></div>';
+      } else if (q.phase === 'play') {
+        const c = q.cur, sec = Math.ceil(q.left / 1000);
+        const prompt = c.reverse ? c.item.meaning : c.item.word;
+        let choices = '';
+        c.choices.forEach(function (ch, i) {
+          let cls = '';
+          if (c.answered) { if (ch.word === c.item.word) cls = ' right'; else if (c.picked === i) cls = ' wrong'; }
+          choices += '<button type="button" class="g-quiz-choice' + cls + '" data-qc="' + i + '"' + (c.answered ? ' disabled' : '') + '><span>' + (i + 1) + '</span>' + esc(c.reverse ? ch.word : ch.meaning) + '</button>';
+        });
+        el.innerHTML = head + '<div class="g-quiz-body">' +
+          '<div class="g-quiz-timer"><i style="width:' + (q.left / (QUIZ_RULES.seconds * 1000) * 100) + '%"></i></div>' +
+          '<div class="g-quiz-stats"><span>⏱️ ' + sec + '초</span><span>💥 -' + q.dmg + ' / ' + QUIZ_RULES.maxDmg + '</span><span class="' + (q.combo >= QUIZ_RULES.comboFrom ? 'hot' : '') + '">🔥 콤보 ' + q.combo + '</span></div>' +
+          '<div class="g-quiz-q"><small>' + (c.reverse ? '이 뜻의 영어 단어는?' : '이 단어의 뜻은?') + '</small>' + esc(prompt) + '</div>' +
+          '<div class="g-quiz-choices">' + choices + '</div></div>';
+      } else if (q.phase === 'saving' || q.phase === 'done') {
+        const r = q.result;
+        el.innerHTML = head + '<div class="g-quiz-body"><div class="g-quiz-big">' + (q.dmg >= QUIZ_RULES.maxDmg ? '🏆' : (q.dmg > 0 ? '💥' : '😵')) + '</div>' +
+          '<div class="g-quiz-res"><div><b>' + q.correct + '</b><span>정답</span></div><div><b>-' + q.dmg + '</b><span>데미지</span></div><div><b>' + q.best + '</b><span>최고 콤보</span></div></div>' +
+          (q.phase === 'saving' ? '<p>공격 기록을 저장하는 중…</p>' : (q.error ? '<div class="ej-error">' + esc(q.error) + '</div>' : '<p>' + (r && r.defeated ? '🎉 <b>보스를 쓰러뜨렸어요!</b> 우리 반 최고!' : '우리 반 보스 체력이 <b>' + (r ? r.hp : '') + '</b> 남았어요. 내일 또 도전해요!') + '</p>')) +
+          (q.phase === 'done' ? '<button type="button" class="ej-btn ej-btn-primary g-start" id="g-quiz-ok">확인</button>' : '') + '</div>';
+      }
+      bindQuiz();
+    }
+    function bindQuiz() {
+      byId('g-quiz-x', function (b) { b.onclick = closeQuiz; });
+      byId('g-quiz-ok', function (b) { b.onclick = closeQuiz; });
+      byId('g-quiz-go', function (b) { b.onclick = startQuiz; });
+      document.querySelectorAll('[data-qc]').forEach(function (b) { b.onclick = function () { answerQuiz(Number(b.getAttribute('data-qc'))); }; });
+    }
+    function startQuiz() {
+      const q = QUIZ; if (!q || q.phase !== 'ready') return;
+      if (q.pool.length < 4) { decoToast('단어가 부족해서 대결을 열 수 없어요'); return; }
+      q.phase = 'play'; q.startAt = Date.now(); quizNext_(); paintQuiz();
+      q.timer = setInterval(function () {
+        if (!QUIZ || QUIZ.phase !== 'play') return;
+        QUIZ.left = Math.max(0, QUIZ_RULES.seconds * 1000 - (Date.now() - QUIZ.startAt));
+        const bar = document.querySelector('.g-quiz-timer i'); if (bar) bar.style.width = (QUIZ.left / (QUIZ_RULES.seconds * 1000) * 100) + '%';
+        const sec = document.querySelector('.g-quiz-stats span'); if (sec) sec.textContent = '⏱️ ' + Math.ceil(QUIZ.left / 1000) + '초';
+        if (QUIZ.left <= 0) finishQuiz();
+      }, 100);
+    }
+    function answerQuiz(i) {
+      const q = QUIZ; if (!q || q.phase !== 'play' || q.cur.answered) return;
+      const c = q.cur, ok = c.choices[i] && c.choices[i].word === c.item.word;
+      c.answered = true; c.picked = i;
+      if (ok) {
+        q.correct++; q.combo++; q.best = Math.max(q.best, q.combo);
+        let hit = QUIZ_RULES.perHit + (q.combo >= QUIZ_RULES.comboFrom ? QUIZ_RULES.comboBonus : 0);
+        hit = Math.min(hit, QUIZ_RULES.maxDmg - q.dmg, Math.max(0, q.boss.hp - q.dmg));
+        q.dmg += hit;
+        if (hit > 0) WORLD.bossStrike(hit, q.combo >= QUIZ_RULES.comboFrom ? q.combo + '콤보!' : '');
+      } else {
+        q.wrong++; q.combo = 0; WORLD.bossTaunt();
+      }
+      paintQuiz();
+      setTimeout(function () {
+        if (!QUIZ || QUIZ !== q || q.phase !== 'play') return;
+        if (q.dmg >= QUIZ_RULES.maxDmg || q.boss.hp - q.dmg <= 0) { finishQuiz(); return; }
+        quizNext_(); paintQuiz();
+      }, ok ? 350 : 900);
+    }
+    function finishQuiz() {
+      const q = QUIZ; if (!q || q.phase !== 'play') return;
+      clearInterval(q.timer); q.timer = null;
+      q.phase = 'saving'; paintQuiz();
+      const before = bossFor(STATE.studentClass);
+      gsRun('recordBossAttack', STATE.studentClass, STATE.studentNumber, STATE.studentName, before.week.key, q.dmg, q.correct).then(function (row) {
+        STATE.bossAttacks = (STATE.bossAttacks || []).concat([row]);
+        const after = bossFor(STATE.studentClass);
+        try { localStorage.setItem(bossSeenKey_(after), String(after.dmg)); } catch (e) { }   // 이미 연출했으니 다시 재생하지 않아요
+        q.result = { hp: after.hp, defeated: after.defeated };
+        q.phase = 'done'; paintQuiz();
+        if (after.defeated && !before.defeated) {
+          WORLD.bossDefeat(function () { WORLD.setBoss(after); WORLD.say('해냈다!! 우리 반 최고 🏆', 3500); });
+        } else {
+          WORLD.setBoss(after);
+          WORLD.say(q.dmg > 0 ? '나이스! -' + q.dmg + ' 데미지 💥' : '아깝다… 내일 다시 붙자!', 2600);
+        }
+      }).catch(function (e) {
+        q.error = (e && e.message) || '기록을 저장하지 못했어요.';
+        q.phase = 'done'; paintQuiz();
+      });
+    }
+    document.addEventListener('keydown', function (ev) {
+      if (!QUIZ) return;
+      // 대결 창이 열려 있는 동안에는 섬(방향키·Space/Enter)으로 키가 넘어가지 않게 막아요
+      if (ev.target && (ev.target.tagName === 'INPUT' || ev.target.tagName === 'TEXTAREA')) return;
+      ev.stopPropagation();
+      if (QUIZ.phase === 'play' && /^[1-4]$/.test(ev.key)) { ev.preventDefault(); answerQuiz(Number(ev.key) - 1); }
+      else if (QUIZ.phase === 'ready' && ev.key === 'Enter') { ev.preventDefault(); startQuiz(); }
+      else if (QUIZ.phase === 'done' && (ev.key === 'Enter' || ev.key === 'Escape')) { ev.preventDefault(); closeQuiz(); }
+      else if (QUIZ.phase === 'ready' && ev.key === 'Escape') { ev.preventDefault(); closeQuiz(); }
+    }, true);
+    window.addEventListener('keyup', function (ev) { if (QUIZ) ev.stopPropagation(); }, true);
 
     render();
     gsRun('getAllData').then(function (data) {
